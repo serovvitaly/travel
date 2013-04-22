@@ -1,0 +1,65 @@
+#twiket { width: 650px; padding: 31px 0; }
+
+.twiket a, .twiket .tw-link, .twiket .tw-searchResult .tw-head span { color: #2b76ac; }
+
+.twiket .tw-step { color: green; }
+.twiket .tw-formBlock {
+	background-color: #F9F300;
+	background-color: #8FCBF4;
+}
+.twiket #tw-searchForm #tw-fType:focus {
+	background: #7fc7ff;
+	background: -webkit-linear-gradient(top, #7fc7ff, #42aaff);
+	background:    -moz-linear-gradient(top, #7fc7ff, #42aaff);
+	background: 	-ms-linear-gradient(top, #7fc7ff, #42aaff);
+	background: 	 -o-linear-gradient(top, #7fc7ff, #42aaff);
+	background: 		linear-gradient(top, #7fc7ff, #42aaff);
+}
+.tw-suggest li:hover, .tw-suggest li.hover { background: #8FCBF4; }
+.tw-calendar .tw-period, .tw-calendar .tw-current, .tw-calendar .tw-enabled:hover { background: #8FCBF4; }
+
+.twiket ul#tw-recent li {
+	background-color: #FFFFCC;
+	background-color: #E9F7FF;
+	border-color:  #F5D6B5;
+	border-color: #CECECE;
+}
+
+#tw-layout_statistics .tw-graphic .tw-col { background-color: #8FCBF4; }
+#tw-layout_statistics .tw-graphic .tw-col.tw-curDate { background-color: #6495ed; }
+#tw-layout_statistics .tw-graphic .tw-col.tw-min { background-color: #8FF4CB; }
+
+.twiket #tw-layout_prefered .tw-body {
+	background-color: #FFFFCC;
+	background-color: #E9F7FF;
+	border-color: #F5D6B5;
+	border-color: #CECECE;
+}
+
+.twiket #tw-layout_matrix table td {
+	border-color: #EBEBEB;
+	border-color: #CECECE;
+}
+.twiket #tw-layout_matrix .tw-selected {
+	background-color: #FFFFCC;
+	background-color: #E9F7FF;
+}
+.twiket #tw-layout_matrix .tw-hover, #tw-layout_matrix .tw-hover td {
+	background-color: #F2F0D8 !important;
+	background-color: #8FCBF4 !important;
+}
+
+.twiket .tw-searchResult .avl:hover, .twiket .tw-searchResult .avl:hover .tw-journey .arrow div {
+	background-color: #F9F300;
+	background-color: #E9F7FF;
+}
+.twiket .tw-searchResult .tw-selectedTrip {
+	background-color: #FFFFCC;
+	background-color: #E9F7FF;
+}
+
+.twiket #tw-layout_ticket .tw-searchResult .tw-selectedTrip {
+	padding-top: 5px;
+	border-radius: 0 5px 0 5px;
+	border: 1px solid #CECECE;
+}

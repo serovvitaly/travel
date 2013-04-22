@@ -1,0 +1,86 @@
+#tw-layout_statistics {  }
+
+#tw-layout_statistics .tw-statShow { margin: 1em 0; font-size: 110%; }
+#tw-layout_searchHeader[class~="tw-invisible"]+#tw-layout_statistics { margin-top: -3.2em; }
+#tw-layout_searchHeader[class~="tw-invisible"]+#tw-layout_statistics .tw-statShow { padding: 5px 0; }
+#tw-layout_statistics .tw-statTitle { font-size: 120%; padding: 5px 0; }
+#tw-layout_statistics .tw-statForm, #tw-layout_statistics ul.tw-stopsSelect { font-size: 110%; }
+#tw-layout_statistics .tw-statTitle { margin-bottom: 0.3em; }
+#tw-layout_statistics ul.tw-stopsSelect { margin-bottom: 0.4em; }
+
+#tw-layout_statistics .tw-statForm td { vertical-align: middle; }
+#tw-layout_statistics .tw-statForm tr.tw-statReturn td { padding-top: 0.4em; }
+#tw-layout_statistics .tw-statForm td:first-child { padding-right: 20px; }
+#tw-layout_statistics .tw-statForm td:first-child span { font-weight: bold; text-transform: lowercase; }
+
+#tw-layout_statistics ul.tw-stopsSelect { display: inline-block; }
+#tw-layout_statistics ul.tw-stopsSelect li { display: inline-block; }
+#tw-layout_statistics ul.tw-stopsSelect li:before { content: '|'; display: inline-block; text-align: center; width: 1em; }
+#tw-layout_statistics ul.tw-stopsSelect li:first-child:before { display: none; }
+#tw-layout_statistics ul.tw-stopsSelect li .tw-selected { cursor: default; border: none; font-weight: bold; }
+
+#tw-layout_statistics .tw-graphic { z-index: 9; margin-top: 1em; margin-right: 100px; position: relative; }
+#tw-layout_statistics .tw-graphic #tw-loader { margin: 2em 0 -2em; }
+#tw-layout_statistics .tw-graphic .tw-noData { font-size: 110%; }
+#tw-layout_statistics .tw-graphic table { width: 100%; table-layout: fixed; border-collapse: collapse; background-color: #F9F9F9; border: 1px solid #ddd; }
+#tw-layout_statistics .tw-graphic table td { border: 1px solid; border-color: #E8E8E8 #F3F3F3 #E4E4E4; vertical-align: bottom; height: 180px; }
+#tw-layout_statistics .tw-graphic table td:first-child { border-left-color: #E4E4E4; padding-left: 5px;
+	background: -webkit-linear-gradient(left, #F1F1F1, #F9F9F9 4px);
+	background:    -moz-linear-gradient(left, #F1F1F1, #F9F9F9 4px);
+	background: 	-ms-linear-gradient(left, #F1F1F1, #F9F9F9 4px);
+	background: 	 -o-linear-gradient(left, #F1F1F1, #F9F9F9 4px);
+	background: 		linear-gradient(left, #F1F1F1, #F9F9F9 4px);
+}
+#tw-layout_statistics .tw-graphic table td:last-child { border-right-color: #E4E4E4; padding-right: 5px;
+	background: -webkit-linear-gradient(right, #F1F1F1, #F9F9F9 4px);
+	background:    -moz-linear-gradient(right, #F1F1F1, #F9F9F9 4px);
+	background: 	-ms-linear-gradient(right, #F1F1F1, #F9F9F9 4px);
+	background: 	 -o-linear-gradient(right, #F1F1F1, #F9F9F9 4px);
+	background: 		linear-gradient(right, #F1F1F1, #F9F9F9 4px);
+}
+#tw-layout_statistics .tw-graphic .tw-colNoData { color: #686868;
+	-webkit-transform: rotate(-90deg);
+	   -moz-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		 -o-transform: rotate(-90deg);
+			transform: rotate(-90deg);
+	margin-top: -6em;
+}
+#tw-layout_statistics .tw-graphic .tw-col { position: relative; cursor: pointer;
+	display: block;
+	color: inherit;
+	-webkit-transition: all 0.2s ease;
+	   -moz-transition: all 0.2s ease;
+	    -ms-transition: all 0.2s ease;
+	     -o-transition: all 0.2s ease;
+	        transition: all 0.2s ease;
+}
+#tw-layout_statistics .tw-col .tw-balloon { opacity: 0; z-index: -1; position: absolute; left: 50%; background-color: white; padding: 5px; white-space: nowrap; text-transform: lowercase;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	border-collapse: separate;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	    -ms-transition: opacity 0.2s linear;
+	     -o-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+}
+#tw-layout_statistics .tw-col:hover .tw-balloon { opacity: 1; z-index: 1; }
+#tw-layout_statistics .tw-col .tw-balloon span { font-weight: bold; }
+#tw-layout_statistics .tw-col .tw-balloon:before { content: ''; z-index: 1; position: absolute; width: 10px; height: 10px; background: white; bottom: -5px; left: 0; right: 0; margin: 0 auto; 
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		 -o-transform: rotate(45deg);
+			transform: rotate(45deg);
+	clip: rect(auto, 15px, 15px, auto);
+}
+#tw-layout_statistics .tw-graphic .tw-col .tw-when { position: absolute; width: 100%; bottom: 1em; color: white; text-align: center; }
+#tw-layout_statistics .tw-graphic .tw-col .tw-legend { position: absolute; left: 0; top: 100%; margin-top: 0.5em; color: #686868; font-size: 80%; }
+#tw-layout_statistics .tw-graphic .tw-col .tw-legend div:last-child { cursor: help; }
+#tw-layout_statistics .tw-graphic .tw-axisZero, #tw-layout_statistics .tw-graphic .tw-axisMax { position: absolute; left: 100%; margin-left: 7px; color: #686868; }
+#tw-layout_statistics .tw-graphic .tw-axisZero { bottom: 0; }
+#tw-layout_statistics .tw-graphic .tw-axisMax { top: 0; white-space: nowrap; }
+#tw-layout_statistics .tw-graphic .tw-axisMin { position: absolute; left: 0; right: -7px; margin-bottom: -1px; border-bottom: 1px dotted black; white-space: nowrap; }
+#tw-layout_statistics .tw-graphic .tw-axisMin span { position: absolute; left: 100%; bottom: 0; font-weight: bold; }
+#tw-layout_statistics .tw-statNote { margin: 4em 0 1em; }

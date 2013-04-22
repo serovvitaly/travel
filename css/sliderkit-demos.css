@@ -1,0 +1,43 @@
+/** 
+ *  sliderkit-demos.css
+ *	> CSS code for demos
+ *  
+ *  This file is part of Slider Kit jQuery plugin.
+ *  http://www.kyrielles.net/sliderkit/
+ *  
+ *  Copyright (c) 2010-2012 Alan Frog
+ *  Licensed under the GNU General Public License
+ *  See <license.txt> or <http://www.gnu.org/licenses/>
+ *
+ */
+
+/*---------------------------------
+ *  Carousel > main
+ *---------------------------------*/
+#carousel-main{width:100%;height:310px;margin-bottom: 20px;}
+
+/* Navbar */
+#carousel-main .sliderkit-nav{left:0;bottom:0;width:100%;height:auto;padding:0;background:none;}
+#carousel-main .sliderkit-nav-clip ul li{float:left;width:220px;margin:3px 15px 3px 3px;text-align:left; padding:0px;border:0px solid #eee; overflow: hidden;}
+#carousel-main .sliderkit-nav-clip ul li > a{display:block;width:auto;height:auto;overflow:hidden;margin:0;opacity:0.8;}
+#carousel-main .sliderkit-nav-clip ul li > a:hover{opacity:1;}
+#carousel-main .sliderkit-nav-clip ul li h2{margin-bottom:-5px \0/;}
+#carousel-main .sliderkit-nav-clip ul li p{font-size:0.9em;}
+#carousel-main .sliderkit-nav-clip ul li .rlt-link-readmore:hover{text-decoration:underline;}
+
+/* Buttons */
+#carousel-main .sliderkit-nav .sliderkit-nav-btn{position:absolute;top:40%;}
+#carousel-main .sliderkit-nav .sliderkit-nav-btn span{display:none;}
+#carousel-main .sliderkit-nav .sliderkit-nav-btn a{display:block;width:31px;height:92px;outline: none;}
+#carousel-main .sliderkit-nav .sliderkit-nav-prev{left:10px;}
+#carousel-main .sliderkit-nav .sliderkit-nav-next{right:10px;}
+#carousel-main .sliderkit-nav .sliderkit-nav-prev a{background:url(../i/str_white_left.png) no-repeat;}
+#carousel-main .sliderkit-nav .sliderkit-nav-next a{background:url(../i/str_white_right.png) no-repeat;}
+/*#carousel-main .sliderkit-nav .sliderkit-nav-prev a:hover,
+#carousel-main .sliderkit-nav .sliderkit-nav-prev a:focus{}
+#carousel-main .sliderkit-nav .sliderkit-nav-next a:hover,
+#carousel-main .sliderkit-nav .sliderkit-nav-next a:focus{}*/
+#carousel-main .sliderkit-nav .sliderkit-btn-disable a{cursor:default;}
+#carousel-main .sliderkit-nav .sliderkit-nav-prev.sliderkit-btn-disable a{background-position:-52px 0;}
+#carousel-main .sliderkit-nav .sliderkit-nav-next.sliderkit-btn-disable a{background-position:-52px -31px;}
+

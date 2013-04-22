@@ -1,0 +1,42 @@
+.twiket .tw-creditCardBlock { margin: 1em 0; position: relative; max-width: 794px; }
+.twiket .tw-creditCardBlock .tw-SSLinfo { margin-bottom: 0.5em; position: relative; }
+.twiket .tw-creditCardBlock .tw-SSLinfo:before { content: ''; position: absolute; top: 0; left: -21px; width: 21px; height: 27px; background: url(/twiket/img/padlock.png) no-repeat left top; }
+.twiket .tw-creditCard { z-index: 2; position: relative; display: inline-block; vertical-align: top; width: 388px; height: 236px; padding: 2px; background: white url("/twiket/img/creditCard.png") no-repeat left top; }
+.twiket .tw-creditCard.tw-reverse { z-index: 1; position: absolute; right: 0; background-position: right top; }
+.twiket .tw-creditCard .tw-visa { position: absolute; top: 18px; right: 24px; height: 26px; width: 79px; background: url(/twiket/img/visa.png) no-repeat center; }
+.twiket .tw-creditCard .tw-masterCard { position: absolute; top: 10px; right: 113px; height: 36px; width: 60px; background: url(/twiket/img/masterCard.png) no-repeat center; }
+.twiket .tw-creditCard table { table-layout: fixed; width: 100%; margin: 0 auto; }
+.twiket .tw-creditCard td { padding: 0 5px; vertical-align: middle; }
+.twiket .tw-creditCard label { display: inline-block; text-transform: uppercase; font-size: 60%; line-height: normal; }
+.twiket .tw-creditCard input[type="text"], .twiket .tw-creditCard input[type="password"] { height: 28px; padding: 3px 8px; text-align: center; width: 100%; }
+.twiket .tw-creditCard .tw-cardNumber, .twiket .tw-creditCard .tw-expDate, .twiket .tw-creditCard .tw-holderName { position: absolute; line-height: 28px; left: 10px; right: 10px; }
+.twiket .tw-creditCard .tw-holderName input { text-align: left;}
+.twiket .tw-creditCard .tw-cardNumber { bottom: 134px; }
+.twiket .tw-creditCard .tw-cardNumber table { width: auto; table-layout: auto; margin: 0 -5px; }
+.twiket .tw-creditCard .tw-expDate { bottom: 72px; }
+.twiket .tw-creditCard .tw-expDate td.tw-expMonth { text-align: right; }
+.twiket .tw-creditCard .tw-expDate td.tw-expMonthLabel { text-align: right; }
+.twiket .tw-creditCard .tw-expDate td.tw-expMonthLabel label { width: 42px; text-align: left; }
+.twiket .tw-creditCard .tw-expDate td.tw-expMonth label { display: inline-block; line-height: 10px; vertical-align: middle; text-align: left; margin: 0 10px 0 0; }
+.twiket .tw-creditCard .tw-expDate td.tw-expMonth input, .tw-creditCard .tw-expDate td.tw-expYear input { width: 43px; text-align: left; }
+.twiket .tw-creditCard .tw-holderName { bottom: 10px; }
+.twiket .tw-creditCard .tw-holderName .tw-field, .twiket .tw-creditCard .tw-holderName input { width: 100%; }
+.twiket .tw-creditCard .tw-cvv { width: 64px; position: absolute; line-height: 28px; bottom: 126px; right: 22px; }
+.twiket .tw-creditCard .tw-cvv label { margin-bottom: 5px; }
+
+.tw-popup#tw-cardAuthorization .tw-title { margin-bottom: 0.2em; }
+.tw-popup#tw-cardAuthorization .tw-titleCheckCode { font-weight: bold; margin-top: 0.8em; }
+.tw-popup#tw-cardAuthorization .tw-note { font-size: 90%; }
+.tw-popup#tw-cardAuthorization .tw-code { display: inline-block; }
+.tw-popup#tw-cardAuthorization .tw-picTitle { font-size: 90%; font-weight: bold; }
+.tw-popup#tw-cardAuthorization .tw-pic { height: 148px; margin-top: -22px; background: url(/twiket/img/cardAuthorization.png) no-repeat; }
+.tw-popup#tw-cardAuthorization .tw-pic.tw-phone { width: 190px; background-position: left top; margin-right: 22px; }
+.tw-popup#tw-cardAuthorization .tw-pic.tw-ebank { width: 177px; background-position: -190px top; margin-right: 22px; }
+.tw-popup#tw-cardAuthorization .tw-pic.tw-card  { width: 177px; background-position: -367px top; }
+.tw-popup#tw-cardAuthorization form { display: inline-block; background-color: #ADD260; padding: 7px 35px 7px 7px; }
+.tw-popup#tw-cardAuthorization table td { vertical-align: top; }
+.tw-popup#tw-cardAuthorization table td .tw-note { white-space: nowrap; }
+.tw-popup#tw-cardAuthorization table td.tw-error { vertical-align: middle; padding-left: 20px; }
+.tw-popup#tw-cardAuthorization table td.tw-error div { display: inline-block; background: #b80000; padding: 3px 5px; color: white; font-size: 80%; white-space: nowrap; }
+.tw-popup#tw-cardAuthorization .tw-field input { padding: 6px 10px; width: 4em; }
+.tw-popup#tw-cardAuthorization .tw-field { margin-right: 1ex; }

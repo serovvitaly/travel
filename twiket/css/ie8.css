@@ -1,0 +1,9 @@
+.twiket input { outline: none; box-sizing: border-box; }
+.twiket #tw-passengersTable td .tw-passCountry select, .twiket .tw-visaInfo select { filter: alpha(opacity=0); }
+#tw-layout_statistics .tw-graphic .tw-colNoData { writing-mode: tb-rl; text-align: center; margin: 0; height: 100%; width: 75%; }
+#tw-layout_statistics .tw-col .tw-balloon { z-index: 1; display: none; }
+#tw-layout_statistics .tw-col:hover .tw-balloon { display: block; }
+#tw-layout_statistics .tw-col .tw-balloon:before { width: 0; height: 0; bottom: -19px; background: none; border: 10px solid White; border-color: White transparent transparent; clip: auto; }
+.twiket .tw-prevNext div { border: 1px solid #DBDBDB; }
+.twiket table.tw-routeHeaderLayout td { text-align: right; }
+.twiket table.tw-routeHeaderLayout td:first-child { text-align: left; }

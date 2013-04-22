@@ -1,0 +1,117 @@
+.twiket #tw-layout_passengersForm { margin-top: 1em; margin-bottom: 1em; }
+.twiket .tw-passengersTable { margin-right: -22px; }
+.twiket #tw-passengersTable { table-layout: fixed; width: 100%; }
+.twiket #tw-passengersTable col.tw-gender { width: 33px; }
+.twiket #tw-passengersTable col.tw-lastName {  }
+.twiket #tw-passengersTable col.tw-firstName {  }
+.twiket #tw-passengersTable col.tw-birthDate { width: 7.5em; }
+.twiket #tw-passengersTable col.tw-passCountry { width: 8em; }
+.twiket #tw-passengersTable col.tw-passNumber { width: 10em; }
+.twiket #tw-passengersTable col.tw-delete { width: 25px; }
+.twiket #tw-passengersTable th { border-bottom: 1px solid #C0C0C0; font-size: 60%; padding-bottom: 0.2em; font-weight: normal; text-transform: uppercase; }
+.twiket #tw-passengersTable th:last-child, .twiket #tw-passengersTable td.tw-remove { border: none; }
+.twiket #tw-passengersTable td:first-child { border-left: none; }
+.twiket #tw-passengersTable tbody td { border: 1px solid #C0C0C0; vertical-align: middle; }
+.twiket #tw-passengersTable td:first-child, .twiket #tw-passengersTable td.tw-remove { text-align: center; vertical-align: middle; }
+.twiket #tw-passengersTable .tw-field { display: block; margin: -1px; vertical-align: middle; }
+.twiket #tw-passengersTable td:first-child .tw-field { margin-left: 0; }
+.twiket #tw-passengersTable .tw-field input { width: 100%; vertical-align: middle; }
+.twiket #tw-passengersTable .tw-passCountry { white-space: nowrap; overflow: hidden; padding: 6px 5px; }
+.twiket #tw-passengersTable .tw-passCountry select { z-index: 5; position: absolute; top: 0; bottom: 0; left: 0; padding: 6px 0; width: 100%; border: none; opacity: 0; font-size: 100%; }
+.twiket #tw-passengersTable .tw-passCountry span { max-width: 100%; overflow: hidden; vertical-align: middle; text-overflow: ellipsis; }
+.twiket #tw-passengersTable.tw-disabled .tw-field { border-left-color: transparent; border-right-color: transparent; }
+.twiket #tw-passengersTable.tw-disabled .tw-field input, .twiket #tw-passengersTable.tw-disabled .tw-passCountry { padding-left: 0; padding-right: none; }
+.twiket #tw-passengersTable.tw-disabled .tw-passCountry span { color: currentColor; border-bottom: none; }
+.twiket #tw-passengersTable span.tw-remove { position: relative; display: inline-block; width: 22px; height: 22px; font-size: 22px; line-height: 22px; color: #AAA899; cursor: pointer; text-align: center; }
+.twiket #tw-passengersTable span.tw-remove:hover, .twiket #tw-passengersTable span.tw-remove:focus, .twiket #tw-passengersTable span.tw-remove:active { color: #498AF3; outline: none; }
+.twiket #tw-passengersTable tfoot td:first-child { font-size: 22px; vertical-align: middle; text-align: center; }
+.twiket #tw-passengersTable div.tw-addRow { border-top: 1px solid #D9D9D9; background: #E9E9E9; margin: -1px 0 0 -33px ; padding: 5px 5px 5px 33px; border-radius: 0 0 5px 5px; }
+.twiket #tw-passengersTable div.tw-addRow button { margin-right: 7px; }
+.twiket #tw-passengersTable div.tw-addRow span.tw-child { margin: 0 7px; }
+.twiket #tw-passengersTable div.tw-addRow button span { font-size: 90%; color: green; }
+.twiket #tw-passengersTable div.tw-addRow button.tw-load { padding-right: 26px; }
+.twiket #tw-passengersTable div.tw-addRow button.tw-load span { position: absolute; top: 0; bottom: 0; right: 5px; margin: auto 0; width: 16px; height: 16px; background: url(/twiket/img/smallLoader.gif) no-repeat center; -moz-transform: translateX(-5px); }
+
+.twiket #tw-passengersForm button[type="submit"] { margin: 1em 0; }
+
+.twiket .tw-genderSelect { text-align: center; }
+.twiket .tw-genderSelect:before { content: ' '; display: inline-block; padding: 6px 0; }
+.twiket .tw-genderSelect label, span.tw-gender { z-index: 77; position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; cursor: pointer; display: inline-block; width: 13px; height: 21px; overflow: hidden; background-repeat: no-repeat;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAAAqCAYAAAAdz21RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABAhJREFUeNrsWT9PWzEQfw5pBUGiElIXpKqoe1cGpHbtxMdg56Mw92N060rFACvMEERbulAIKoUkJO6duIeMc2ffsxMS0pxk+b17/vnPz/fHiY21tphJdTEccfv7X7egwrK9tvZpW9NRCuY5S03QIwFvqdZKCmbqiEOLOaFaKymYiRTwHss9R131CSc4cSGhJAr6Ntw7Sxw02oVqnenvGwA/Bga7hGoJ+4OCHd5A+0XFJJvk3ifQfjW2IJy8jyn1VchIIVB01QBpKB/g+54wQBeqV0RaQXUD9L1hurezgEcYLWkht0vB1J3n9djcBT32gSTNOTr/XSJju2pMTMEwxMxDP7c5mJqwq650YrsK3+vMuw1MYhd3kik7kclfQulTW6yvhXbn3JrKZyTAbZOCqSnIPo+YdFf4/Icz8ycKCS1Xj4t3yaBvrRxMPTcLQecvodO2t8ge6OeE+LBOQd5ycUwg2/pZzs98npW8A91pIKZ9xzbe2JUwGouzggVcBc6DxrMUjXQy9o/bhDdQHXpqjFGH9K3IwWiIWxAGWXIsxLdcU1oBlBfKxZ8HvnVpEwYsuwwLwhzfe6pfjC4JM3AAds8vNLE2PDc0qTtwhNDgzqD9SiQ5dL1Nws2pFWOQmsIFbAppVc5NoZDg9cVadgCzyeg2IuOoMKrdAmBDsiiyKsulcc1J3WmzEGvnHA1MbAwi9DNzmP0ikV0FMxYzZ6QPZX4a/h15arExV02QG+kwOwxMbZJ2UQoJiedL7At/YbSYmLuci4kRh783G+65LOBqo7SeVPJwfXeeehH0F7kYM7tzSJMZccNMDsaYLShNrNU7kICZOotDAgr6lxW+ryqJq4yZOosr/vPLGjACyz0/PkCBxY2rFPeXLmipW6PEVJyTvaeFf3/Qe6Bd5zjhlp3IYJd0JLFUXysn2SRMU7MgDsMtKkZGCoEicQHSyrInDNAV2vcmweL8eQ0L85AcRF9+7NZGiAfsZQ3XfpzxqlwDyDzUt1kYxhV8y2mHXILD0Xs/sKMjDQn4p2jM7Zg2lTAa4n5KxNH3jkDclYAZeUgAOQqFCvKIoxxMNnFUt7nFRDCWiyUhDLdBAcxpYHNOBXLUGM2CfnCTcy2KsYa+01dXSVw7g7i+QMSBNwb+bXQQCQcqjGZBv2MxTiramKiw7E7Esq+UGfI4IaseB7Oqn1Eok/TIEhraDBTLwgHcGbRfiWTIgcsakOd3WRM7wmiOONrLGuqrPqg2ofltMrqNyDgqTMzi7sg9XsP738BgferLuHgNqQ7mAp6XNeeyEqO16LIdp0vFzC5rZpc1/MWLayWKXzJqzERd1oBbDO2yhhIa+nSLccXlXMxUX9ZQxh24eAH9RS5mdueQKP8EGAC+M9vk+CEdoAAAAABJRU5ErkJggg==);
+}
+.twiket .tw-genderSelect label.tw-focus { outline: 1px dotted black; }
+.twiket .tw-genderSelect label.M { left: -14px; }
+.twiket .tw-genderSelect label.F { right: -14px; }
+.twiket .tw-genderSelect label.ADT.M { background-position: left top; }
+.twiket .tw-genderSelect label.ADT.M.tw-checked, .twiket span.tw-gender.ADT.M { background-position: left -21px; }
+.twiket .tw-genderSelect label.ADT.F { background-position: -13px top; }
+.twiket .tw-genderSelect label.ADT.F.tw-checked, .twiket span.tw-gender.ADT.F { background-position: -13px -21px; }
+.twiket .tw-genderSelect label.CNN.M { background-position: -26px top; }
+.twiket .tw-genderSelect label.CNN.M.tw-checked, .twiket span.tw-gender.CNN.M { background-position: -26px -21px; }
+.twiket .tw-genderSelect label.CNN.F { background-position: -39px top; }
+.twiket .tw-genderSelect label.CNN.F.tw-checked, .twiket span.tw-gender.CNN.F { background-position: -39px -21px; }
+.twiket .tw-genderSelect label.INF.M { background-position: -52px top; }
+.twiket .tw-genderSelect label.INF.M.tw-checked, .twiket span.tw-gender.INF.M { background-position: -52px -21px; }
+.twiket .tw-genderSelect label.INF.F { background-position: -65px top; }
+.twiket .tw-genderSelect label.INF.F.tw-checked, span.tw-gender.INF.F { background-position: -65px -21px; }
+.twiket .tw-genderSelect input[type="radio"] { position: absolute; left: -40px; }
+
+.twiket .tw-bayer label { display: block; margin: 0.5em 0 0.2em; font-size: 80%; text-transform: uppercase; }
+.twiket .tw-bayer .tw-email, .tw-bayer .tw-phone { display: inline-block; }
+.twiket .tw-bayer .tw-phone>span { display: inline-block; width: 0.8em; margin: -1px 0.2em 0 -1em; text-align: right; font-size: 140%; vertical-align: middle; }
+.twiket .tw-bayer .tw-phone .tw-field { width: 176px; }
+.twiket .tw-bayer .tw-email { margin-left: 1.5em; margin-right: 1.5em; }
+.twiket .tw-bayer .tw-email .tw-field { width: 15em; }
+.twiket .tw-bayer input { width: 100%; }
+
+.twiket .tw-pmtVrnts { margin: 0.5em 0 1.5em; list-style: none; }
+.twiket .tw-pmtVrnts>li { margin-bottom: 1em; padding-left: 100px; background-position: left top; background-repeat: no-repeat; }
+.twiket .tw-pmtVrnts>li.tw-pm_card { background-image: url(/twiket/img/pm_card.png); min-height: 41px; }
+.twiket .tw-pmtVrnts>li.tw-pm_cash { background-image: url(/twiket/img/pm_cash.png); min-height: 54px; }
+.twiket .tw-pmtVrnts>li>span { font-weight: bold; }
+.twiket .tw-pmtVrnts ul { margin-top: 0.5em; list-style: none; }
+.twiket .tw-pmtVrnts ul li { margin: 0.2em 0; }
+.twiket .tw-pmtVrnts span.tw-link { position: relative; }
+.twiket .tw-pmtVrnts span.tw-link:after { content: ''; position: absolute; top: -10px; bottom: -10px; margin: auto 0; right: -20px; width: 17px; height: 17px; background: url(/images/QuestionIcon.png) no-repeat center right; }
+.twiket .tw-pmtVrnts input { margin-right: 0.7em; }
+
+.twiket table.paymentTable th { text-align: right; font-size: 60%; font-weight: normal; text-transform: uppercase; padding-bottom: 5px; }
+.twiket table.paymentTable td { text-align: right; font-size: 120%; }
+.twiket table.paymentTable td.sign { padding: 0 15px; }
+.twiket table.paymentTable tbody tr:last-child td { padding-bottom: 5px; }
+.twiket table.paymentTable td:first-child { text-align: left; font-size: 100%; text-transform: lowercase; width: 7em; }
+.twiket table.paymentTable tbody tr:last-child td { border-bottom: 1px solid #CCC; }
+.twiket table.paymentTable thead th.fareRules, .twiket table.paymentTable td.fareRules { text-align: left; padding-left: 40px; }
+.twiket table.paymentTable tbody tr td.fareRules { border-bottom: none; font-size: 100%; }
+
+.twiket .tw-amount { font-size: 140%; font-weight: bold; margin: 0.5em 0 0; display: inline-block; }
+.twiket .transactions { display: inline; }
+.twiket .tw-paymentNote { margin: 1em 0; }
+.twiket .tw-paymentNote .tw-attentionTitle { font-size: 140%; }
+.twiket .tw-agreements { margin: 1em 0; }
+.twiket .tw-agreementsBody { margin: 0.5em 0; }
+.twiket .tw-agreementsBody ul { margin: 0.5em 0 0.5em 1.6em; list-style: disc; }
+.twiket .tw-agreements label { margin-left: 1.6em; position: relative; }
+.twiket .tw-agreements label input { position: absolute; left: -1.6em; top: 0; bottom: 0; margin: auto 0; }
+.twiket .tw-paySubmitRow { vertical-align: middle; }
+.twiket #tw-posPassword { display: inline-block; margin-right: 1.5em; }
+.twiket #tw-posPassword .tw-field { width: 176px; }
+.twiket #tw-posPassword input { width: 100%; }
+
+.tw-popup#tw-fareRules { padding: 0; height: 530px; }
+.tw-popup#tw-fareRules div.tw-content { padding: 0 20px; margin: 20px 0; height: 490px; overflow: auto; }
+.tw-popup#tw-fareRules div.tw-caution div.tw-title { font-size: 140%; font-weight: normal; margin: -0.2em 0 0; }
+.tw-popup#tw-fareRules div.tw-title { margin: 1em 0 0.5em; }
+.tw-popup#tw-fareRules div.tw-title span.tw-weekday { font-weight: normal; }
+.tw-popup#tw-fareRules div.tw-rules div.tw-subTitle { margin: 0.5em 0 0; font-weight: bold; }
+.tw-popup#tw-fareRules div.tw-rules div.tw-note { font-size: 80%; margin-bottom: 0.5em; }
+.tw-popup#tw-fareRules div.tw-rules div.tw-full { white-space: pre; position: relative; font-size: 80%; border: 1px solid #CCC; background: #EAEAEA; height: 120px; overflow: auto; }
+.tw-popup#tw-fareRules div.tw-rules div.tw-full>div { padding: 10px; }
+.tw-popup#tw-fareRules.tw-directions1 div.tw-rules div.tw-full { height: 220px; }
+
+.twiket #tw-layout_order { font-size: 120%; margin: 1em 0; }
+
+.twiket .tw-visaInfo .tw-select { position: relative; display: inline-block; }
+.twiket .tw-visaInfo select { z-index: 1; position: absolute; top: 0; bottom: 0; left: 0; width: 100%; font-size: 100%; line-height: 40px; opacity: 0; border: none; cursor: pointer; }
+.twiket.tw-popupVisaInfo { width: 640px; padding-left: 0; padding-right: 0; }
+.twiket.tw-popupVisaInfo iframe { border: none; overflow: auto; width: 100%; height: 350px; }

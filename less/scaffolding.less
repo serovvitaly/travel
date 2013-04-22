@@ -1,0 +1,61 @@
+//
+// Scaffolding
+// --------------------------------------------------
+
+
+// Body reset
+// -------------------------
+
+body {
+  margin: 0;
+  font-family: @baseFontFamily;
+  font-size: @baseFontSize;
+  line-height: @baseLineHeight;
+  color: @textColor;
+  background: @bodyBackground !important;
+}
+
+
+// Links
+// -------------------------
+
+a {
+  color: @linkColor;
+  &.dashed{
+    text-decoration: none;
+    border-bottom: 1px dashed @linkColor;
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}
+a:hover,
+a:focus {
+  color: @linkColorHover;
+  text-decoration: underline;
+}
+
+
+// Images
+// -------------------------
+
+// Rounded corners
+.img-rounded {
+  .border-radius(@borderRadiusLarge);
+}
+
+// Add polaroid-esque trim
+.img-polaroid {
+  padding: 10px;
+  background-color: #fff;
+  .border-radius(@borderRadiusLarge);
+  // border: 1px solid rgba(0,0,0,.2);
+  .box-shadow(0 0px 10px rgba(0,0,0,.2));
+  margin-bottom: 10px
+}
+
+// Perfect circle
+.img-circle {
+  .border-radius(500px); // crank the border-radius so it works with most reasonably sized images
+}

@@ -1,0 +1,35 @@
+.twiket input, .twiket button, .twiket .tw-button, .twiket select
+, .twiket .tw-dashed, .twiket .tw-dotted
+, .twiket .tw-field
+, div.tw-calendar .tw-rollLeft, div.tw-calendar .tw-rollRight
+, .twiket ul#tw-recent li
+, #tw-layout_statistics ul.tw-stopsSelect, #tw-layout_statistics ul.tw-stopsSelect li
+, .twiket #tw-layout_currency ul, .twiket #tw-layout_currency li
+, .twiket #tw-layout_prefered .tw-ak .tw-logo
+,.twiket #tw-passengersTable .tw-remove
+{ display: inline; zoom: 1; }
+
+.tw-suggest
+, #tw-layout_statistics .tw-graphic, #tw-layout_statistics .tw-graphic .tw-col
+, .tw-formBlock
+, .rowWrapper
+{ zoom: 1; }
+
+#tw-routeDateForm table { table-layout: fixed; }
+#tw-passengersCountForm .tw-field { width: 75px; }
+#tw-passengersCountForm .tw-field input { width: 22px; }
+
+.twiket .tw-field .tw-prevNext { top: 6px; }
+.twiket .tw-prevNext div {  }
+
+.tw-suggest table { width: auto; }
+
+#tw-layout_statistics .tw-graphic .tw-col { text-decoration: none; }
+.twiket #tw-layout_currency li, #tw-layout_statistics ul.tw-stopsSelect li:first-child { margin-right: 1em; }
+
+.tw-popup { left: 50%; margin-left: expression(-this.offsetWidth/2 + "px"); top: 2em; }
+.twiket.tw-popup #tw-loader { left: 50%; margin-left: -19px; margin-top: 40px; }
+
+#tw-fareRules.tw-popup div.tw-rules div.tw-full { position: static; }
+
+.twiket .tw-genderSelect label, span.tw-gender { background-image: url(/twiket/img/gender.png); }
