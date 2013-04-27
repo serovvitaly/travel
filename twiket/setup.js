@@ -16,7 +16,7 @@ twiket.setup = {
 		customeragreement: 'https://secure.onetwotrip.com/customeragreement/',
 		tLiveCookie: 'https://www.twiket.com/cookie.html'
 	},
-	source: 'wl-workle',
+	source: 'whitelabel',
 	marker: 'marker',
 	language: 'ru',
 	currency: 'RUB',

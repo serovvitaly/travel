@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<meta charset="utf-8">
-	<title>Travel Online</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <title>Travel Online</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -19,10 +19,110 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+    
+    <link rel="stylesheet" href="/twiket/css/common.css"/>
+    <link rel="stylesheet" href="/twiket/css/searchForm.css"/>
+    <link rel="stylesheet" href="/twiket/css/statistics.css"/>
+    <link rel="stylesheet" href="/twiket/css/results.css"/>
+    <link rel="stylesheet" href="/twiket/css/orderForm.css"/>
+    <link rel="stylesheet" href="/twiket/css/card.css"/>
+    <link rel="stylesheet" href="/twiket/css/custom.css"/>
+    
+    
+    
+    <script src="/twiket/js/jquery-1.8.3.min.js"></script>
+    <script src="/twiket/js/jquery.tmpl.js"></script>
+    <script src="/twiket/js/jquery.maskedinput.js"></script>
+    <script src="/twiket/setup.js"></script>
+    <script src="/twiket/js/common.js"></script>
+    <script src="/twiket/js/references.js"></script>
+    
+    <script src="/twiket/l10n/ru/refData.js"></script>
+    <script src="/twiket/l10n/ru/l10n.js"></script>
+    <script src="/twiket/l10n/ru/baggage.js"></script>
+    <script src="/twiket/js/referencesLibs.js"></script>
+    <script src="/twiket/js/date.js"></script>
+    <script src="/twiket/js/field.js"></script>
+    <script src="/twiket/js/card.js"></script>
+    
+    <script src="/twiket/js/searchForm.js"></script>
+    <script src="/twiket/js/statistics.js"></script>
+    
+    <script src="/twiket/js/farerules.js"></script>
+    
+    <script src="/twiket/js/encrypt.js"></script>
+    <script src="/twiket/js/events.js"></script>
+    
+    <script src="/twiket/js/results.js"></script>
+    
+    <script src="/js/twiket.js"></script>
+    
 </head>
 
 
 <body>
+<div id="twiket" class="twiket" style="display: none;">
+
+  <div id="tw-layout_search" class="tw-invisible"></div>
+      
+    <script id="tmpl_Search" type="text/x-jquery-tmpl">
+        <form id="tw-searchForm">
+            <div id="tw-routeDateForm" class="tw-formBlock">
+                <table class="tw-searchTable">
+                    <col class="tw-label1"/><col class="tw-field1"/><col class="tw-label2"/><col/>
+                    <tr>
+                        <td class="tw-label1">
+                            <label for="tw-from">${l10n.from}</label>
+                        </td>
+                        <td class="tw-field1">
+                            <div class="tw-field">
+                                <input type="text" autocomplete="off" id="tw-from-"/>
+                                <input type="text" autocomplete="off" readonly="readonly" class="tw-placeholder" value="${l10n.from}" tabindex="-1"/>
+                            </div>
+                        </td>
+                        <td class="tw-label2">
+                            <label for="tw-to">${l10n.to}</label>
+                        </td>
+                        <td class="tw-field2">
+                            <div class="tw-field">
+                                <input type="text" autocomplete="off" id="tw-to-"/>
+                                <input type="text" autocomplete="off" readonly="readonly" class="tw-placeholder" value="${l10n.to}" tabindex="-1"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tw-label1">
+                            <label for="tw-depart">${l10n.depart}</label>
+                        </td>
+                        <td class="tw-field1">
+                            <div class="tw-field">
+                                <input type="text" autocomplete="off" readonly="readonly" id="tw-depart" name="depart"/>
+                                <div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+                            </div>
+                        </td>
+                        <td class="tw-label2">
+                            <div id="tw-fType" class="tw-button" tabindex="0">${l10n.returnDate}</div>
+                        </td>
+                        <td class="tw-field2">
+                            <div class="tw-field">
+                                <input type="text" autocomplete="off" readonly="readonly" id="tw-return" name="return"/>
+                                <div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+                                <div class="tw-fieldFade tw-invisible"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="text-align: right;">
+                <button type="submit" class="tw-invisible">${l10n.startSearch} <span></span></button>
+            </div>
+        </form>
+    </script>
+    
+
+  
+</div>
 
 <!-- modalEnter -->
   <div class="modal hide" id="modalEnter" tabindex="-1" role="dialog" aria-labelledby="modalEnter" aria-hidden="true">
@@ -76,7 +176,7 @@
   <nav class="navbar navbar-inverse navbar-static-top">  <!-- .navbar-static-top, navbar-fixed-top, navbar-fixed-bottom -->
     <div class="navbar-inner">
       <div class="container">
-        <a class="brand" href="./index.html"><img src="./i/brand.png" alt="TravelOnline"></a>
+        <a class="brand" href="/"><img src="./i/brand.png" alt="TravelOnline"></a>
         <ul class="nav">
           <li class="active"><a href="./tickets.html">Авиабилеты</a></li>
           <li><a href="./hotels.hmtl">Отели</a></li>
@@ -209,7 +309,7 @@
           <div class="well span10">
             <div class="btn-toolbar">
               <div class="input-append">
-                <input type="text" class="input-large" value="Москва (Россия)">
+                <input type="text" class="input-large" placeholder="Откуда" autocomplete="off" id="tw-from">
                 <button class="btn btn-primary"><h3>16</h3><h4>дек</h4></button>
               </div>
               
@@ -236,20 +336,20 @@
               </div>  <!-- /calendar -->
 
               <div class="input-append">
-                <input type="text" class="input-large" value="Нью-Йорк (США)">
+                <input type="text" class="input-large" placeholder="Куда" autocomplete="off" id="tw-to">
                 <button class="btn btn-primary"><h3>16</h3><h4>дек</h4></button>
               </div>
             </div>
           </div>  <!-- /well -->
 
-          <input type="submit" class="btn btn-danger span2" value="ПОИСК">
+          <input type="submit" class="btn btn-danger span2" value="ПОИСК" onclick="searchBegin(); return false;">
         </form>
 
-        <p class="searchResult"><a href="javascript:;">Москва - Нью-Йорк с 13 фев по 27 фев</a></p>
+        <p class="searchResult" style="display: none"><a href="javascript:;">Москва - Нью-Йорк с 13 фев по 27 фев</a></p>
       </div>  <!-- /mainSearch -->
 
-      <div class="span12 dynamics">
-        <div class="row">
+      <div class="span12 dynamics" style="margin-top: -20px;">
+        <div class="row" style="display: none;">
           <span class="dynTo span6">
             <h2>Исходящий рейс <small>Динамика стоимости</small></h2>
             <div class="dynMonth navbar clearfix">
@@ -722,66 +822,67 @@
                   </label>
                 </div>
                 
-                <div class="controls-row">
-                  <label class="radio inline short">
-                    <input type="radio" name="rad4"> SkyTeam
-                  </label>
-                  <div class="star">
-                    <div class="star-ok"></div>
-                  </div>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline short">
-                    <input type="radio" name="rad4"> StarAlliance
-                  </label>
-                  <div class="star">
-                    <div class="star-ok"></div>
-                  </div>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline short">
-                    <input type="radio" name="rad4"> OneWorld
-                  </label>
-                  <div class="star">
-                    <div class="star-ok"></div>
-                  </div>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline short">
-                    <input type="radio" name="rad4"> SkyTeam
-                  </label>
-                  <div class="star">
-                    <div class="star-ok"></div>
-                  </div>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline short">
-                    <input type="radio" name="rad4"> StarAlliance
-                  </label>
-                  <div class="star">
-                    <div class="star-ok"></div>
-                  </div>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline short">
-                    <input type="radio" name="rad4"> OneWorld
-                  </label>
-                  <div class="star">
-                    <div class="star-ok"></div>
-                  </div>
-                </div>
               </div>
             </form>
           </div>
         </article>
       </aside>
 
-      <div class="span10 tickets">
+      
+      <script id="tmpl_singleTrip" type="text/x-jquery-tmpl">
+        <article class="ticket">
+          <table class="table">
+            <thead>
+              <tr>
+                <td class="ticCompany td1">${html_tmpl.byTrips.Airline[$item.dir][0]}</td>
+                <td class="ticLogo td2" title="${html_tmpl.byTrips.Airline[$item.dir][0]}"><img src="/twiket/img/ak/${html_tmpl.byTrips.logo[$item.dir][0]}.png" alt=""></td>
+                <td class="td1"></td>
+                <td class="ticPrice td2">${html_tmpl.Price}</td>
+              </tr>
+              <tr>
+                <td class="ticRating td1">
+                  <div class="star_big">
+                    <div class="star_big-ok"></div>
+                  </div>
+                </td>
+                <td class="td"></td>
+                <td class="td1"></td>
+                <td class="ticMore td2" colspan="2"><a href="javascript:;">еще варианты</a></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ticDate td1">Туда, 13 февраля, Суббота</td>
+                <td class="td2"></td>
+                <td class="ticDate td1">Обратно, 27 февраля, Пятница</td>
+                <td class="td2"></td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>${html_tmpl.StartTime[$item.dir]}</b> - ${html_tmpl.EndTime[$item.dir]} (20 фев)</td>
+                <td class="ticSeat td2">мест 1</td>
+                <td class="ticTime td1"><b>12:30</b> - 9:50 (29 фев)</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">{{html html_tmpl.byTrips.html_route[$item.dir]}}</a></td>
+                <td class="ticTimeThrow td2">12 ч 10 мин</td>
+                <td class="ticThrow td1"><a href="javascript:;">через Лондон</a></td>
+                <td class="ticTimeThrow td2">12 ч 10 мин</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">из Домодедово - в Гатвик</td>
+                <td class="ticTimeFull td2">16 ч 30 мин</td>
+                <td class="ticTrip td1">из Домодедово - в Гатвик</td>
+                <td class="ticTimeFull td2">16 ч 30 мин</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        <hr>
+      </script>
+      
+      
+      <div id="tw-layout_result" class="span10 tickets">
         <article class="ticket top">
           <h2>САМЫЙ БЫСТРЫЙ БИЛЕТ</h2>
           <table class="table">

@@ -59,7 +59,7 @@ tw.inherits = function(Child, Parent){
 
 $.fn.trimHTML = function(){
 	var s = $(this).html();
-	s = s.replace(/\n\t\s*/g, "").replace(/^\s*/, "").replace(/\s{2,}/g, " ").replace(/> </g, "><");
+	//s = s.replace(/\n\t\s*/g, "").replace(/^\s*/, "").replace(/\s{2,}/g, " ").replace(/> </g, "><");
 	return s;
 };
 

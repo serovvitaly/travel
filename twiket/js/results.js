@@ -1376,16 +1376,17 @@ tw.DrawResults.prototype.initSecondSort = function(arr){
 };
 tw.DrawResults.prototype.show = function(){
 	var self = this;
-	$($.tmpl('tmpl_layoutResult', {
+	/*$($.tmpl('tmpl_layoutResult', {
 		dirNumber: 0,
 		directions: this.directionsRoutes
-	})).appendTo(this.layout);
-	this.dataFlights = $('.dataFlights', this.layout)[0];
+	})).appendTo(this.layout);  */
+    //this.dataFlights = $('.dataFlights', this.layout)[0];
+	this.dataFlights = this.layout;
 	$(document).trigger({
 		type: "redrawResults",
 		obj: self
 	});
-	$(this.layout).removeClass("tw-invisible");
+	//$(this.layout).removeClass("tw-invisible");
 };
 tw.DrawResults.prototype.redrawColumn = function(){
 	var self = this;

@@ -161,9 +161,9 @@ tw.SearchForm.prototype.update = function(event){
 		request.route += tw.formatDate(this.inputReturn.field.date, 'ddmm');
 	}
 	if (tw.setup.module.passengersCount) {
-		request.ad = this.form.ADT.value;
-		request.cn = this.form.CNN.value;
-		request['in'] = this.form.INF.value;
+		//request.ad = this.form.ADT.value;
+		//request.cn = this.form.CNN.value;
+		//request['in'] = this.form.INF.value;
 	}
 	if (focusTo) {
 		setTimeout(function(){
@@ -609,7 +609,7 @@ tw.SuggestResults.prototype.getLength = function() {
 	return this.arr.length;
 };
 
-tw.Suggest = function(input){
+tw.Suggest = function(input){ 
 	var self = this;
 	this.input = input;
 	this.inputValue = this.input.value.toLowerCase();
@@ -877,23 +877,23 @@ tw.Suggest.prototype.setResult = function(){
 	}
 	this.setPlaceholder();
 };
-tw.Suggest.prototype.setPlaceholder = function(){
+tw.Suggest.prototype.setPlaceholder = function(){ return;
 	if (!this.input.value || this.input.value == "\n") {/* При отмене ввода в FF7.0.1 value == "\n" */
-		this.placeholder.value = this.placeholder.defaultValue;
+		//this.placeholder.value = this.placeholder.defaultValue;
 	} else if (this.curResult) {
 		code = this.curResult;
 		if (this.input.value.toLowerCase() === ref.getPointName(code).substring(0, this.input.value.length).toLowerCase()) {
-			this.placeholder.value = ref.getPointName(this.curResult) + " (" + code + ")";
+			//this.placeholder.value = ref.getPointName(this.curResult) + " (" + code + ")";
 		} else {
 			this.placeholder.value = "";
 		}
 	} else {
-		this.placeholder.value = "";
+		//this.placeholder.value = "";
 	}
 };
 
 $(function(){
-	if (tw.setup.module.passengersCount) new tw.PassengersCountForm();
+	//if (tw.setup.module.passengersCount) new tw.PassengersCountForm();
 });
 tw.PassengersCountForm = function(){
 	var self = this;
