@@ -67,11 +67,24 @@ $(document).ready(function(){
 	$( ".slider.sliderType2" ).slider( "value", 0 );
 
 	//$.datepicker.setDefaults( $.datepicker.regional[ "ru" ] );
-	$( ".datepicker" ).datepicker();
+	$( ".datepicker" ).datepicker({
+        onSelect: function (date, inst) {
+            if (date == 'NaN.NaN.NaN') {
+                return;
+            }
+            var months = ['','янв','дек','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+            var tg = $(this).hasClass('dp2') ? '#tw-to' : '#tw-from';
+            var btn = $(tg).next('button');
+            btn.children('h3').html(date.split('.')[0]);
+            btn.children('h4').html(months[date.split('.')[1] * 1]);
+            
+            $('.calendar').toggle();
+        }
+    });
 
 	$('.datepicker .ui-state-default').append('<span class="grad"></span>');
 
-	$('.calend .btn').click(function(){
+	$('.calend .btn, .input-append .btn').click(function(){
 		$(this).parent().parent().find('.calendar').toggle();
 	});
 

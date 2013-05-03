@@ -7,12 +7,12 @@
 	
 	tw.CurrencySelect = function(){
 		var self = this;
-		this.layout = $('#tw-layout_currency')[0];
+		this.layout = $('#filter_currency')[0];
 		if (!this.layout) return;
 		
-		$(this.layout).on('click', 'li span:not(.tw-selected)', function(){
-			$('span', $(this.parentNode).siblings()).removeClass('tw-selected').addClass('tw-link tw-dashed');
-			$(this).addClass('tw-selected').removeClass('tw-link tw-dashed');
+		$(this.layout).on('click', 'button:not(.active)', function(){
+			$('button', $(this.parentNode)).removeClass('active');
+			$(this).addClass('active');
 			tw.currency = $(this).attr('data-code');
 			$(document).trigger({
 				type: "changeCurrency"
@@ -25,7 +25,7 @@
 			self.show();
 		});
 	};
-	tw.CurrencySelect.prototype.draw = function(){
+	tw.CurrencySelect.prototype.draw = function(){ return;
 		var label = l10n.showOneInCurrency;
 		if (tw.setup.module.passengersCount) label = l10n.showAllInCurrency;
 		this.layout.innerHTML = label;
@@ -1389,16 +1389,79 @@ tw.DrawResults.prototype.show = function(){
 	//$(this.layout).removeClass("tw-invisible");
 };
 tw.DrawResults.prototype.redrawColumn = function(){
+    
+    var offset = 0;
+    var limit  = 10;
+    
+    //console.log('dirNumber = '+this.dirNumber );
+    //console.log(this.Columns);
+    
+    this.dataFlights = '#tw-layout_result';
+    
 	var self = this;
 	$(this.dataFlights).empty();
 
 	if (this.dirNumber == 0) {
-		for (var j=0, FL = this.Columns.arr[0].length; j< FL; j++ ) {
-			$($.tmpl('tmpl_singleTrip', this.Columns.arr[0][j].flight, {dir: 0, listlength: this.Columns.arr[0][j].list.length})).appendTo(this.dataFlights);
+        var uf_departure_times_items = [], min_price_deptm_first = {amount:0, price: 0}, min_price_deptm_second = {amount:0, price: 0};
+        
+		for (var j = 0; j < this.Columns.arr[0].length; j++ ) {
+            console.log(this.Columns.arr[0][j].flight);            
+            
+            var filtering = true; 
+            
+            $.each(ufilter, function(index, item){
+                //
+            });
+            
+            this.Columns.arr[0][j].flight.html_tmpl.StartTimeMy = [];
+            for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.StartTime.length; imo++) {
+                var imo_item = this.Columns.arr[0][j].flight.html_tmpl.StartTime[imo].split(':');
+                this.Columns.arr[0][j].flight.html_tmpl.StartTimeMy[imo] = imo_item[0] + ' ч ' + imo_item[1] + '  мин';
+                
+                var imo_item_join = imo_item.join('') * 1;
+                if (imo_item_join >= 500 && imo_item_join <= 1559) {
+                    if (min_price_deptm_first.amount <= 0 || this.Columns.arr[0][j].flight.AmountFare < min_price_deptm_first.amount) {
+                        min_price_deptm_first.amount = this.Columns.arr[0][j].flight.AmountFare;
+                        min_price_deptm_first.price  = this.Columns.arr[0][j].flight.html_tmpl.Price;
+                    }
+                }
+                else if (imo_item_join >= 1600 || imo_item_join <= 459) {
+                    if (min_price_deptm_second.amount <= 0 || this.Columns.arr[0][j].flight.AmountFare < min_price_deptm_second.amount) {
+                        min_price_deptm_second.amount = this.Columns.arr[0][j].flight.AmountFare;
+                        min_price_deptm_second.price  = this.Columns.arr[0][j].flight.html_tmpl.Price;
+                    }
+                }
+                  
+            }
+            
+            if (filtering && j >= offset && j < offset + limit) {
+            
+                this.Columns.arr[0][j].flight.html_tmpl.StartDateMy = [];
+                for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.StartDate.length; imo++) {
+                    var imo_item = this.Columns.arr[0][j].flight.html_tmpl.StartDate[imo];
+                    
+                    this.Columns.arr[0][j].flight.html_tmpl.StartDateMy[imo] = twiket.formatDate('2505', 'd mmmm, dddd');
+                }
+                this.Columns.arr[0][j].flight.html_tmpl.EndTimeMy = [];
+                for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.EndTime.length; imo++) {
+                    var imo_item = this.Columns.arr[0][j].flight.html_tmpl.EndTime[imo].split(':');
+                    this.Columns.arr[0][j].flight.html_tmpl.EndTimeMy[imo] = imo_item[0] + ' ч ' + imo_item[1] + '  мин';
+                }
+                
+			    $($.tmpl('tmpl_singleTrip', this.Columns.arr[0][j].flight, {dir: 0, listlength: this.Columns.arr[0][j].list.length})).appendTo(this.dataFlights);
+                
+            }
 		}
+        
+        $('#min_price_deptm_first span').html(min_price_deptm_first.price);
+        $('#min_price_deptm_second span').html(min_price_deptm_second.price);
+        
 	} else {
 		$.tmpl('tmpl_singleTrip', this.Columns.obj[0][this.at].list, {dir: 1}).appendTo(this.dataFlights);;
 	}
+    
+    return;
+    
 	$('.rowWrapper',this.dataFlights).on('click','div.avl',function(){
 		var flight = self.oFlights[$(this).attr('fi')];
 		var elRow = this;

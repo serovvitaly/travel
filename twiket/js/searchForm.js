@@ -609,7 +609,7 @@ tw.SuggestResults.prototype.getLength = function() {
 	return this.arr.length;
 };
 
-tw.Suggest = function(input){ 
+tw.Suggest = function(input){
 	var self = this;
 	this.input = input;
 	this.inputValue = this.input.value.toLowerCase();

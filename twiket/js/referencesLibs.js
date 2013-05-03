@@ -95,7 +95,10 @@ ref.getCityName = function(c){
 	return this.Cities[c] ? this.Cities[c].Name : this.Airports[c] ? this.Cities[this.Airports[c].Parent].Name : c;
 };
 ref.getAirportName = function(c){
-	return this.Airports[c] ? this.Airports[c].Name : c;
+    return this.Airports[c] ? this.Airports[c].Name : c;
+};
+ref.getAirlinesName = function(c){
+	return this.Airlines[c] ? this.Airlines[c].Name : c;
 };
 ref.getAirportString = function(c){
 	return this.Cities[c] ? this.Cities[c].Name : this.Airports[c] ? this.Airports[c].Name + ", " + this.Cities[this.Airports[c].Parent].Name : c;

@@ -1,0 +1,800 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Whitelabel</title>
+	<!--link rel="icon" type="image/x-icon" href="/favicon.ico"/-->
+	<link rel="stylesheet" href="/twiket/css/common.css"/>
+	<link rel="stylesheet" href="/twiket/css/searchForm.css"/>
+	<link rel="stylesheet" href="/twiket/css/statistics.css"/>
+	<link rel="stylesheet" href="/twiket/css/results.css"/>
+	<link rel="stylesheet" href="/twiket/css/orderForm.css"/>
+	<link rel="stylesheet" href="/twiket/css/card.css"/>
+	<link rel="stylesheet" href="/twiket/css/custom.css"/>
+	<!--[if lte IE 8]>
+		<link rel="stylesheet" href="/twiket/css/ie8.css"/>
+	<![endif]-->
+	<!--[if lte IE 7]>
+		<link rel="stylesheet" href="/twiket/css/ie7.css"/>
+		<script src="/twiket/js/json2.js"></script>
+	<![endif]-->
+	<script src="/twiket/js/jquery-1.8.3.min.js"></script>
+	<script src="/twiket/js/jquery.tmpl.js"></script>
+	<script src="/twiket/js/jquery.maskedinput.js"></script>
+	<script src="/twiket/setup.js"></script>
+	<script src="/twiket/js/common.js"></script>
+	<script src="/twiket/js/references.js"></script>
+	<script src="/twiket/l10n/ru/refData.js"></script>
+	<script src="/twiket/l10n/ru/l10n.js"></script>
+	<script src="/twiket/l10n/ru/baggage.js"></script>
+	<script src="/twiket/js/referencesLibs.js"></script>
+	<script src="/twiket/js/date.js"></script>
+	<script src="/twiket/js/field.js"></script>
+	<script src="/twiket/js/card.js"></script>
+	<script src="/twiket/js/searchForm.js"></script>
+	<script src="/twiket/js/statistics.js"></script>
+	<script src="/twiket/js/results.js"></script>
+	<script src="/twiket/js/farerules.js"></script>
+	<script src="/twiket/js/orderForm.js"></script>
+	<script src="/twiket/js/encrypt.js"></script>
+	<script src="/twiket/js/events.js"></script>
+</head>
+<body>
+<div id="twiket" class="twiket">
+	<div id="tw-layout_language" class="tw-invisible"><ul><li class="tw-ru"></li><li class="tw-ua"></li><li class="tw-az"></li></ul></div>
+	<div id="tw-layout_search" class="tw-invisible"></div>
+	<div id="tw-layout_searchHeader" class="tw-invisible"></div>
+	<div id="tw-layout_statistics" class="tw-invisible"></div>
+	<div id="tw-layout_currency" class="tw-invisible"></div>
+	<div id="tw-layout_prefered" class="tw-invisible"><table><tr><td id="tw-Prefered1"></td><td id="tw-Prefered2"></td></tr></table></div>
+	<div id="tw-layout_matrix" class="tw-invisible"></div>
+	<div id="tw-layout_order" class="tw-invisible"></div>
+	<div id="tw-layout_ticket" class="tw-invisible"></div>
+	<div id="tw-layout_result" class="tw-invisible"></div>
+	<div id="tw-layout_passengersForm" class="tw-invisible"></div>
+	<div id="tw-layout_payment" class="tw-invisible"></div>
+	<div id="tw-layout_loader" class="tw-invisible"></div>
+	
+	<script id="tmpl_Search" type="text/x-jquery-tmpl">
+		<form id="tw-searchForm">
+			<div id="tw-routeDateForm" class="tw-formBlock">
+				<table class="tw-searchTable">
+					<col class="tw-label1"/><col class="tw-field1"/><col class="tw-label2"/><col/>
+					<tr>
+						<td class="tw-label1">
+							<label for="tw-from">${l10n.from}</label>
+						</td>
+						<td class="tw-field1">
+							<div class="tw-field">
+								<input type="text" autocomplete="off" id="tw-from"/>
+								<input type="text" autocomplete="off" readonly="readonly" class="tw-placeholder" value="${l10n.from}" tabindex="-1"/>
+							</div>
+						</td>
+						<td class="tw-label2">
+							<label for="tw-to">${l10n.to}</label>
+						</td>
+						<td class="tw-field2">
+							<div class="tw-field">
+								<input type="text" autocomplete="off" id="tw-to"/>
+								<input type="text" autocomplete="off" readonly="readonly" class="tw-placeholder" value="${l10n.to}" tabindex="-1"/>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="tw-label1">
+							<label for="tw-depart">${l10n.depart}</label>
+						</td>
+						<td class="tw-field1">
+							<div class="tw-field">
+								<input type="text" autocomplete="off" readonly="readonly" id="tw-depart" name="depart"/>
+								<div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+							</div>
+						</td>
+						<td class="tw-label2">
+							<div id="tw-fType" class="tw-button" tabindex="0">${l10n.returnDate}</div>
+						</td>
+						<td class="tw-field2">
+							<div class="tw-field">
+								<input type="text" autocomplete="off" readonly="readonly" id="tw-return" name="return"/>
+								<div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+								<div class="tw-fieldFade tw-invisible"></div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div style="text-align: right;">
+				<button type="submit" class="tw-invisible">${l10n.startSearch} <span></span></button>
+			</div>
+		</form>
+	</script>
+	
+	<script id="tmpl_PassengersCountForm" type="text/x-jquery-tmpl">
+		<div id="tw-passengersCountForm">
+			<div id="tw-pasCountSwitch">${l10n.passCountForm_show} <span class="tw-link tw-dashed" data-pass="after">${l10n.passCountForm_showAfter}</span> | <span class="tw-selected" data-pass="before">${l10n.passCountForm_showBefore}</span>. <span class="tw-passBeforeAfterDiff tw-link tw-dashed">${l10n.passCountForm_diff}</span></div>
+			<div class="tw-formBlock">
+				<table class="tw-searchTable">
+					<tr>
+						<td>
+							<label for="tw-ADT">${l10n.passCountForm_ADT}</label>
+						</td>
+						<td>
+							<div class="tw-field">
+								<input type="text" autocomplete="off" id="tw-ADT" name="ADT" maxlength="1" value="1" readonly="readonly"/>
+								<div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+							</div>
+						</td>
+						<td>
+							<label for="tw-CNN">${l10n.passCountForm_CNN}</label>
+						</td>
+						<td>
+							<div class="tw-field">
+								<input type="text" autocomplete="off" id="tw-CNN" name="CNN" maxlength="1" value="0" readonly="readonly"/>
+								<div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+							</div>
+						</td>
+						<td>
+							<label for="tw-INF">${l10n.passCountForm_INF}</label>
+						</td>
+						<td>
+							<div class="tw-field">
+								<input type="text" autocomplete="off" id="tw-INF" name="INF" maxlength="1" value="0" readonly="readonly"/>
+								<div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</script>
+
+	<script id="tmpl_SearchHeader" type="text/x-jquery-tmpl">
+		<div class="tw-header">{{html l10n.searchHeader}}</div>
+		<div class="tw-titles">
+			{{each(i, $dir) $data.data.directions}}
+				<div>
+					${ref.getCityName($dir.from) + " → " + ref.getCityName($dir.to) + ", "}
+					<span class="tw-date">${twiket.formatDate($dir.date, "d mmmm, dddd")}</span>
+				</div>
+			{{/each}}
+		</div>
+	</script>
+	
+	<script id="tmpl_Statistics" type="text/x-jquery-tmpl">
+		<div class="tw-statBody">
+			<div class="tw-statTitle"></div>
+			<ul class="tw-stopsSelect">
+				<li><span class="tw-selected" data-whithstops="true">${l10n.statistics_whithStops}</span></li>
+				<li><span class="tw-link tw-dashed" data-whithstops="false">${l10n.statistics_withoutStops}</span></li>
+			</ul>
+			<table class="tw-statForm">
+				<tr class="tw-statDepart">
+					<td>${l10n.stat_depart} <span></span></td>
+					<td>
+						<div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+					</td>
+				</tr>
+				<tr class="tw-statReturn">
+					<td>${l10n.stat_return} <span></span></td>
+					<td>
+						<div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+					</td>
+				</tr>
+			</table>
+			<div class="tw-graphic"></div>
+			<div class="tw-statNote">{{html l10n.statistics_note}}</div>
+		</div>
+		<div class="tw-statShow tw-invisible"><span class="tw-link tw-dashed">${l10n.stat_show}</span></div>
+	</script>
+	
+	<script id="tmpl_PreferedBlock" type="text/x-jquery-tmpl">
+		<div class="tw-body">
+			<div class="tw-name">${$item.name}</div>
+			<div class="tw-ak"><img src="/twiket/img/ak/${AK}.png" alt=""/> ${ref.Airlines[$data.AK]}</div>
+			{{each JourneyTime}}
+				<div>
+					<!--div class="tw-directionName">
+						{{if $index==0}}
+							${l10n.there}
+						{{else}}
+							${l10n.back}
+						{{/if}}
+						${" "}
+						<span class="tw-date">${twiket.formatDate(twiket.parseAPI(html_tmpl.StartDate[$index]), "d mmmm, dddd")}</span>
+					</div-->
+					<div>
+						<table>
+							<tr>
+								<td>
+									<span class="tw-startTime">${html_tmpl.StartTime[$index]}</span>&mdash;<span class="tw-endTime">${html_tmpl.EndTime[$index]}</span>
+									{{if html_tmpl.StartDate[$index] != html_tmpl.EndDate[$index]}}
+										<span class="tw-nowrap">${MakeArrivalDateFlightInfo(html_tmpl.EndDate[$index])}</span>
+									{{/if}}
+								</td>
+								<td>${l10n.seats} ${minDirSeatAvl[$index]}+</td>
+							</tr>
+						</table>
+						{{if html_tmpl.StopPoints[$index].length>0}}
+							<table>
+								<tr class="tw-boardChange">
+									<td>
+										{{if html_tmpl.StopPoints[$index].length==1}}
+											${l10n.through} <span class="tw-nowrap">${twiket.ChangeLastLetterTranfer(ref.getCityName(html_tmpl.StopPoints[$index][0]))}</span>
+											{{else}}
+											${html_tmpl.StopPoints[$index].length} ${l10n.changeBoard}
+										{{/if}}
+									</td>
+									<td>
+										<span class="tw-info" title="${html_tmpl.TransferTitle[$index]}">
+											{{if StopTimes[$index].length}}&harr;{{/if}}${html_tmpl.DurationStopTime[$index]}
+											{{if html_tmpl.TransferTitle[$index] != ''}}
+												{{if html_tmpl.TransferNight[$index]}}&nbsp;<img src="/twiket/img/eye.gif" width="12" height="7" alt=""/>{{/if}}
+												{{if html_tmpl.TransferAirport[$index]}}&nbsp;<img src="/twiket/img/car.gif" width="14" height="10" alt=""/>{{/if}}
+											{{/if}}
+										</span>
+									</td>
+								</tr>
+							</table>
+						{{else}}
+							{{if html_tmpl.ChangeBoardPoints[$index].length>0}}
+								<table>
+									<tr class="tw-boardChange">
+										<td>${html_tmpl.ChangeBoardPoints[$index].length} {{if html_tmpl.ChangeBoardPoints[$index].length==1}}${l10n.stop}{{else}}${l10n.stops}{{/if}}</td>
+										<td>
+											<span class="tw-info" title="${html_tmpl.TransferTitle[$index]}">
+												${html_tmpl.DurationStopTime[$index]}
+											</span>
+										</td>
+									</tr>
+								</table>
+							{{else}}
+								<table>
+									<tr>
+										<td>${l10n.noChangeBoard}</td>
+										<td>${html_tmpl.Planes[$index]}</td>
+									</tr>
+								</table>
+							{{/if}}
+						{{/if}}
+						<table>
+							<tr>
+								<td>
+									{{if (twiket.ticketParams.singleFrom[$index]>1 && twiket.ticketParams.singleTo[$index]>1) || (twiket.ticketParams.singleFrom[$index]==1 && twiket.ticketParams.singleTo[$index]==1)}}
+										${l10n.prefered_out} 
+										{{if html_tmpl.miniAirportByCodeFrom[$index].length > 16}}
+											<span title="${html_tmpl.miniAirportByCodeFrom[$index]}">${twiket.ellipsisName(html_tmpl.miniAirportByCodeFrom[$index])}</span>
+										{{else}}
+											${html_tmpl.miniAirportByCodeFrom[$index]}
+										{{/if}}
+										${' &rarr; '}
+										${l10n.prefered_in} 
+										{{if html_tmpl.miniAirportByCodeTo[$index].length>16 }}
+											<span title="${html_tmpl.miniAirportByCodeTo[$index]}">${twiket.ellipsisName(html_tmpl.miniAirportByCodeTo[$index])}</span>
+										{{else}}
+											${html_tmpl.miniAirportByCodeTo[$index]}
+										{{/if}}
+									{{else}}
+										{{if twiket.ticketParams.singleFrom[$index]==1 && twiket.ticketParams.singleTo[$index]>1}}
+											<div>
+												${l10n.prefered_in} 
+												{{if html_tmpl.miniAirportByCodeTo[$index].length>16 }}
+													<span title="${html_tmpl.miniAirportByCodeTo[$index]}">${twiket.ellipsisName(html_tmpl.miniAirportByCodeTo[$index])}</span>
+												{{else}}
+													${html_tmpl.miniAirportByCodeTo[$index]}
+												{{/if}}
+											</div>
+										{{else}}
+												{{if twiket.ticketParams.singleFrom[$index]>1 && twiket.ticketParams.singleTo[$index]==1}}
+													<div>
+														${l10n.prefered_out} 
+														{{if html_tmpl.miniAirportByCodeFrom[$index].length > 16}}
+															<span title="${html_tmpl.miniAirportByCodeFrom[$index]}">${twiket.ellipsisName(html_tmpl.miniAirportByCodeFrom[$index])}</span>
+														{{else}}
+															${html_tmpl.miniAirportByCodeFrom[$index]}
+														{{/if}}
+													</div>
+												{{/if}}
+										{{/if}}
+									{{/if}}
+								</td>
+								<td>${html_tmpl.DurationJourneyTime[$index]}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				{{if $index!=JourneyTime.length-1}}
+					<div class="tw-hr"></div>
+				{{/if}}
+			{{/each}}
+		</div>
+		<div class="tw-buttonRow">
+			<div class="tw-button tw-buttonPrice" fi="${FlightIndex}">
+				${l10n.button_buy} ${html_tmpl.Price}
+			</div>
+		</div>
+	</script>
+	
+	<script id="tmpl_Matrix" type="text/x-jquery-tmpl">
+		<table class="tw-matrixCaption">
+			<tr>
+				<td>${fountStr}</td>
+				{{if akCount>8}}
+					<td class="tw-nav">
+						<span class="tw-prev tw-link tw-dashed tw-invisible">${l10n.matrix_otherAk}</span>
+						<span class="tw-next tw-link tw-dashed tw-invisible">${l10n.matrix_moreAk}</span>
+					</td>
+				{{/if}}
+			</tr>
+		</table>
+		<table page="0">
+			<tr>
+				<td></td>
+				<td class="tw-airline tw-selected">
+					<div class="tw-link">{{html l10n.matrix_all}}<br/>(${FlightCount})</div>
+				</td>
+				{{each(i, $AK) ak}}
+					<td class="tw-airline {{if $AK.page > 0}}tw-invisible{{/if}}" code="${$AK.code}" p="${$AK.page}">
+						<div class="tw-link" title="${ref.Airlines[$AK.code]}">${ref.Airlines[$AK.code]}</div>
+						<img src="/twiket/img/ak/${$AK.rFlight.html_tmpl.byTrips.logo[0][0]}.png" alt="" title="${ref.Airlines[$AK.code]}"/>
+					</td>
+				{{/each}}
+			</tr>
+			{{if $data.direct}}
+				<tr>
+					<td>
+						<span>${l10n.matrix_direct}</span>
+					</td>
+					<td class="tw-choose tw-stops_cell tw-selected" type="direct">
+						<span class="tw-link tw-dashed">${twiket.formatMoney(minDirectPrice)}</span>
+					</td>
+					{{each(i, $AK) ak}}
+						{{if $AK.direct[0]}}
+							<td class="tw-choose{{if $AK.page > 0}} tw-invisible{{/if}}" type="direct" code="${$AK.code}" p="${$AK.page}">
+								<span class="tw-link tw-dashed">${twiket.formatMoney($AK.direct[0].AmountFare)}</span>
+							</td>
+						{{else}}
+							<td class="{{if $AK.page > 0}}tw-invisible{{/if}}" p="${$AK.page}">&ndash;</td>
+						{{/if}}
+					{{/each}}
+				</tr>
+			{{/if}}
+			{{if $data.stops}}
+				<tr>
+					<td>
+						<span>${l10n.matrix_whithBoardChange}</span>
+					</td>
+					<td class="tw-choose tw-stops_cell tw-selected" type="stops">
+						<span class="tw-link tw-dashed">${twiket.formatMoney(minStopsPrice)}</span>
+					</td>
+					{{each(i, $AK) ak}}
+						{{if $AK.stops[0]}}
+							<td class="tw-choose{{if $AK.page > 0}} tw-invisible{{/if}}" type="stops" code="${$AK.code}" p="${$AK.page}">
+								<span class="tw-link tw-dashed">${twiket.formatMoney($AK.stops[0].AmountFare)}</span>
+							</td>
+						{{else}}
+							<td class="{{if $AK.page > 0}}tw-invisible{{/if}}" p="${$AK.page}">&ndash;</td>
+						{{/if}}
+					{{/each}}
+				</tr>
+			{{/if}}
+		</table>
+	</script>
+	
+	<script id="tmpl_layoutResult" type="text/x-jquery-tmpl">
+		<div class="tw-searchResult">
+			<div class="tw-routeHeader">
+				<span class="tw-step">${l10n.step + ' ' + (dirNumber + 1) + '. '}</span>
+				${directions[dirNumber].from} &rarr; ${directions[dirNumber].to}
+				<span class="tw-date">${', ' + twiket.formatDate(directions[dirNumber].date, "d mmmm, dddd")}</span>
+			</div>
+			<div class="tw-routeBody">
+				<div class="tw-chooseHint">
+					{{if dirNumber == 0}}
+						${l10n.chooseHintThere}
+					{{else}}
+						${l10n.chooseHintBack}
+					{{/if}}
+				</div>
+				<div class="tw-head">
+					<table>
+						<tr>
+							<td class="tw-departure"><span st="departure">${l10n.resultsTable_takeoff}</span></td>
+							<td class="tw-journey"><span st="journey">${l10n.resultsTable_duration}</span></td>
+							<td class="tw-arrival"><span st="arrival">${l10n.resultsTable_arrival}</span></td>
+							<td class="tw-ak"><span st="ak">${l10n.resultsTable_airline}</span></td>
+							<td class="tw-route"><span st="route">${l10n.resultsTable_route}</span></td>
+							<td class="tw-price"><span st="price">
+								{{if directions.length == 2}}
+									${l10n.resultsTable_priceRound}
+								{{else}}
+									${l10n.resultsTable_price}
+								{{/if}}
+							</span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="dataFlights"></div>
+			</div>
+		</div>
+	</script>
+	<script id="tmpl_singleTrip" type="text/x-jquery-tmpl">
+		<div class="rowWrapper">
+			<div class="rowItem avl" id="${TripIds[$item.dir]}-${TripIds}" fi="${FlightIndex}">
+				<table>
+					<tr>
+						<td class="tw-departure">${html_tmpl.StartTime[$item.dir]}</td>
+						<td class="tw-journey">
+							<div class="arrow">
+								<div>${html_tmpl.DurationJourneyTimeShort[$item.dir]}</div>
+							</div>
+						</td>
+						<td class="tw-arrival">${html_tmpl.EndTime[$item.dir]}</td>
+						<td class="tw-ak" title="${html_tmpl.byTrips.Airline[$item.dir][0]}">
+							<div>
+								<img src="/twiket/img/ak/${html_tmpl.byTrips.logo[$item.dir][0]}.png" alt=""/>
+								<div>${html_tmpl.byTrips.Airline[$item.dir][0]}</div>
+							</div>
+						</td>
+						<td class="tw-route">{{html html_tmpl.byTrips.html_route[$item.dir]}}</td>
+						<td class="tw-price">
+							<div class="tw-button">
+								<span class="tw-link tw-dashed">
+									{{if $item.listlength && $item.listlength > 1}}
+										<span class="tw-count">${$item.listlength} ${l10n.priceFrom} </span>
+									{{/if}}
+									<span class="tw-amt">${html_tmpl.Price}</span>
+								</span>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</script>
+	
+	<script id="tmpl_PassengersForm" type="text/x-jquery-tmpl">
+		<div class="tw-blockHeader">${l10n.passengersForm_title}</div>
+		<form id="tw-passengersForm">
+			<div class="tw-passengersTable">
+				<table id="tw-passengersTable">
+					<col class="tw-gender"/>
+					<col class="tw-lastName"/>
+					<col class="tw-firstName"/>
+					<col class="tw-birthDate"/>
+					<col class="tw-passCountry"/>
+					<col class="tw-passNumber"/>
+					<col class="tw-delete"/>
+					<thead>
+						<tr>
+							<th>${l10n.passengersForm_labels_gender}</th>
+							<th>${l10n.passengersForm_labels_lastName}</th>
+							<th>${l10n.passengersForm_labels_firstName}</th>
+							<th>${l10n.passengersForm_labels_birthDate}</th>
+							<th>${l10n.passengersForm_labels_passCountry}</th>
+							<th>${l10n.passengersForm_labels_passNumber}</th>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody></tbody>
+					<tfoot>
+						<tr>
+							<td>+</td>
+							<td colspan="5">
+								<div class="tw-addRow">
+									<button type="button" name="addADT">${l10n.passengersForm_add_adt} <span></span></button>
+									<span class="tw-child">${l10n.passengersForm_add_child}</span>
+									<button type="button" name="addCNN">${l10n.passengersForm_add_cnn} <span></span></button>
+									<button type="button" name="addINF">${l10n.passengersForm_add_inf} <span></span></button>
+								</div>
+							</td>
+							<td></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+			<button type="submit">${l10n.passengersForm_submit}</button>
+		</form>
+	</script>
+
+	<script id="tmpl_Ticket" type="text/x-jquery-tmpl">
+		<div class="tw-searchResult">
+			{{each($i, $dir) $data.directions}}
+				<table class="tw-routeHeaderLayout"><tr>
+					<td>
+						<div class="tw-routeHeader">
+							<span class="tw-step">${l10n.step + ' ' + ($i + 1) + '. '}</span>
+							${$dir.from} &rarr; ${$dir.to}
+							<span class="tw-date">${', ' + twiket.formatDate($dir.date, "d mmmm, dddd")}</span>
+						</div>
+					</td>
+					<td><span class="tw-link tw-dashed tw-moreFlights">${l10n.moreFlights}</span></td>
+				</tr></table>
+				{{tmpl(curFlight, {dir: $i}) "SelectedTripInfo"}}
+				<div class="tw-visaInfo tw-invisible">{{html l10n.visaInfo}}</div>
+			{{/each}}
+		</div>
+	</script>
+	<script id="tmpl_Baggage" type="text/x-jquery-tmpl">
+		<div class="tw-baggage">
+			{{if $data.fare.dirs[$data.dirNumber].bgType == "K"}}
+				{{tmpl({
+					bg: $data.fare.dirs[$data.dirNumber].bg + " " + l10n.kg
+				}) l10n.baggage}}
+			{{else $data.fare.dirs[$data.dirNumber].bgType == "PC"}}
+				{{if $data.fare.dirs[$data.dirNumber].bg == 1}}
+					{{tmpl({
+						bg: $data.fare.dirs[$data.dirNumber].bg + " " + l10n.bg1
+					}) l10n.baggage}}
+				{{else}}
+					{{tmpl({
+						bg: $data.fare.dirs[$data.dirNumber].bg + " " + l10n.bg8
+					}) l10n.baggage}}
+				{{/if}}
+			{{else}}
+				{{tmpl({
+					bg: "—"
+				}) l10n.baggage}}
+			{{/if}}
+			{{if ref.baggage[$data.curFlight.opEveryTripAK[$data.dirNumber][0]]}}
+				, <a href="${ref.baggage[$data.curFlight.opEveryTripAK[$data.dirNumber][0]]}" target="_blank">${l10n.more}</a>
+			{{/if}}
+		</div>
+	</script>
+	<script id="tmpl_SelectedTripInfo" type="text/x-jquery-tmpl">
+		<div class="tw-selectedTrip" style="display: none" fi="${$data.FlightIndex}">
+			{{each(i) $data.TripIds[$item.dir]}}
+				<div class="rowItem">
+					<table>
+						<tr>
+							<td class="tw-departure">${$data.html_tmpl.byTrips.StartTime[$item.dir][i]}</td>
+							<td class="tw-journey">${$data.html_tmpl.byTrips.DurationJourneyTime[$item.dir][i]}</td>
+							<td class="tw-arrival">${$data.html_tmpl.byTrips.EndTime[$item.dir][i]}</td>
+							<td class="tw-ak" title="${$data.html_tmpl.byTrips.Airline[$item.dir][i]}">
+								<div>
+									<img src="/twiket/img/ak/${$data.html_tmpl.byTrips.logo[$item.dir][i]}.png" alt=""/>
+									<div>${$data.html_tmpl.byTrips.Airline[$item.dir][i]}</div>
+								</div>
+							</td>
+							<td class="tw-route" title="${$data.html_tmpl.byTrips.FlightInfoDirect[$item.dir][i]}">${$data.html_tmpl.byTrips.FlightInfoDirect[$item.dir][i]}</td>
+							<td class="tw-colDate">${$data.html_tmpl.byTrips.StartDate[$item.dir][i]}</td>
+						</tr>
+						<tr class="tw-additional">
+							<td colspan="3"></td>
+							<td class="tw-subAK">
+								<span title="${$data.html_tmpl.byTrips.Planes[$item.dir][i]}">${$data.html_tmpl.byTrips.Planes[$item.dir][i]}</span>
+							</td>
+							<td colspan="2">
+								${$data.html_tmpl.byTrips.FlightNumber[$item.dir][i]}
+								{{if $data.EveryTripAK[$item.dir][i] != $data.opEveryTripAK[$item.dir][i]}}
+									${', ' + l10n.operated} ${$data.html_tmpl.byTrips.operatedAirline[$item.dir][i]}
+								{{/if}}
+							</td>
+						</tr>
+						{{if $data.html_tmpl.byTrips.DurationStopTime[$item.dir][i]}}
+							<tr>
+								<td colspan="3"></td>
+								<td colspan="3" class="tw-boardChange">${l10n.tooltip1 + ref.getCityName($data.html_tmpl.StopPoints[$item.dir][i]) + ' ' + $data.html_tmpl.byTrips.DurationStopTime[$item.dir][i]}</td>
+							</tr>
+						{{/if}}
+					</table>
+				</div>
+			{{/each}}
+		</div>
+	</script>
+	<!-- payment -->
+	<script id="tmpl_Makeorder" type="text/x-jquery-tmpl">
+		<form id="paymentForm">
+			<div class="tw-bayer">
+				<div class="tw-blockHeader"></div>
+				<div class="tw-blockComment">${l10n.buyerComment}</div>
+				<div class="tw-phone">
+					<label for="tw-input_phone">${l10n.phone}</label>
+					<span>+</span>
+				</div>
+				<div class="tw-email">
+					<label for="tw-input_email">${l10n.email}</label>
+				</div>
+			</div>
+			<div id="tw-paymentTitle" class="tw-blockHeader"></div>
+			<ul class="tw-pmtVrnts"></ul>
+			<table class="paymentTable">
+				<thead>
+					<tr>
+						<td></td>
+						<th>${l10n.payment_tableHead_base}</th>
+						<td></td>
+						<th>${l10n.payment_tableHead_taxe}</th>
+						<td class="markup"></td>
+						<th class="markup">${l10n.payment_tableHead_markup}</th>
+						<td class="discount"></td>
+						<th class="discount">${l10n.payment_tableHead_discount}</th>
+						<td></td>
+						<th>${l10n.payment_tableHead_amount}</th>
+						<th class="fareRules">${l10n.payment_tableHead_rules}</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			<div class="tw-amount"></div>
+			<div class="transactions"></div>
+			<div class="tw-paymentNote">
+				<div class="tw-attentionTitle">${l10n.warning}</div>
+				<div class="tw-attentionText"></div>
+			</div>
+			<div class="tw-agreements">
+				<div class="tw-blockHeader">${l10n.agreements_title}</div>
+				<div class="tw-agreementsBody">{{html l10n.agreements_HTML}}</div>
+				<label>
+					<input type="checkbox" name="agreements">${' ' + l10n.agreements_label}
+				</label>
+			</div>
+			<div class="tw-paySubmitRow">
+				<div id="tw-posPassword" class="tw-invisible"></div>
+				<button type="submit">${l10n.payment_pay}</button>
+			</div>
+		</form>
+	</script>
+	<script id="tmpl_Field" type="text/x-jquery-tmpl">
+		<div class="tw-field{{if $data.checkbox}} tw-checkbox{{/if}}">
+			{{if $data.checkbox}}
+				<div class="tw-checkbox">
+					<input type="checkbox" autocomplete="off" name="${$data.name}_flag" id="tw-input_${$data.name}_flag" value="true" checked="checked"/>
+				</div>
+			{{/if}}
+			<input type="{{if $data.inputType}}${$data.inputType}{{else}}text{{/if}}" autocomplete="${$data.autocomplete}" name="${$data.name}" id="tw-input_${$data.name}" value="${$data.value}" maxlength="${$data.maxlength}"/>
+			{{if $data.placeholder}}
+				<input type="text" autocomplete="off" readonly="readonly" class="tw-placeholder" value="${$data.placeholder}" tabindex="-1"/>
+			{{/if}}
+		</div>
+	</script>
+	<script id="tmpl_Card" type="text/x-jquery-tmpl">
+		<div class="tw-creditCardBlock">
+			<div class="tw-SSLinfo">{{html l10n.SSLinfo}}</div>
+			<div class="tw-creditCard tw-avers">
+				<div class="tw-visa"></div>
+				<div class="tw-masterCard"></div>
+				<div class="tw-cardNumber">
+					<label for="tw-input_number1">Card number</label>
+					<table><tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr></table>
+				</div>
+				<div class="tw-expDate">
+					<table>
+						<tr>
+							<td class="tw-expMonthLabel"><label for="tw-input_expMonth">Month</label></td>
+							<td class="tw-expYearLabel"><label for="tw-input_expYear">Year</label></td>
+						</tr>
+						<tr>
+							<td class="tw-expMonth">
+								<label for="tw-input_expMonth">Valid<br />thru</label>
+							</td>
+						<td class="tw-expYear"></td>
+						</tr>
+					</table>
+				</div>
+				<div class="tw-holderName">
+					<label for="tw-input_holderName">Card holder${l10n.cardHolder}</label>
+				</div>
+			</div>
+			<div class="tw-creditCard tw-reverse">
+				<div class="tw-cvv">
+					<label for="tw-input_cvv">CVV/CVC</label>
+				</div>
+			</div>
+		</div>
+	</script>
+	<script id="tmpl_cardAuthorization" type="text/x-jquery-tmpl">
+		<div class="tw-title">${l10n.cardAuth_cardCheck}</div>
+		<div class="tw-note">{{html l10n.cardAuth_html_cardCheckComment}}</div>
+		<div class="tw-titleCheckCode">${l10n.cardAuth_cvv}</div>
+		<table style="margin: 2px 0;"><tr>
+			<td>
+				<form>
+					<div class="tw-code"></div>
+					<button type="submit">${l10n.cardAuth_confirm}</button>
+				</form>
+			</td>
+			<td class="tw-error">
+				<div class="tw-invisible">${l10n.cardAuth_errorCode}</div>
+			</td>
+		</tr></table>
+		<div class="tw-note">${l10n.cardAuth_noteCode}</div>
+		<table style="margin: 1em 0; width: 100%;">
+			<tr>
+				<td>
+					<div class="tw-picTitle">${l10n.cardAuth_titleSms}</div>
+					<div class="tw-pic tw-phone"></div>
+					<div class="tw-note">${l10n.cardAuth_noteSms}</div>
+				</td>
+				<td>
+					<div class="tw-picTitle">${l10n.cardAuth_titleBank}</div>
+					<div class="tw-pic tw-ebank"></div>
+					<div class="tw-note">${l10n.cardAuth_noteBank}</div>
+				</td>
+				<td>
+					<div class="tw-picTitle">${l10n.cardAuth_titleCard}</div>
+					<div class="tw-pic tw-card"></div>
+					<div class="tw-note">${l10n.cardAuth_noteCard}</div>
+				</td>
+			</tr>
+		</table>
+		<div class="tw-note"><span class="tw-warn">${l10n.cardAuth_warnCode}</span></div>
+		<div class="tw-buttons">
+			<button type="button" onclick="twiket.removePopup()">${l10n.cardAuth_close}</button>
+		</div>
+	</script>
+	<script id="tmpl_Popup" type="text/x-jquery-tmpl">
+		<div class="twiket tw-popup {{if $data.error}}tw-popupError{{/if}} ${$data.className}" {{if $data.id}}id="${$data.id}"{{/if}}>
+			{{if $data.close_button}}
+				<div class="tw-popupClose">×</div>
+			{{/if}}
+			{{if $data.error}}
+				<div class="tw-sadsmile">:’-(</div>
+			{{/if}}
+			{{if $data.reason}}
+				<div class="tw-title">${reason}</div>
+			{{/if}}
+			{{if $data.comment}}
+				<div class="tw-body">{{html comment}}</div>
+			{{/if}}
+			{{if $data.button}}
+				<div class="tw-buttons">
+					<button type="button" {{if $data.actionButton}}onclick="${$data.actionButton}"{{/if}}>${button}</button>
+				</div>
+			{{/if}}
+		</div>
+	</script>
+	<script id="tmpl_cancelPrereservationPopup" type="text/x-jquery-tmpl">
+		<div class="tw-title">${l10n.warning}</div>
+		<div class="tw-body">
+			<p>${l10n.popup_cancelPrereservation}</p>
+			<ul>
+				{{each(i,pas) reservedPas}}
+					<li class="tw-bold">${pas}</li>
+				{{/each}}
+			</ul>
+			<p>${l10n.popup_noSeats}</p>
+		</div>
+		<div class="tw-buttons">
+			<button type="button" id="notAgree">${l10n.popup_chooseAnotherVariant}</button>
+		</div>
+	</script>
+	<script id="tmpl_PriceChangedPopup" type="text/x-jquery-tmpl">
+		<div class="tw-title">${l10n.warning}</div>
+		<div class="tw-body">
+			${l10n.popup_oldPrice} <b>${oldPrice}</b>.<br/>
+			${l10n.popup_newPrice} <b>${newPrice}</b>.
+		</div>
+		<div class="tw-buttons">
+			<button type="button" id="continueMaking">${l10n.popup_agree}</button>
+			<button type="button" id="notAgree">${l10n.popup_chooseAnotherVariant}</button>
+		</div>
+	</script>
+	<script id="tmpl_CancelReservation" type="text/x-jquery-tmpl">
+		<div class="tw-title">${l10n.warning}</div>
+		<div class="tw-body">
+			<p>${l10n.cancelReservation_comment}</p>
+			<ul>
+				{{each(i,res) reservations}}
+					{{each(j, pas) res.passengers}}
+						<li>
+							${pas.lastName} ${pas.firstName}
+						</li>
+					{{/each}}
+				{{/each}}
+			</ul>
+		</div>
+		{{if !$data.hideOptions}}
+			<div class="tw-buttons">
+				<button type="button" id="notAgree" onclick="twiket.removePopup();">${l10n.continueOrder}</button>
+				<button type="button" id="continueMaking">${l10n.popup_agree}</button>
+			</div>
+		{{/if}}
+	</script>
+</div>
+</body>
+</html>
