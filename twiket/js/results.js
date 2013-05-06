@@ -372,7 +372,8 @@ tw.oResult = null;
 tw.ticketParams={};
 $(function(){
 	$.template('tmpl_layoutResult', $("#tmpl_layoutResult").trimHTML());
-	$.template('tmpl_singleTrip', $("#tmpl_singleTrip").trimHTML());
+    $.template('tmpl_singleTrip', $("#tmpl_singleTrip").trimHTML());
+	$.template('tmpl_singleTrip_top', $("#tmpl_singleTrip_top").trimHTML());
 	$.template('SelectedTripInfo', $("#tmpl_SelectedTripInfo").trimHTML());
 	$.template('Ticket', $("#tmpl_Ticket").trimHTML());
 	$.template('Baggage', $("#tmpl_Baggage").trimHTML());
@@ -1393,6 +1394,8 @@ tw.DrawResults.prototype.redrawColumn = function(){
     var offset = 0;
     var limit  = 10;
     
+    var most_quick_item = {time:0, id: 0};
+    
     //console.log('dirNumber = '+this.dirNumber );
     //console.log(this.Columns);
     
@@ -1404,14 +1407,24 @@ tw.DrawResults.prototype.redrawColumn = function(){
 	if (this.dirNumber == 0) {
         var uf_departure_times_items = [], min_price_deptm_first = {amount:0, price: 0}, min_price_deptm_second = {amount:0, price: 0}, airports_list = {}, airlines_list = {}, aircarriers_list = {};
         
+        
 		for (var j = 0; j < this.Columns.arr[0].length; j++ ) {
-            console.log(this.Columns.arr[0][j].flight);            
+            //console.log(this.Columns.arr[0][j].flight);            
             
             var filtering = true; 
             
-            $.each(ufilter, function(index, item){
-                //
-            });
+            if (most_quick_item.time <= 0) {
+                most_quick_item = {
+                    time: this.Columns.arr[0][j].flight.totalJourneyTime,
+                    id: j
+                }
+            }
+            else if (this.Columns.arr[0][j].flight.totalJourneyTime < most_quick_item.time) {
+                most_quick_item = {
+                    time: this.Columns.arr[0][j].flight.totalJourneyTime,
+                    id: j
+                }
+            }
             
             var AirportByCodeFrom = this.Columns.arr[0][j].flight.html_tmpl.AirportByCodeFrom[0];
             if (airports_list[ AirportByCodeFrom ]) {
@@ -1428,7 +1441,8 @@ tw.DrawResults.prototype.redrawColumn = function(){
                 };
             }
             
-            airlines_list[this.Columns.arr[0][j].flight.html_tmpl.Airline[0]] = 0;
+            var AirlineByCode = this.Columns.arr[0][j].flight.html_tmpl.Airline[0];
+            airlines_list[AirlineByCode] = 0;
             
             this.Columns.arr[0][j].flight.html_tmpl.StartTimeMy = [];
             for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.StartTime.length; imo++) {
@@ -1451,19 +1465,49 @@ tw.DrawResults.prototype.redrawColumn = function(){
                   
             }
             
-            if (filtering && j >= offset && j < offset + limit) {
-            //if (filtering && j >= offset && j < this.Columns.arr[0].length) {
+            // фильтрация
+            if (ufilter.byDepartureAirport != null && ufilter.byDepartureAirport != AirportByCodeFrom) {
+                filtering = false;
+            }
+            if (ufilter.byAirline != null && ufilter.byAirline != AirlineByCode) {
+                filtering = false;
+            }
+            var filtStartTime = this.Columns.arr[0][j].flight.html_tmpl.StartTime[0].split(':').join('') * 1;
+            switch (ufilter.byDepartureTime * 1) {
+                case 1:
+                    if (filtStartTime < 500 || filtStartTime > 1559) {
+                        filtering = false;
+                    }
+                    break;
+                case 2:
+                    if (filtStartTime < 1600 && filtStartTime > 459) {
+                        filtering = false;
+                    }
+                    break;
+                
+                default:
+                    //
+            }
+            
+            //if (filtering && j >= offset && j < offset + limit) {
+            if (filtering) {
             
                 this.Columns.arr[0][j].flight.html_tmpl.StartDateMy = [];
                 for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.StartDate.length; imo++) {
                     var imo_item = this.Columns.arr[0][j].flight.html_tmpl.StartDate[imo];
-                    
-                    this.Columns.arr[0][j].flight.html_tmpl.StartDateMy[imo] = twiket.formatDate('2505', 'd mmmm, dddd');
+                    imo_item = imo_item.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
+                    this.Columns.arr[0][j].flight.html_tmpl.StartDateMy[imo] = twiket.formatDate(imo_item, 'd mmmm, dddd');
                 }
                 this.Columns.arr[0][j].flight.html_tmpl.EndTimeMy = [];
                 for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.EndTime.length; imo++) {
                     var imo_item = this.Columns.arr[0][j].flight.html_tmpl.EndTime[imo].split(':');
                     this.Columns.arr[0][j].flight.html_tmpl.EndTimeMy[imo] = imo_item[0] + ' ч ' + imo_item[1] + '  мин';
+                }
+                this.Columns.arr[0][j].flight.html_tmpl.EndDateMy = [];
+                for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.EndDate.length; imo++) {
+                    var imo_item = this.Columns.arr[0][j].flight.html_tmpl.EndDate[imo];
+                    imo_item = imo_item.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
+                    this.Columns.arr[0][j].flight.html_tmpl.EndDateMy[imo] = twiket.formatDate(imo_item, 'd mmmm');
                 }
                 
 			    $($.tmpl('tmpl_singleTrip', this.Columns.arr[0][j].flight, {dir: 0, listlength: this.Columns.arr[0][j].list.length})).appendTo(this.dataFlights);
@@ -1474,16 +1518,39 @@ tw.DrawResults.prototype.redrawColumn = function(){
         $('#min_price_deptm_first span').html(min_price_deptm_first.price);
         $('#min_price_deptm_second span').html(min_price_deptm_second.price);
         
-        //console.log(airports_list);
+        
+        
         $('#airports_list').html('');
         $.each(airports_list, function(index, item){
-            $('#airports_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad2"> ' + ref.getAirportString(index) + '</label><span class="cost radio inline">' + item.price + '</span></div>');
+            $('#airports_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad2" data-airport="'+index+'"> ' + ref.getAirportString(index) + '</label><span class="cost radio inline">' + item.price + '</span></div>');
         });
+        
+        $('#airports_list input[data-airport="'+ufilter.byDepartureAirport+'"]').attr('checked', 'checked');
+        
+        $('#airports_list input').change(function(e){            
+            ufilter.byDepartureAirport = $(this).attr('data-airport');
+            twiket.DrawFares(searchResult);
+        });
+        
+        
         
         $('#airlines_list').html('');
         $.each(airlines_list, function(index, item){
-            $('#airlines_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad3"> ' + ref.getAirlinesName(index) + '</label></div>');
+            $('#airlines_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad3" data-airline="'+index+'"> ' + ref.getAirlinesName(index) + '</label></div>');
         });
+        
+        $('#airlines_list input[data-airline="'+ufilter.byAirline+'"]').attr('checked', 'checked');
+        
+        $('#airlines_list input').change(function(){
+            ufilter.byAirline = $(this).attr('data-airline');
+            twiket.DrawFares(searchResult);
+        });
+        
+        
+        // САМЫЙ БЫСТРЫЙ
+        $('.most-quick .conter').html( $($.tmpl('tmpl_singleTrip_top', this.Columns.arr[0][most_quick_item.id].flight, {dir: 0, listlength: this.Columns.arr[0][most_quick_item.id].list.length})) );
+        // САМЫЙ ДЕШЕВЫЙ        
+        $('.most-cheap .conter').html( $($.tmpl('tmpl_singleTrip_top', this.Columns.arr[0][0].flight, {dir: 0, listlength: this.Columns.arr[0][0].list.length})) );
         
         $('#aircarriers_list').html('');
         $.each(aircarriers_list, function(index, item){

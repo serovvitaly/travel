@@ -12,10 +12,6 @@ var request_rote = {
     back: null
 };
 
-//$(document).ready(function(){
-    //$.template('tmpl_singleTrip', $("#tmpl_singleTrip").html());
-//});
-
 
 /**
 * Отображает результаты поиска используя фильтр
@@ -52,7 +48,7 @@ function renderResult(){
 * Осуществляет поиск авиабилетов 
 */
 function searchBegin(){
-    console.log(request_rote);
+    //console.log(request_rote);
     if (!request_rote.from || !request_rote.to || !request_rote.there ) {
         alert('Неверные параметры поиска');
         return;
@@ -68,6 +64,11 @@ function searchBegin(){
         route: "",
         ad: 1
     };
+    
+    $('.fitl-time input').change(function(){
+        ufilter.byDepartureTime = $(this).attr('data-time');
+        twiket.DrawFares(searchResult);
+    });
     
     uf_departure_times = null;
     
@@ -98,7 +99,7 @@ function searchBegin(){
                 searchResult = json;
                 renderResult();
                 
-                
+                $('.tickets .ticket.top').show();
                 
                 return;
                 
