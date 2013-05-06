@@ -1409,7 +1409,7 @@ tw.DrawResults.prototype.redrawColumn = function(){
         
         
 		for (var j = 0; j < this.Columns.arr[0].length; j++ ) {
-            //console.log(this.Columns.arr[0][j].flight);            
+            console.log(this.Columns.arr[0][j].flight);            
             
             var filtering = true; 
             
@@ -1470,6 +1470,9 @@ tw.DrawResults.prototype.redrawColumn = function(){
                 filtering = false;
             }
             if (ufilter.byAirline != null && ufilter.byAirline != AirlineByCode) {
+                filtering = false;
+            }
+            if (ufilter.direct === true && this.Columns.arr[0][j].flight.html_tmpl.byTrips.html_route[0] != 'прямой') {
                 filtering = false;
             }
             var filtStartTime = this.Columns.arr[0][j].flight.html_tmpl.StartTime[0].split(':').join('') * 1;

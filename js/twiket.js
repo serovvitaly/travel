@@ -1,7 +1,18 @@
 
 
 var searchResult = [];
-var ufilter = {}, uf_departure_times = null;
+var uf_departure_times = null;
+
+var ufilter = {
+    cabinClass:         'E',   // Тип салона
+    direct:             false, // Все рейсы (false) или только прямые (true)
+    byDepartureTime:    null,  // Время вылета (null - любое)
+    byDepartureAirport: null,  // Аэропорт вылета (null - любое)
+    byArrivalTime:      null,  // Время прилета (null - любое)
+    byArrivalAirport:   null,  // Аэропорт прилета (null - любое)
+    byAirline:          null,  // Авиалинии (null - любое)
+    byAirCarriers:      null   // Авиаперевозчики (null - любое)
+};
 
 var results_display = 10;
 
@@ -16,21 +27,11 @@ var request_rote = {
 /**
 * Отображает результаты поиска используя фильтр
 */
-function renderResult(){
+function renderResult(filter){
     
     var me = this;
     
-    me.filt = $.extend({
-        cabinClass:         'E',   // Тип салона
-        direct:             false, // Все рейсы (false) или только прямые (true)
-        byDepartureTime:    null,  // Время вылета (null - любое)
-        byDepartureAirport: null,  // Аэропорт вылета (null - любое)
-        byArrivalTime:      null,  // Время прилета (null - любое)
-        byArrivalAirport:   null,  // Аэропорт прилета (null - любое)
-        byAirline:          null,  // Авиалинии (null - любое)
-        byAirCarriers:      null   // Авиаперевозчики (null - любое)
-    }, ufilter);
-    
+    ufilter = $.extend(ufilter, filter);    
     
     me.items = [];
     
@@ -47,7 +48,10 @@ function renderResult(){
 /**
 * Осуществляет поиск авиабилетов 
 */
-function searchBegin(){
+function searchBegin(filter){
+    
+    ufilter = $.extend(ufilter, filter);
+    
     //console.log(request_rote);
     if (!request_rote.from || !request_rote.to || !request_rote.there ) {
         alert('Неверные параметры поиска');
@@ -76,7 +80,7 @@ function searchBegin(){
     //params.route += this.inputFrom.suggest.curResult;
     
     if(!params.ad) params.ad = 1;
-        params.cs = 'E';
+        params.cs = ufilter.cabinClass;
         params.source = twiket.setup.source;
         params.srcmarker = twiket.setup.marker;
     MakeRequest();

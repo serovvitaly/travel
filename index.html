@@ -619,14 +619,14 @@
             </div>
 
             <div class="btn-group" data-toggle="buttons-radio">
-              <button class="btn">Все рейсы</button>
-              <button class="btn active">Прямые</button>
+              <button class="btn active" onclick="renderResult({direct:false})">Все рейсы</button>
+              <button class="btn" onclick="renderResult({direct:true})">Прямые</button>
             </div>
 
             <label class="checkbox">класс: </label>
             <div class="btn-group" data-toggle="buttons-radio">
-              <button class="btn">Эконом</button>
-              <button class="btn active">Бизнес</button>
+              <button class="btn active" onclick="searchBegin({cabinClass:'E'})">Эконом</button>
+              <button class="btn" onclick="searchBegin({cabinClass:'B'})">Бизнес</button>
             </div>
             
             <label>валюта:</label>
