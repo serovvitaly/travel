@@ -686,26 +686,10 @@
                   </label>
                 </div>
                 
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad2"> Шереметьево
-                  </label>
-                  <span class="cost radio inline">300 $</span>
+                <div id="airports_list">
+                  
                 </div>
-
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad2"> Домодедово
-                  </label>
-                  <span class="cost radio inline">260 $</span>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad2"> Внуково
-                  </label>
-                  <span class="cost radio inline">260 $</span>
-                </div>
+                
               </div>
 
             </form>
@@ -774,40 +758,12 @@
           <h2>Авиалинии</h2>
           <div class="inn">
             <form action="" class="form-inline">
-              <div class="control-group">
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad3" checked> Аэрофлот
-                  </label>
-                </div>
+              <div class="control-group" id="airlines_list">
                 
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad3"> Трансаэро
-                  </label>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad3"> S7 Airlins
-                  </label>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad3"> Трансаэро
-                  </label>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad3"> S7 Airlins
-                  </label>
-                </div>
               </div>
             </form>
 
-            <h4><a href="">Посмотреть еще</a></h4>
+          <!--  <h4><a href="">Посмотреть еще</a></h4>   -->
           </div>
         </article>
 
@@ -819,6 +775,8 @@
                 <div class="controls-row">
                   <label class="radio inline">
                     <input type="radio" name="rad4" checked>все перевозчики
+                    <div id="aircarriers_list">
+                    </div>
                   </label>
                 </div>
                 
@@ -864,7 +822,7 @@
                 <td class="ticSeat td2">мест 1</td>
               </tr>
               <tr>
-                <td class="ticThrow td1"><a href="javascript:;">{{html html_tmpl.byTrips.html_route[$item.dir]}}</a></td>
+                <td class="ticThrow td1"><!--<a href="javascript:;">-->{{html html_tmpl.byTrips.html_route[$item.dir]}}<!--</a>--></td>
                 <td class="ticTimeThrow td2">${html_tmpl.StartTimeMy[$item.dir]}</td>
                 <td class="ticThrow td1"><a href="javascript:;">через Лондон</a></td>
                 <td class="ticTimeThrow td2">12 ч 10 мин</td>

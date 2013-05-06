@@ -1402,7 +1402,7 @@ tw.DrawResults.prototype.redrawColumn = function(){
 	$(this.dataFlights).empty();
 
 	if (this.dirNumber == 0) {
-        var uf_departure_times_items = [], min_price_deptm_first = {amount:0, price: 0}, min_price_deptm_second = {amount:0, price: 0};
+        var uf_departure_times_items = [], min_price_deptm_first = {amount:0, price: 0}, min_price_deptm_second = {amount:0, price: 0}, airports_list = {}, airlines_list = {}, aircarriers_list = {};
         
 		for (var j = 0; j < this.Columns.arr[0].length; j++ ) {
             console.log(this.Columns.arr[0][j].flight);            
@@ -1412,6 +1412,23 @@ tw.DrawResults.prototype.redrawColumn = function(){
             $.each(ufilter, function(index, item){
                 //
             });
+            
+            var AirportByCodeFrom = this.Columns.arr[0][j].flight.html_tmpl.AirportByCodeFrom[0];
+            if (airports_list[ AirportByCodeFrom ]) {
+                if (this.Columns.arr[0][j].flight.AmountFare < airports_list[ AirportByCodeFrom ].amount) {
+                    airports_list[ AirportByCodeFrom ] = {
+                        amount: this.Columns.arr[0][j].flight.AmountFare,
+                        price : this.Columns.arr[0][j].flight.html_tmpl.Price
+                    };
+                }
+            } else {
+                airports_list[ AirportByCodeFrom ] = {
+                    amount: this.Columns.arr[0][j].flight.AmountFare,
+                    price : this.Columns.arr[0][j].flight.html_tmpl.Price
+                };
+            }
+            
+            airlines_list[this.Columns.arr[0][j].flight.html_tmpl.Airline[0]] = 0;
             
             this.Columns.arr[0][j].flight.html_tmpl.StartTimeMy = [];
             for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.StartTime.length; imo++) {
@@ -1435,6 +1452,7 @@ tw.DrawResults.prototype.redrawColumn = function(){
             }
             
             if (filtering && j >= offset && j < offset + limit) {
+            //if (filtering && j >= offset && j < this.Columns.arr[0].length) {
             
                 this.Columns.arr[0][j].flight.html_tmpl.StartDateMy = [];
                 for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.StartDate.length; imo++) {
@@ -1455,6 +1473,22 @@ tw.DrawResults.prototype.redrawColumn = function(){
         
         $('#min_price_deptm_first span').html(min_price_deptm_first.price);
         $('#min_price_deptm_second span').html(min_price_deptm_second.price);
+        
+        //console.log(airports_list);
+        $('#airports_list').html('');
+        $.each(airports_list, function(index, item){
+            $('#airports_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad2"> ' + ref.getAirportString(index) + '</label><span class="cost radio inline">' + item.price + '</span></div>');
+        });
+        
+        $('#airlines_list').html('');
+        $.each(airlines_list, function(index, item){
+            $('#airlines_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad3"> ' + ref.getAirlinesName(index) + '</label></div>');
+        });
+        
+        $('#aircarriers_list').html('');
+        $.each(aircarriers_list, function(index, item){
+            $('#airlines_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad3"> ' + ref.getAirlinesName(index) + '</label></div>');
+        });
         
 	} else {
 		$.tmpl('tmpl_singleTrip', this.Columns.obj[0][this.at].list, {dir: 1}).appendTo(this.dataFlights);;

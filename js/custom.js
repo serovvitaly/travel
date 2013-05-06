@@ -72,11 +72,23 @@ $(document).ready(function(){
             if (date == 'NaN.NaN.NaN') {
                 return;
             }
+            
+            date = date.split('.');
+            
             var months = ['','янв','дек','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
             var tg = $(this).hasClass('dp2') ? '#tw-to' : '#tw-from';
             var btn = $(tg).next('button');
-            btn.children('h3').html(date.split('.')[0]);
-            btn.children('h4').html(months[date.split('.')[1] * 1]);
+            btn.children('h3').html(date[0]);
+            btn.children('h4').html(months[date[1] * 1]);
+            
+            switch (tg) {
+                case '#tw-from':
+                    request_rote.there = date[0] + date[1];
+                    break;
+                case '#tw-to':
+                    request_rote.back  = date[0] + date[1];
+                    break;
+            }
             
             $('.calendar').toggle();
         }

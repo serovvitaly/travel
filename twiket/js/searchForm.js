@@ -870,6 +870,16 @@ tw.Suggest.prototype.setResult = function(){
 	if (this.curResult && this.input.value != ref.getPointName(this.curResult)) {
 		this.input.value = ref.getPointName(this.curResult);
 		this.inputValue = this.input.value.toLowerCase();
+        
+        switch (this.input.id) {
+            case 'tw-from':
+                request_rote.from = this.curResult;
+                break;
+            case 'tw-to':
+                request_rote.to = this.curResult;
+                break;
+        }
+        
 	}
 	if (this.lastResult != this.curResult) {
 		this.lastResult = this.curResult;

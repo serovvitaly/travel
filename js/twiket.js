@@ -5,6 +5,13 @@ var ufilter = {}, uf_departure_times = null;
 
 var results_display = 10;
 
+var request_rote = {
+    from: null,
+    to: null,
+    there: null,
+    back: null
+};
+
 //$(document).ready(function(){
     //$.template('tmpl_singleTrip', $("#tmpl_singleTrip").html());
 //});
@@ -45,7 +52,13 @@ function renderResult(){
 * Осуществляет поиск авиабилетов 
 */
 function searchBegin(){
-
+    console.log(request_rote);
+    if (!request_rote.from || !request_rote.to || !request_rote.there ) {
+        alert('Неверные параметры поиска');
+        return;
+    }
+    
+    $('#tw-layout_result').html('<h1 style="text-align:center; padding: 20px">идет поиск...</h1>');    
 
     if($.xhrSearch) {
         $.xhrSearch.abort();
@@ -58,8 +71,7 @@ function searchBegin(){
     
     uf_departure_times = null;
     
-    params.route = '2405MOWPRG';
-    //params.route = '2305MOWPRG2505';
+    params.route = request_rote.there + request_rote.from + request_rote.to + (request_rote.back ? request_rote.back : '');
     //params.route += this.inputFrom.suggest.curResult;
     
     if(!params.ad) params.ad = 1;
@@ -80,7 +92,7 @@ function searchBegin(){
                 $.xhrSearch = xhr;
             },
             success: function(json){
-                
+                $('#tw-layout_result').html('');
                 json.key = params.route;
                 
                 searchResult = json;
