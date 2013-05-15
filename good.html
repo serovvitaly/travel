@@ -872,6 +872,33 @@
             </div>
         {{/if}}
     </script>
+     
+     <script id="tmpl_Statistics" type="text/x-jquery-tmpl">
+        <div class="tw-statBody">
+            <div class="tw-statTitle"></div>
+            <ul class="tw-stopsSelect">
+                <li><span class="tw-selected" data-whithstops="true">${l10n.statistics_whithStops}</span></li>
+                <li><span class="tw-link tw-dashed" data-whithstops="false">${l10n.statistics_withoutStops}</span></li>
+            </ul>
+            <table class="tw-statForm">
+                <tr class="tw-statDepart">
+                    <td>${l10n.stat_depart} <span></span></td>
+                    <td>
+                        <div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+                    </td>
+                </tr>
+                <tr class="tw-statReturn">
+                    <td>${l10n.stat_return} <span></span></td>
+                    <td>
+                        <div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+                    </td>
+                </tr>
+            </table>
+            <div class="tw-graphic"></div>
+            <div class="tw-statNote">{{html l10n.statistics_note}}</div>
+        </div>
+        <div class="tw-statShow tw-invisible"><span class="tw-link tw-dashed">${l10n.stat_show}</span></div>
+    </script>
       
 </div>
 
@@ -1419,7 +1446,6 @@
         </div>  <!-- /dynamics -->
       </div>  <!-- /mainSearch -->
 
-
       <div class="span12 selectors">
         <div class="btn-row">
           <div class="btn-toolbar">
@@ -1492,7 +1518,7 @@
               <div class="control-group" style="display: none;">
                 <div class="controls-row">
                   <label class="radio inline">
-                    <input type="radio" name="rad2" checked> из любого аэропорта
+                    <input type="radio" name="rad2" checked data-airport="0"> из любого аэропорта
                   </label>
                 </div>
                 
@@ -1528,7 +1554,7 @@
               <div class="control-group" style="display: none;">
                 <div class="controls-row">
                   <label class="radio inline">
-                    <input type="radio" name="arr_rad2" checked> из любого аэропорта
+                    <input type="radio" name="arr_rad2" checked data-airport="0"> из любого аэропорта
                   </label>
                 </div>
                 
@@ -1574,7 +1600,7 @@
               <div class="control-group" style="display: none;">
                 <div class="controls-row">
                   <label class="radio inline">
-                    <input type="radio" name="rad6" checked> из любого аэропорта
+                    <input type="radio" name="rad6" checked data-airport="0"> из любого аэропорта
                   </label>
                 </div>
                 
@@ -1609,7 +1635,7 @@
               <div class="control-group" style="display: none;">
                 <div class="controls-row">
                   <label class="radio inline">
-                    <input type="radio" name="rad6" checked> из любого аэропорта
+                    <input type="radio" name="rad6" checked data-airport="0"> из любого аэропорта
                   </label>
                 </div>
                 

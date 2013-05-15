@@ -5,7 +5,7 @@ $(function(){
 // custom forms init
 function initCustomForms() {
 	$('select').customSelect();
-	$('input:radio').customRadio();
+	//$('input:radio').customRadio();
 	$('input:checkbox').customCheckbox();
 }
 

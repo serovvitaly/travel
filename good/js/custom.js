@@ -97,6 +97,8 @@ $(document).ready(function(){
                 return;
             }
             
+            var date_str = date;
+            
             date = date.split('.');
             
             var months = ['','янв','дек','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
@@ -108,9 +110,11 @@ $(document).ready(function(){
             switch (tg) {
                 case '#tw-from':
                     request_rote.there = date[0] + date[1];
+                    request_rote.there_str = date_str;
                     break;
                 case '#tw-to':
                     request_rote.back  = date[0] + date[1];
+                    request_rote.back_str = date_str;
                     break;
             }
             

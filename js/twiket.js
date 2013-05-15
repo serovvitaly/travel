@@ -33,7 +33,9 @@ var request_rote = {
     from: null,
     to: null,
     there: null,
-    back: null
+    back: null,
+    there_str: null,
+    back_str: null
 };
 
 
@@ -64,6 +66,93 @@ function returnToSearch(){
     
     $('#tw-layout_result').removeClass('tw-invisible');
     $('#tickets-box').fadeIn();
+}
+
+
+function getStatistic(params){
+    
+    var self = this;
+    
+    var days_from_beginning = 7; // количество дней меньших даты запроса
+    
+    //dateFrom: request_rote.there,
+    //dateBack: request_rote.back,
+    //airpFrom: request_rote.from,
+    //airpTo: request_rote.to,
+    
+    var opt = {
+        url: twiket.setup.urls.statistics,
+        dataType: "jsonp",
+        data: {}
+    }
+    
+    var rote_there = params.from + params.to;
+    var rote_back  = params.to + params.from;
+    
+    var there_date_mix = params.there_str.split('.');
+    var there_date = there_date_mix[2] + '-' + there_date_mix[1] + '-' + there_date_mix[0];
+    
+    var _there_first_DATE = new Date(there_date);
+    
+    var dateThere_start_first  = params.there;
+    
+    
+    var tdate, tmonth; 
+    
+    _there_first_DATE.setDate(_there_first_DATE.getDate() + 14);    
+    tdate  = _there_first_DATE.getDate();
+    tmonth = _there_first_DATE.getUTCMonth() + 1;
+    var dateThere_stop_first   = ((tdate > 9) ? tdate : '0' + tdate) + ((tmonth > 9) ? tmonth : '0' + tmonth);
+    
+    _there_first_DATE.setDate(_there_first_DATE.getDate() + 1);
+    tdate  = _there_first_DATE.getDate();
+    tmonth = _there_first_DATE.getUTCMonth() + 1;
+    var dateThere_start_second = ((tdate > 9) ? tdate : '0' + tdate) + ((tmonth > 9) ? tmonth : '0' + tmonth);
+    
+    _there_first_DATE.setDate(_there_first_DATE.getDate() + 14);
+    tdate  = _there_first_DATE.getDate();
+    tmonth = _there_first_DATE.getUTCMonth() + 1;
+    var dateThere_stop_second  = ((tdate > 9) ? tdate : '0' + tdate) + ((tmonth > 9) ? tmonth : '0' + tmonth);
+    
+    var there_mix = [];
+    
+    this.update_there = function(data){
+        
+        $.each(data, function(index, item){
+            there_mix[index[0]+index[1]+'.'+index[2]+index[3]] = item;
+        });
+        
+        console.log(there_mix);
+    }
+    
+    // первый запрос "туда"
+    opt.data = {
+            route: rote_there,
+            dateFrom: dateThere_start_first,
+            dateTo: dateThere_stop_first,
+            asArray: true
+        };        
+    opt.success = function(json){
+        if(json.dates){
+            self.update_there(json.dates);
+        }
+    }
+    $.ajax(opt);
+    
+    // второй запрос "туда"
+    opt.data = {
+            route: rote_there,
+            dateFrom: dateThere_start_second,
+            dateTo: dateThere_stop_second,
+            asArray: true
+        };        
+    opt.success = function(json){
+        if(json.dates){
+            self.update_there(json.dates);
+        }
+    }
+    $.ajax(opt);
+    //
 }
 
 
@@ -128,10 +217,21 @@ function searchBegin(filter){
     });
     // --END--
     
+    
+
+    
+    
+    
     uf_departure_times = null;
     
     params.route = request_rote.there + request_rote.from + request_rote.to + (request_rote.back ? request_rote.back : '');
     //params.route += this.inputFrom.suggest.curResult;
+    
+    
+    getStatistic(request_rote);
+    
+    // Запрос статистики
+    
     
     if(!params.ad) params.ad = 1;
         params.cs = ufilter.cabinClass;

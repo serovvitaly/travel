@@ -72,6 +72,9 @@ $(document).ready(function(){
 	//$.datepicker.setDefaults( $.datepicker.regional[ "ru" ] );
 	$( ".datepicker" ).datepicker({
         onSelect: function (date, inst) {
+            
+            var date_str = date;
+            
             if (date == 'NaN.NaN.NaN') {
                 return;
             }
@@ -83,13 +86,15 @@ $(document).ready(function(){
             var btn = $(tg).next('button');
             btn.children('h3').html(date[0]);
             btn.children('h4').html(months[date[1] * 1]);
-            
+            alert(date_str);
             switch (tg) {
                 case '#tw-from':
                     request_rote.there = date[0] + date[1];
+                    request_rote.there_str = date_str;
                     break;
                 case '#tw-to':
                     request_rote.back  = date[0] + date[1];
+                    request_rote.back_str = date_str;
                     break;
             }
             
