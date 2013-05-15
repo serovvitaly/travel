@@ -18,7 +18,10 @@ tw.PassengersForm = function(){
 		self.flight = event.flight;
 		self.params = self.flight.params;
 		self.fare = self.flight.fare;
-		self.flightInfo = event.flightInfo;
+        self.flightInfo = event.flightInfo;
+        
+		self.request = global_request;
+        
 		self.show();
 	});
 	$(document).on("changeRequest showResults emptyResults showSearchForm", function(){
@@ -517,9 +520,9 @@ tw.PassengersForm.prototype.setEnabled = function(){
 tw.PassengersForm.prototype.show = function(){
 	this.getDirections();
 	if(this.arrDirections.length == 1){
-		$('.tw-blockHeader', this.elLayout)[0].innerHTML = '<span class="tw-step">' + l10n.step + ' 2. </span>' + l10n.passengersForm_title;
+	//	$('.tw-blockHeader', this.elLayout)[0].innerHTML = '<span class="tw-step">' + l10n.step + ' 2. </span>' + l10n.passengersForm_title;
 	} else {
-		$('.tw-blockHeader', this.elLayout)[0].innerHTML = '<span class="tw-step">' + l10n.step + ' 3. </span>' + l10n.passengersForm_title;
+	//	$('.tw-blockHeader', this.elLayout)[0].innerHTML = '<span class="tw-step">' + l10n.step + ' 3. </span>' + l10n.passengersForm_title;
 	}
 	if (!tw.setup.module.passengersCount) {
 		if (!this.setPrices()) {

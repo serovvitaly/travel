@@ -54,6 +54,23 @@
     
     <script src="/js/twiket.js"></script>
     
+    <style>
+    .tw-invisible{
+        display: none;
+    }
+    article.ticket table td.ticPrice a{
+        display: block;
+        margin-left: -60px;
+        color: #F15A22;
+        text-decoration: none;
+    }
+    article.ticket.top table td.ticPrice a{
+        margin-left: -100px;
+    }
+    .tw-passCountry select{
+        width: 80px;
+    }
+    </style>
     
 </head>
 
@@ -64,8 +81,8 @@
  
   
 <script id="tmpl_PassengersForm" type="text/x-jquery-tmpl">
-        <div class="tw-blockHeader">${l10n.passengersForm_title}</div>
-        <form id="tw-passengersForm">
+        
+        <form id="tw-passengersForm" style="padding:20px">
             <div class="tw-passengersTable">
                 <table id="tw-passengersTable">
                     <col class="tw-gender"/>
@@ -107,24 +124,67 @@
         </form>
     </script>
 
+    <script id="tmpl_SelectedTripInfo" type="text/x-jquery-tmpl">
+        <div class="tw-selectedTrip" style="display: none" fi="${$data.FlightIndex}">
+            {{each(i) $data.TripIds[$item.dir]}}
+                <div class="rowItem">
+                    <table style="width:100%">
+                        <tr>
+                            <td class="tw-departure">${$data.html_tmpl.byTrips.StartTime[$item.dir][i]}</td>
+                            <td class="tw-journey">${$data.html_tmpl.byTrips.DurationJourneyTime[$item.dir][i]}</td>
+                            <td class="tw-arrival">${$data.html_tmpl.byTrips.EndTime[$item.dir][i]}</td>
+                            <td class="tw-ak" title="${$data.html_tmpl.byTrips.Airline[$item.dir][i]}">
+                                <div>
+                                    <img src="/twiket/img/ak/${$data.html_tmpl.byTrips.logo[$item.dir][i]}.png" alt=""/>
+                                    <div>${$data.html_tmpl.byTrips.Airline[$item.dir][i]}</div>
+                                </div>
+                            </td>
+                            <td class="tw-route" title="${$data.html_tmpl.byTrips.FlightInfoDirect[$item.dir][i]}">${$data.html_tmpl.byTrips.FlightInfoDirect[$item.dir][i]}</td>
+                            <td class="tw-colDate">${$data.html_tmpl.byTrips.StartDate[$item.dir][i]}</td>
+                        </tr>
+                        <tr class="tw-additional">
+                            <td colspan="3"></td>
+                            <td class="tw-subAK">
+                                <span title="${$data.html_tmpl.byTrips.Planes[$item.dir][i]}">${$data.html_tmpl.byTrips.Planes[$item.dir][i]}</span>
+                            </td>
+                            <td colspan="2">
+                                ${$data.html_tmpl.byTrips.FlightNumber[$item.dir][i]}
+                                {{if $data.EveryTripAK[$item.dir][i] != $data.opEveryTripAK[$item.dir][i]}}
+                                    ${', ' + l10n.operated} ${$data.html_tmpl.byTrips.operatedAirline[$item.dir][i]}
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{if $data.html_tmpl.byTrips.DurationStopTime[$item.dir][i]}}
+                            <tr>
+                                <td colspan="3"></td>
+                                <td colspan="3" class="tw-boardChange">${l10n.tooltip1 + ref.getCityName($data.html_tmpl.StopPoints[$item.dir][i]) + ' ' + $data.html_tmpl.byTrips.DurationStopTime[$item.dir][i]}</td>
+                            </tr>
+                        {{/if}}
+                    </table>
+                </div>
+            {{/each}}
+        </div>
+    </script>
+    
 <script id="tmpl_Ticket" type="text/x-jquery-tmpl">
-    <div class="tw-searchResult">
+    <div class="tw-searchResult" style="padding: 0 20px">
         {{each($i, $dir) $data.directions}}
             <table class="tw-routeHeaderLayout"><tr>
                 <td>
                     <div class="tw-routeHeader">
-                        <span class="tw-step">${l10n.step + ' ' + ($i + 1) + '. '}</span>
-                        ${$dir.from} &rarr; ${$dir.to}
-                        <span class="tw-date">${', ' + twiket.formatDate($dir.date, "d mmmm, dddd")}</span>
+                        <a href="#" onclick="returnToSearch(); return false;">Вернуться к полному списку</a>
+                        <h2>${$dir.from} &rarr; ${$dir.to}</h2>
+                        <h3 class="tw-date">${twiket.formatDate($dir.date, "d mmmm, dddd")}</h3>
                     </div>
                 </td>
-                <td><span class="tw-link tw-dashed tw-moreFlights">${l10n.moreFlights}</span></td>
+             <!--   <td><span class="tw-link tw-dashed tw-moreFlights">${l10n.moreFlights}</span></td>  -->
             </tr></table>
             {{tmpl(curFlight, {dir: $i}) "SelectedTripInfo"}}
             <div class="tw-visaInfo tw-invisible">{{html l10n.visaInfo}}</div>
         {{/each}}
     </div>
 </script>
+
 
 
 
@@ -260,7 +320,7 @@
             <tfoot>
               <tr>
                 <td class="ticMore td1"><a href="javascript:;">еще варианты</a></td>
-                <td class="ticPrice td2">${html_tmpl.Price}</td>
+                <td class="ticPrice td2"><a id="${TripIds[$item.dir]}-${TripIds}" fi="${FlightIndex}" href="#">${html_tmpl.Price}</a></td>
               </tr>
             </tfoot>
           </table>
@@ -323,7 +383,7 @@
             <tfoot>
               <tr>
                 <td class="ticMore td1"><a href="javascript:;">еще варианты</a></td>
-                <td class="ticPrice td2">${html_tmpl.Price}</td>
+                <td class="ticPrice td2"><a id="${TripIds[$item.dir]}-${TripIds}" fi="${FlightIndex}" href="#">${html_tmpl.Price}</a></td>
               </tr>
             </tfoot>
           </table>
@@ -405,7 +465,7 @@
             <tfoot>
               <tr>
                 <td class="ticMore td1"><a href="javascript:;">еще варианты</a></td>
-                <td class="ticPrice td2">230 $</td>
+                <td class="ticPrice td2"><a id="${TripIds[$item.dir]}-${TripIds}" fi="${FlightIndex}" href="#">${html_tmpl.Price}</a></td>
               </tr>
             </tfoot>
           </table>
@@ -603,7 +663,7 @@
       
 <!-- payment -->
     <script id="tmpl_Makeorder" type="text/x-jquery-tmpl">
-        <form id="paymentForm">
+        <form id="paymentForm" style="padding: 0 20px">
             <div class="tw-bayer">
                 <div class="tw-blockHeader"></div>
                 <div class="tw-blockComment">${l10n.buyerComment}</div>
@@ -661,10 +721,7 @@
                     <input type="checkbox" autocomplete="off" name="${$data.name}_flag" id="tw-input_${$data.name}_flag" value="true" checked="checked"/>
                 </div>
             {{/if}}
-            <input type="{{if $data.inputType}}${$data.inputType}{{else}}text{{/if}}" autocomplete="${$data.autocomplete}" name="${$data.name}" id="tw-input_${$data.name}" value="${$data.value}" maxlength="${$data.maxlength}"/>
-            {{if $data.placeholder}}
-                <input type="text" autocomplete="off" readonly="readonly" class="tw-placeholder" value="${$data.placeholder}" tabindex="-1"/>
-            {{/if}}
+            <input style="width: 120px;" {{if $data.placeholder}}placeholder="${$data.placeholder}"{{/if}} type="{{if $data.inputType}}${$data.inputType}{{else}}text{{/if}}" autocomplete="${$data.autocomplete}" name="${$data.name}" id="tw-input_${$data.name}" value="${$data.value}" maxlength="${$data.maxlength}"/>
         </div>
     </script>
     <script id="tmpl_Card" type="text/x-jquery-tmpl">
@@ -1432,7 +1489,7 @@
                 </div>
               </div>
 
-              <div class="control-group">
+              <div class="control-group" style="display: none;">
                 <div class="controls-row">
                   <label class="radio inline">
                     <input type="radio" name="rad2" checked> из любого аэропорта
@@ -1468,7 +1525,7 @@
                 </div>
               </div>
 
-              <div class="control-group">
+              <div class="control-group" style="display: none;">
                 <div class="controls-row">
                   <label class="radio inline">
                     <input type="radio" name="arr_rad2" checked> из любого аэропорта
@@ -1514,26 +1571,14 @@
                 </div>
               </div>
 
-              <div class="control-group">
+              <div class="control-group" style="display: none;">
                 <div class="controls-row">
                   <label class="radio inline">
                     <input type="radio" name="rad6" checked> из любого аэропорта
                   </label>
                 </div>
                 
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad6"> Шереметьево
-                  </label>
-                  <span class="cost radio inline">300 $</span>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad6"> Домодедово
-                  </label>
-                  <span class="cost radio inline">260 $</span>
-                </div>
+                <div id="to_dep_airports_list"></div>
               </div>
 
             </form>
@@ -1561,26 +1606,14 @@
                 </div>
               </div>
 
-              <div class="control-group">
+              <div class="control-group" style="display: none;">
                 <div class="controls-row">
                   <label class="radio inline">
                     <input type="radio" name="rad6" checked> из любого аэропорта
                   </label>
                 </div>
                 
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad6"> Шереметьево
-                  </label>
-                  <span class="cost radio inline">300 $</span>
-                </div>
-
-                <div class="controls-row">
-                  <label class="radio inline">
-                    <input type="radio" name="rad6"> Домодедово
-                  </label>
-                  <span class="cost radio inline">260 $</span>
-                </div>
+                <div id="to_arr_airports_list"></div>
               </div>
 
             </form>
@@ -1676,9 +1709,14 @@
       <div class="span10 tickets">
       
         <div style="display: none;" id="tw-layout_search" class="tw-invisible"></div>
-        <div style="display: none;" id="tw-layout_passengersForm" class="tw-invisible"></div>
-        <div style="display: none;" id="tw-layout_payment" class="tw-invisible"></div>
-      
+        
+        <div id="tw-layout_ticket" class="tw-invisible"></div>
+        <div id="tw-layout_passengersForm" class="tw-invisible"></div>
+        <div id="tw-layout_loader" class="tw-invisible"></div>
+        <div id="tw-layout_payment" class="tw-invisible"></div>
+        
+        
+        <div id="tickets-box">
         <article class="ticket top most-quick">
           <h2>САМЫЙ БЫСТРЫЙ БИЛЕТ</h2>
           <div class="conter"></div>
@@ -1691,7 +1729,8 @@
           
         <h2 class="moreVariants">Еще варианты</h2> 
 
-        <div id="tw-layout_result" class="tw-invisible"></div>
+        <div id="tw-layout_result"></div>
+        </div>
         
      <!--  <button class="btn btn-danger ticMore">загрузить еще</button>  -->
       </div>  <!-- /tickets -->

@@ -1,5 +1,7 @@
 
 
+var global_request = {};
+
 var searchResult = [];
 var uf_departure_times = null;
 
@@ -56,11 +58,22 @@ function renderResult(filter){
 }
 
 
+function returnToSearch(){
+    
+    $('#tw-layout_ticket ,#tw-layout_passengersForm ,#tw-layout_loader ,#tw-layout_payment').addClass('tw-invisible');
+    
+    $('#tw-layout_result').removeClass('tw-invisible');
+    $('#tickets-box').fadeIn();
+}
+
+
 /**
 * Осуществляет поиск авиабилетов 
 */
 function searchBegin(filter){
    
+    $('#tickets-box').fadeIn();
+    
     if ($('#flightType1').hasClass('active')) {
         search_mode = 1;
     }
@@ -124,6 +137,9 @@ function searchBegin(filter){
         params.cs = ufilter.cabinClass;
         params.source = twiket.setup.source;
         params.srcmarker = twiket.setup.marker;
+    
+    global_request = params;
+    
     MakeRequest();
     function MakeRequest(){
         $.ajax({
