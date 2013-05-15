@@ -1,0 +1,61 @@
+//
+// Responsive: Tablet to desktop
+// --------------------------------------------------
+
+
+@media (min-width: 768px) and (max-width: 979px) {
+
+	.img-polaroid{padding:5px;}
+
+	header{
+		.head-info{
+			padding-top:10px;
+			.lead {
+				font-size: 1em;
+				line-height:1.2em;
+			}
+			.phone {
+				font-size: 1.5em;
+			}
+		}
+	}
+
+	.banner .well {
+		height:130px;
+		h1{
+			font-size: 1.1em;
+			margin-bottom: 5px;
+		}
+		p {
+			font-size:0.8em;
+			margin-bottom:5px;
+		}
+		.caption a{
+			font-size: 1.5em;
+		}
+	}
+
+	footer{
+		p{
+			font-size: 0.9em;
+		}
+		.foot-counter{
+			img{
+				width:70px;
+				margin:3px 0;
+			}
+		}
+	}
+
+  // Fixed grid
+  #grid > .core(@gridColumnWidth768, @gridGutterWidth768);
+
+  // Fluid grid
+  #grid > .fluid(@fluidGridColumnWidth768, @fluidGridGutterWidth768);
+
+  // Input grid
+  #grid > .input(@gridColumnWidth768, @gridGutterWidth768);
+
+  // No need to reset .thumbnails here since it's the same @gridGutterWidth
+
+}

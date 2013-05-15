@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<title>Travel Online</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <link rel="stylesheet" type="text/css" href="/good/css/sliderkit-core.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="/good/css/sliderkit-demos.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="/good/css/sliderkit-demos-ie8.css" rel="stylesheet"/>
+  <link href="/good/css/bootstrap.css" rel="stylesheet">  
+  <link href="/good/css/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
+  <!-- <link href="./css/responsive.css" rel="stylesheet"> -->
+  <link href="/good/css/browser-hack.css" rel="stylesheet">
+
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    
+    <link rel="stylesheet" href="/twiket/css/common.css"/>
+    <link rel="stylesheet" href="/twiket/css/searchForm.css"/>
+    <link rel="stylesheet" href="/twiket/css/statistics.css"/>
+    <link rel="stylesheet" href="/twiket/css/results.css"/>
+    <link rel="stylesheet" href="/twiket/css/orderForm.css"/>
+    <link rel="stylesheet" href="/twiket/css/card.css"/>
+    <link rel="stylesheet" href="/twiket/css/custom.css"/>
+    
+    
+    <script src="/twiket/js/jquery-1.8.3.min.js"></script>
+    <script src="/twiket/js/jquery.tmpl.js"></script>
+    <script src="/twiket/js/jquery.maskedinput.js"></script>
+    <script src="/twiket/setup.js"></script>
+    <script src="/twiket/js/common.js"></script>
+    <script src="/twiket/js/references.js"></script>
+    <script src="/twiket/l10n/ru/refData.js"></script>
+    <script src="/twiket/l10n/ru/l10n.js"></script>
+    <script src="/twiket/l10n/ru/baggage.js"></script>
+    <script src="/twiket/js/referencesLibs.js"></script>
+    <script src="/twiket/js/date.js"></script>
+    <script src="/twiket/js/field.js"></script>
+    <script src="/twiket/js/card.js"></script>
+    <script src="/twiket/js/searchForm.js"></script>
+    <script src="/twiket/js/statistics.js"></script>
+    <script src="/twiket/js/results.js"></script>
+    <script src="/twiket/js/farerules.js"></script>
+    <script src="/twiket/js/orderForm.js"></script>
+    <script src="/twiket/js/encrypt.js"></script>
+    <script src="/twiket/js/events.js"></script>
+    
+    
+    <script src="/js/twiket.js"></script>
+    
+    
+</head>
+
+
+<body>
+
+<div id="twiket" class="twiket" style="display: none;">
+ 
+  
+<script id="tmpl_PassengersForm" type="text/x-jquery-tmpl">
+        <div class="tw-blockHeader">${l10n.passengersForm_title}</div>
+        <form id="tw-passengersForm">
+            <div class="tw-passengersTable">
+                <table id="tw-passengersTable">
+                    <col class="tw-gender"/>
+                    <col class="tw-lastName"/>
+                    <col class="tw-firstName"/>
+                    <col class="tw-birthDate"/>
+                    <col class="tw-passCountry"/>
+                    <col class="tw-passNumber"/>
+                    <col class="tw-delete"/>
+                    <thead>
+                        <tr>
+                            <th>${l10n.passengersForm_labels_gender}</th>
+                            <th>${l10n.passengersForm_labels_lastName}</th>
+                            <th>${l10n.passengersForm_labels_firstName}</th>
+                            <th>${l10n.passengersForm_labels_birthDate}</th>
+                            <th>${l10n.passengersForm_labels_passCountry}</th>
+                            <th>${l10n.passengersForm_labels_passNumber}</th>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td>+</td>
+                            <td colspan="5">
+                                <div class="tw-addRow">
+                                    <button type="button" name="addADT">${l10n.passengersForm_add_adt} <span></span></button>
+                                    <span class="tw-child">${l10n.passengersForm_add_child}</span>
+                                    <button type="button" name="addCNN">${l10n.passengersForm_add_cnn} <span></span></button>
+                                    <button type="button" name="addINF">${l10n.passengersForm_add_inf} <span></span></button>
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <button type="submit">${l10n.passengersForm_submit}</button>
+        </form>
+    </script>
+
+<script id="tmpl_Ticket" type="text/x-jquery-tmpl">
+    <div class="tw-searchResult">
+        {{each($i, $dir) $data.directions}}
+            <table class="tw-routeHeaderLayout"><tr>
+                <td>
+                    <div class="tw-routeHeader">
+                        <span class="tw-step">${l10n.step + ' ' + ($i + 1) + '. '}</span>
+                        ${$dir.from} &rarr; ${$dir.to}
+                        <span class="tw-date">${', ' + twiket.formatDate($dir.date, "d mmmm, dddd")}</span>
+                    </div>
+                </td>
+                <td><span class="tw-link tw-dashed tw-moreFlights">${l10n.moreFlights}</span></td>
+            </tr></table>
+            {{tmpl(curFlight, {dir: $i}) "SelectedTripInfo"}}
+            <div class="tw-visaInfo tw-invisible">{{html l10n.visaInfo}}</div>
+        {{/each}}
+    </div>
+</script>
+
+
+
+      <script id="tmpl_layoutResult" type="text/x-jquery-tmpl">
+        <div class="tw-searchResult">
+            <div class="tw-routeHeader">
+                <span class="tw-step">${l10n.step + ' ' + (dirNumber + 1) + '. '}</span>
+                ${directions[dirNumber].from} &rarr; ${directions[dirNumber].to}
+                <span class="tw-date">${', ' + twiket.formatDate(directions[dirNumber].date, "d mmmm, dddd")}</span>
+            </div>
+            <div class="tw-routeBody">
+                <div class="tw-chooseHint">
+                    {{if dirNumber == 0}}
+                        ${l10n.chooseHintThere}
+                    {{else}}
+                        ${l10n.chooseHintBack}
+                    {{/if}}
+                </div>
+                <div class="tw-head">
+                    <table>
+                        <tr>
+                            <td class="tw-departure"><span st="departure">${l10n.resultsTable_takeoff}</span></td>
+                            <td class="tw-journey"><span st="journey">${l10n.resultsTable_duration}</span></td>
+                            <td class="tw-arrival"><span st="arrival">${l10n.resultsTable_arrival}</span></td>
+                            <td class="tw-ak"><span st="ak">${l10n.resultsTable_airline}</span></td>
+                            <td class="tw-route"><span st="route">${l10n.resultsTable_route}</span></td>
+                            <td class="tw-price"><span st="price">
+                                {{if directions.length == 2}}
+                                    ${l10n.resultsTable_priceRound}
+                                {{else}}
+                                    ${l10n.resultsTable_price}
+                                {{/if}}
+                            </span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="dataFlights"></div>
+            </div>
+        </div>
+    </script>
+ 
+      
+      <script id="tmpl_Search" type="text/x-jquery-tmpl">
+        <form id="tw-searchForm">
+            <div id="tw-routeDateForm" class="tw-formBlock">
+                <table class="tw-searchTable">
+                    <col class="tw-label1"/><col class="tw-field1"/><col class="tw-label2"/><col/>
+                    <tr>
+                        <td class="tw-label1">
+                            <label for="tw-from">${l10n.from}</label>
+                        </td>
+                        <td class="tw-field1">
+                            <div class="tw-field">
+                                <input type="text" autocomplete="off" id="tw-from-"/>
+                                <input type="text" autocomplete="off" readonly="readonly" class="tw-placeholder" value="${l10n.from}" tabindex="-1"/>
+                            </div>
+                        </td>
+                        <td class="tw-label2">
+                            <label for="tw-to">${l10n.to}</label>
+                        </td>
+                        <td class="tw-field2">
+                            <div class="tw-field">
+                                <input type="text" autocomplete="off" id="tw-to-"/>
+                                <input type="text" autocomplete="off" readonly="readonly" class="tw-placeholder" value="${l10n.to}" tabindex="-1"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tw-label1">
+                            <label for="tw-depart">${l10n.depart}</label>
+                        </td>
+                        <td class="tw-field1">
+                            <div class="tw-field">
+                                <input type="text" autocomplete="off" readonly="readonly" id="tw-depart" name="depart"/>
+                                <div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+                            </div>
+                        </td>
+                        <td class="tw-label2">
+                            <div id="tw-fType" class="tw-button" tabindex="0">${l10n.returnDate}</div>
+                        </td>
+                        <td class="tw-field2">
+                            <div class="tw-field">
+                                <input type="text" autocomplete="off" readonly="readonly" id="tw-return" name="return"/>
+                                <div class="tw-prevNext"><div class="tw-prev"></div><div class="tw-next"></div></div>
+                                <div class="tw-fieldFade tw-invisible"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="text-align: right;">
+                <button type="submit" class="tw-invisible">${l10n.startSearch} <span></span></button>
+            </div>
+        </form>
+    </script>
+      
+      
+      <script id="tmpl_singleTrip_top_1" type="text/x-jquery-tmpl">
+          <table class="table">
+            <thead>
+              <tr>
+                <td class="ticCompany td1">${html_tmpl.byTrips.Airline[0][0]}</td>
+                <td class="ticLogo td2"><img src="/twiket/img/ak/${html_tmpl.byTrips.logo[$item.dir][0]}.png" alt=""></td>
+              </tr>
+              <tr>
+                <td class="ticRating td1">
+                  <div class="star_big">
+                    <div class="star_big-ok"></div>
+                  </div>
+                </td>
+                <td class="td2"></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ticDate td1">Туда, ${html_tmpl.StartDateMy[0]}</td>
+                <td class="td2"></td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>${html_tmpl.StartTime[0]}</b> - ${html_tmpl.EndTime[0]} (${html_tmpl.EndDateMy[0]})</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">{{html html_tmpl.byTrips.html_route[0]}}</a></td>
+                <td class="ticTimeThrow td2">${html_tmpl.StartTimeMy[0]}</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">${html_tmpl.TransferTitle[0]}</td>
+                <td class="ticTimeFull td2">${html_tmpl.EndTimeMy[0]}</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td class="ticMore td1"><a href="javascript:;">еще варианты</a></td>
+                <td class="ticPrice td2">${html_tmpl.Price}</td>
+              </tr>
+            </tfoot>
+          </table>
+      </script>
+      
+      <script id="tmpl_singleTrip_top_2" type="text/x-jquery-tmpl">
+          <table class="table">
+            <thead>
+              <tr>
+                <td class="ticCompany td1">${html_tmpl.byTrips.Airline[0][0]}</td>
+                <td class="ticLogo td2"><img src="/twiket/img/ak/${html_tmpl.byTrips.logo[$item.dir][0]}.png" alt=""></td>
+              </tr>
+              <tr>
+                <td class="ticRating td1">
+                  <div class="star_big">
+                    <div class="star_big-ok"></div>
+                  </div>
+                </td>
+                <td class="td2"></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ticDate td1">Туда, ${html_tmpl.StartDateMy[0]}</td>
+                <td class="td2"></td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>${html_tmpl.StartTime[0]}</b> - ${html_tmpl.EndTime[0]} (${html_tmpl.EndDateMy[0]})</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">{{html html_tmpl.byTrips.html_route[0]}}</a></td>
+                <td class="ticTimeThrow td2">${html_tmpl.StartTimeMy[0]}</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">${html_tmpl.TransferTitle[0]}</td>
+                <td class="ticTimeFull td2">${html_tmpl.EndTimeMy[0]}</td>
+              </tr>
+            </tbody>
+
+            <tbody>
+              <tr>
+                <td class="ticDate td1">Обратно, ${html_tmpl.StartDateMy[1]}</td>
+                <td class="td2"></td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>${html_tmpl.StartTime[1]}</b> - ${html_tmpl.EndTime[1]} (${html_tmpl.EndDateMy[1]})</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">{{html html_tmpl.byTrips.html_route[1]}}</a></td>
+                <td class="ticTimeThrow td2">${html_tmpl.StartTimeMy[1]}</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">${html_tmpl.TransferTitle[1]}</td>
+                <td class="ticTimeFull td2">${html_tmpl.EndTimeMy[1]}</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td class="ticMore td1"><a href="javascript:;">еще варианты</a></td>
+                <td class="ticPrice td2">${html_tmpl.Price}</td>
+              </tr>
+            </tfoot>
+          </table>
+      </script>
+      
+      <script id="tmpl_singleTrip_top_3" type="text/x-jquery-tmpl">
+          <table class="table">
+            <thead>
+              <tr>
+                <td class="ticCompany td1">El Al Israel Airlines</td>
+                <td class="ticLogo td2"><img src="/good/i/ticLogo.jpg" alt=""></td>
+              </tr>
+              <tr>
+                <td class="ticRating td1">
+                  <div class="star_big">
+                    <div class="star_big-ok"></div>
+                  </div>
+                </td>
+                <td class="td2"></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ticDate td1">Туда, 13 февраля, Суббота</td>
+                <td class="td2"></td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>22:50</b> - 11:20 (20 фев)</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">через Лондон</a></td>
+                <td class="ticTimeThrow td2">12 ч 10 мин</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">из Домодедово - в Гатвик</td>
+                <td class="ticTimeFull td2">16 ч 30 мин</td>
+              </tr>
+            </tbody>
+
+            <tbody>
+              <tr>
+                <td class="ticDate td1">Обратно, 27 февраля, Пятница</td>
+                <td class="td2"></td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>12:30</b> - 9:50 (29 фев)</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">через Лондон</a></td>
+                <td class="ticTimeThrow td2">12 ч 10 мин</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">из Домодедово - в Гатвик</td>
+                <td class="ticTimeFull td2">16 ч 30 мин</td>
+              </tr>
+            </tbody>
+
+            <tbody>
+              <tr>
+                <td class="ticDate td1">Туда, 13 февраля, Суббота</td>
+                <td class="td2"></td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>22:50</b> - 11:20 (20 фев)</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">через Лондон</a></td>
+                <td class="ticTimeThrow td2">12 ч 10 мин</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">из Домодедово - в Гатвик</td>
+                <td class="ticTimeFull td2">16 ч 30 мин</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td class="ticMore td1"><a href="javascript:;">еще варианты</a></td>
+                <td class="ticPrice td2">230 $</td>
+              </tr>
+            </tfoot>
+          </table>
+      </script>
+      
+      
+  
+      <script id="tmpl_singleTrip_1" type="text/x-jquery-tmpl">
+        <article class="ticket small">
+          <table class="table">
+            <thead>
+              <tr>
+                <td colspan="2" class="ticCompany td1">${html_tmpl.byTrips.Airline[0][0]}</td>
+              </tr>
+              <tr>
+                <td class="ticRating td1">
+                  <div class="star_big">
+                    <div class="star_big-ok"></div>
+                  </div>
+                </td>
+                <td class="td2"></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2" class="ticDate td1">Туда, ${html_tmpl.StartDateMy[0]}</td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>${html_tmpl.StartTime[0]}</b> - ${html_tmpl.EndTime[0]} (${html_tmpl.EndDateMy[0]})</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">{{html html_tmpl.byTrips.html_route[0]}}</a></td>
+                <td class="ticTimeThrow td2">${html_tmpl.StartTimeMy[0]}</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">${html_tmpl.TransferTitle[0]}</td>
+                <td class="ticTimeFull td2">${html_tmpl.EndTimeMy[0]}</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td class="ticMore td1"><a href="javascript:;">еще варианты</a></td>
+                <td class="ticPrice td2"><a id="${TripIds[$item.dir]}-${TripIds}" fi="${FlightIndex}" href="#">${html_tmpl.Price}</a></td>
+              </tr>
+            </tfoot>
+          </table>
+        </article>
+      </script>
+  
+      <script id="tmpl_singleTrip_2" type="text/x-jquery-tmpl">
+        <article class="ticket small">
+          <table class="table">
+            <thead>
+              <tr>
+                <td colspan="2" class="ticCompany td1">${html_tmpl.byTrips.Airline[0][0]}</td>
+              </tr>
+              <tr>
+                <td class="ticRating td1">
+                  <div class="star_big">
+                    <div class="star_big-ok"></div>
+                  </div>
+                </td>
+                <td class="td2"></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2" class="ticDate td1">Туда, ${html_tmpl.StartDateMy[0]}</td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>${html_tmpl.StartTime[0]}</b> - ${html_tmpl.EndTime[0]} (${html_tmpl.EndDateMy[0]})</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">{{html html_tmpl.byTrips.html_route[0]}}</a></td>
+                <td class="ticTimeThrow td2">${html_tmpl.StartTimeMy[0]}</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">${html_tmpl.TransferTitle[0]}</td>
+                <td class="ticTimeFull td2">${html_tmpl.EndTimeMy[0]}</td>
+              </tr>
+            </tbody>
+
+            <tbody>
+              <tr>
+                <td colspan="2" class="ticDate td1">Обратно, ${html_tmpl.StartDateMy[1]}</td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>${html_tmpl.StartTime[1]}</b> - ${html_tmpl.EndTime[1]} (${html_tmpl.EndDateMy[1]})</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">{{html html_tmpl.byTrips.html_route[1]}}</a></td>
+                <td class="ticTimeThrow td2">${html_tmpl.StartTimeMy[1]}</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">${html_tmpl.TransferTitle[1]}</td>
+                <td class="ticTimeFull td2">${html_tmpl.EndTimeMy[1]}</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td class="ticMore td1"><a href="javascript:;">еще варианты</a></td>
+                <td class="ticPrice td2"><a id="${TripIds[$item.dir]}-${TripIds}" fi="${FlightIndex}" href="#">${html_tmpl.Price}</a></td>
+              </tr>
+            </tfoot>
+          </table>
+        </article>
+      </script>
+  
+      <script id="tmpl_singleTrip_3" type="text/x-jquery-tmpl">
+        <article class="ticket small">
+          <table class="table">
+            <thead>
+              <tr>
+                <td colspan="2" class="ticCompany td1">El Al Israel Airlines</td>
+              </tr>
+              <tr>
+                <td class="ticRating td1">
+                  <div class="star_big">
+                    <div class="star_big-ok"></div>
+                  </div>
+                </td>
+                <td class="td2"></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2" class="ticDate td1">Туда, 13 февраля, Суббота</td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>22:50</b> - 11:20 (20 фев)</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">через Лондон</a></td>
+                <td class="ticTimeThrow td2">12 ч 10 мин</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">из Домодедово - в Гатвик</td>
+                <td class="ticTimeFull td2">16 ч 30 мин</td>
+              </tr>
+            </tbody>
+
+            <tbody>
+              <tr>
+                <td colspan="2" class="ticDate td1">Обратно, 27 февраля, Пятница</td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>12:30</b> - 9:50 (29 фев)</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">через Лондон</a></td>
+                <td class="ticTimeThrow td2">12 ч 10 мин</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">из Домодедово - в Гатвик</td>
+                <td class="ticTimeFull td2">16 ч 30 мин</td>
+              </tr>
+            </tbody>
+            
+            <tbody>
+              <tr>
+                <td colspan="2" class="ticDate td1">Обратно, 27 февраля, Пятница</td>
+              </tr>
+              <tr>
+                <td class="ticTime td1"><b>12:30</b> - 9:50 (29 фев)</td>
+                <td class="ticSeat td2">мест 1</td>
+              </tr>
+              <tr>
+                <td class="ticThrow td1"><a href="javascript:;">через Лондон</a></td>
+                <td class="ticTimeThrow td2">12 ч 10 мин</td>
+              </tr>
+              <tr>
+                <td class="ticTrip td1">из Домодедово - в Гатвик</td>
+                <td class="ticTimeFull td2">16 ч 30 мин</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td class="ticMore td1"><a href="javascript:;">еще варианты</a></td>
+                <td class="ticPrice td2">230 $</td>
+              </tr>
+            </tfoot>
+          </table>
+        </article>
+      </script>
+      
+      
+      
+<!-- payment -->
+    <script id="tmpl_Makeorder" type="text/x-jquery-tmpl">
+        <form id="paymentForm">
+            <div class="tw-bayer">
+                <div class="tw-blockHeader"></div>
+                <div class="tw-blockComment">${l10n.buyerComment}</div>
+                <div class="tw-phone">
+                    <label for="tw-input_phone">${l10n.phone}</label>
+                    <span>+</span>
+                </div>
+                <div class="tw-email">
+                    <label for="tw-input_email">${l10n.email}</label>
+                </div>
+            </div>
+            <div id="tw-paymentTitle" class="tw-blockHeader"></div>
+            <ul class="tw-pmtVrnts"></ul>
+            <table class="paymentTable">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <th>${l10n.payment_tableHead_base}</th>
+                        <td></td>
+                        <th>${l10n.payment_tableHead_taxe}</th>
+                        <td class="markup"></td>
+                        <th class="markup">${l10n.payment_tableHead_markup}</th>
+                        <td class="discount"></td>
+                        <th class="discount">${l10n.payment_tableHead_discount}</th>
+                        <td></td>
+                        <th>${l10n.payment_tableHead_amount}</th>
+                        <th class="fareRules">${l10n.payment_tableHead_rules}</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="tw-amount"></div>
+            <div class="transactions"></div>
+            <div class="tw-paymentNote">
+                <div class="tw-attentionTitle">${l10n.warning}</div>
+                <div class="tw-attentionText"></div>
+            </div>
+            <div class="tw-agreements">
+                <div class="tw-blockHeader">${l10n.agreements_title}</div>
+                <div class="tw-agreementsBody">{{html l10n.agreements_HTML}}</div>
+                <label>
+                    <input type="checkbox" name="agreements">${' ' + l10n.agreements_label}
+                </label>
+            </div>
+            <div class="tw-paySubmitRow">
+                <div id="tw-posPassword" class="tw-invisible"></div>
+                <button type="submit">${l10n.payment_pay}</button>
+            </div>
+        </form>
+    </script>
+    <script id="tmpl_Field" type="text/x-jquery-tmpl">
+        <div class="tw-field{{if $data.checkbox}} tw-checkbox{{/if}}">
+            {{if $data.checkbox}}
+                <div class="tw-checkbox">
+                    <input type="checkbox" autocomplete="off" name="${$data.name}_flag" id="tw-input_${$data.name}_flag" value="true" checked="checked"/>
+                </div>
+            {{/if}}
+            <input type="{{if $data.inputType}}${$data.inputType}{{else}}text{{/if}}" autocomplete="${$data.autocomplete}" name="${$data.name}" id="tw-input_${$data.name}" value="${$data.value}" maxlength="${$data.maxlength}"/>
+            {{if $data.placeholder}}
+                <input type="text" autocomplete="off" readonly="readonly" class="tw-placeholder" value="${$data.placeholder}" tabindex="-1"/>
+            {{/if}}
+        </div>
+    </script>
+    <script id="tmpl_Card" type="text/x-jquery-tmpl">
+        <div class="tw-creditCardBlock">
+            <div class="tw-SSLinfo">{{html l10n.SSLinfo}}</div>
+            <div class="tw-creditCard tw-avers">
+                <div class="tw-visa"></div>
+                <div class="tw-masterCard"></div>
+                <div class="tw-cardNumber">
+                    <label for="tw-input_number1">Card number</label>
+                    <table><tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr></table>
+                </div>
+                <div class="tw-expDate">
+                    <table>
+                        <tr>
+                            <td class="tw-expMonthLabel"><label for="tw-input_expMonth">Month</label></td>
+                            <td class="tw-expYearLabel"><label for="tw-input_expYear">Year</label></td>
+                        </tr>
+                        <tr>
+                            <td class="tw-expMonth">
+                                <label for="tw-input_expMonth">Valid<br />thru</label>
+                            </td>
+                        <td class="tw-expYear"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tw-holderName">
+                    <label for="tw-input_holderName">Card holder${l10n.cardHolder}</label>
+                </div>
+            </div>
+            <div class="tw-creditCard tw-reverse">
+                <div class="tw-cvv">
+                    <label for="tw-input_cvv">CVV/CVC</label>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="tmpl_cardAuthorization" type="text/x-jquery-tmpl">
+        <div class="tw-title">${l10n.cardAuth_cardCheck}</div>
+        <div class="tw-note">{{html l10n.cardAuth_html_cardCheckComment}}</div>
+        <div class="tw-titleCheckCode">${l10n.cardAuth_cvv}</div>
+        <table style="margin: 2px 0;"><tr>
+            <td>
+                <form>
+                    <div class="tw-code"></div>
+                    <button type="submit">${l10n.cardAuth_confirm}</button>
+                </form>
+            </td>
+            <td class="tw-error">
+                <div class="tw-invisible">${l10n.cardAuth_errorCode}</div>
+            </td>
+        </tr></table>
+        <div class="tw-note">${l10n.cardAuth_noteCode}</div>
+        <table style="margin: 1em 0; width: 100%;">
+            <tr>
+                <td>
+                    <div class="tw-picTitle">${l10n.cardAuth_titleSms}</div>
+                    <div class="tw-pic tw-phone"></div>
+                    <div class="tw-note">${l10n.cardAuth_noteSms}</div>
+                </td>
+                <td>
+                    <div class="tw-picTitle">${l10n.cardAuth_titleBank}</div>
+                    <div class="tw-pic tw-ebank"></div>
+                    <div class="tw-note">${l10n.cardAuth_noteBank}</div>
+                </td>
+                <td>
+                    <div class="tw-picTitle">${l10n.cardAuth_titleCard}</div>
+                    <div class="tw-pic tw-card"></div>
+                    <div class="tw-note">${l10n.cardAuth_noteCard}</div>
+                </td>
+            </tr>
+        </table>
+        <div class="tw-note"><span class="tw-warn">${l10n.cardAuth_warnCode}</span></div>
+        <div class="tw-buttons">
+            <button type="button" onclick="twiket.removePopup()">${l10n.cardAuth_close}</button>
+        </div>
+    </script>
+    <script id="tmpl_Popup" type="text/x-jquery-tmpl">
+        <div class="twiket tw-popup {{if $data.error}}tw-popupError{{/if}} ${$data.className}" {{if $data.id}}id="${$data.id}"{{/if}}>
+            {{if $data.close_button}}
+                <div class="tw-popupClose">×</div>
+            {{/if}}
+            {{if $data.error}}
+                <div class="tw-sadsmile">:’-(</div>
+            {{/if}}
+            {{if $data.reason}}
+                <div class="tw-title">${reason}</div>
+            {{/if}}
+            {{if $data.comment}}
+                <div class="tw-body">{{html comment}}</div>
+            {{/if}}
+            {{if $data.button}}
+                <div class="tw-buttons">
+                    <button type="button" {{if $data.actionButton}}onclick="${$data.actionButton}"{{/if}}>${button}</button>
+                </div>
+            {{/if}}
+        </div>
+    </script>
+    <script id="tmpl_cancelPrereservationPopup" type="text/x-jquery-tmpl">
+        <div class="tw-title">${l10n.warning}</div>
+        <div class="tw-body">
+            <p>${l10n.popup_cancelPrereservation}</p>
+            <ul>
+                {{each(i,pas) reservedPas}}
+                    <li class="tw-bold">${pas}</li>
+                {{/each}}
+            </ul>
+            <p>${l10n.popup_noSeats}</p>
+        </div>
+        <div class="tw-buttons">
+            <button type="button" id="notAgree">${l10n.popup_chooseAnotherVariant}</button>
+        </div>
+    </script>
+    <script id="tmpl_PriceChangedPopup" type="text/x-jquery-tmpl">
+        <div class="tw-title">${l10n.warning}</div>
+        <div class="tw-body">
+            ${l10n.popup_oldPrice} <b>${oldPrice}</b>.<br/>
+            ${l10n.popup_newPrice} <b>${newPrice}</b>.
+        </div>
+        <div class="tw-buttons">
+            <button type="button" id="continueMaking">${l10n.popup_agree}</button>
+            <button type="button" id="notAgree">${l10n.popup_chooseAnotherVariant}</button>
+        </div>
+    </script>
+    <script id="tmpl_CancelReservation" type="text/x-jquery-tmpl">
+        <div class="tw-title">${l10n.warning}</div>
+        <div class="tw-body">
+            <p>${l10n.cancelReservation_comment}</p>
+            <ul>
+                {{each(i,res) reservations}}
+                    {{each(j, pas) res.passengers}}
+                        <li>
+                            ${pas.lastName} ${pas.firstName}
+                        </li>
+                    {{/each}}
+                {{/each}}
+            </ul>
+        </div>
+        {{if !$data.hideOptions}}
+            <div class="tw-buttons">
+                <button type="button" id="notAgree" onclick="twiket.removePopup();">${l10n.continueOrder}</button>
+                <button type="button" id="continueMaking">${l10n.popup_agree}</button>
+            </div>
+        {{/if}}
+    </script>
+      
+</div>
+
+
+
+  <div class="h-popupSide">
+  <!-- popupSideHelp -->
+    <div class="popupSide text-center" id="popupSideHelp">
+      <a href="javascript:;" class="popupSideBtn"><img src="/good/i/popupSideHelp-btn.png" alt="Помощь"></a>
+      <button type="button" class="close">×</button>
+      <h3>Выберите раздел в котором Вам нужна помощь</h3>
+      <table class="popupSideTable">
+        <tr>
+          <th><a href="javascript:;"><img src="/good/i/popupSideHelpFly.png" alt=""></a></th>
+          <th><a href="javascript:;"><img src="/good/i/popupSideHelpHotel.png" alt=""></a></th>
+          <th><a href="javascript:;"><img src="/good/i/popupSideHelpTour.png" alt=""></a></th>
+          <th><a href="javascript:;"><img src="/good/i/popupSideHelpTrip.png" alt=""></a></th>
+          <th><a href="javascript:;"><img src="/good/i/popupSideHelpCruise.png" alt=""></a></th>
+          <th><a href="javascript:;"><img src="/good/i/popupSideHelpRent.png" alt=""></a></th>
+        </tr>
+        <tr>
+          <td><a href="javascript:;">АВИАБИЛЕТЫ</a></td>
+          <td><a href="javascript:;">ОТЕЛИ</a></td>
+          <td><a href="javascript:;">ТУРЫ</a></td>
+          <td><a href="javascript:;">ПУТЕШЕСТВИЯ</a></td>
+          <td><a href="javascript:;">КРУИЗЫ</a></td>
+          <td><a href="javascript:;">АРЕНДА НЕДВИЖИМОСТИ</a></td>
+        </tr>
+      </table>
+      <a href="mailto:hello@travelonline.ru" class="popupEmail">hello@travelonline.ru</a>
+      <span class="popupPhone">тел: +7 926 426 68 55</span>
+    </div>  <!-- /popupSideHelp -->
+  <!-- /popupSideHelp -->
+  </div>
+
+
+<!-- modalEnter -->
+  <div class="modal hide" id="modalEnter" tabindex="-1" role="dialog" aria-labelledby="modalEnter" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <div class="modal-body">
+      <a class="ent" href="javascript:;"><img src="/good/i/modalEnter1.png" alt=""></a>
+      <a class="ent" href="javascript:;"><img src="/good/i/modalEnterFb.png" alt=""></a>
+    </div>
+    <div class="modal-footer">
+      <form action="">
+        <input type="text" placeholder="Эл.почта:">
+        <input type="text" placeholder="Пароль">
+        <div class="controls-row">
+          <input type="submit" class="btn btn-danger" value="войти" data-dismiss="modal" aria-hidden="true">
+          <label class="checkbox inline">
+            <input id="" type="checkbox" value="option1">Запомнить меня
+          </label>
+        </div>
+      </form>
+      <a class="btn btn-link" href="javascript:;">Забыли пароль?</a>
+      <a class="btn btn-link" href="javascript:;">Хотите хавести аккаунт?</a>
+    </div>
+  </div>
+<!-- /modalEnter -->
+
+
+<!-- modalReg -->
+  <div class="modal hide" id="modalReg" tabindex="-1" role="dialog" aria-labelledby="modalEnter" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <div class="modal-body">
+      <a class="ent" href="javascript:;"><img src="/good/i/modalEnter1.png" alt=""></a>
+      <a class="ent" href="javascript:;"><img src="/good/i/modalEnterFb.png" alt=""></a>
+    </div>
+    <div class="modal-footer text-center">
+      <form action="">
+        <input type="text" placeholder="Эл.почта:">
+        <input type="text" placeholder="Пароль">
+        <input type="text" placeholder="Повторите пароль">
+        <input type="submit" id="regOpen" class="btn btn-danger" value="зарегистрироваться" data-dismiss="modal" aria-hidden="true">
+      </form>
+      <p>Регистрируясь на travelonline.ru <br>вы принимаете условия <a href="javascript:;">пользовательского соглашения</a></p>
+    </div>
+  </div>
+<!-- /modalReg -->
+
+
+  <nav class="navbar navbar-inverse navbar-static-top">  <!-- .navbar-static-top, navbar-fixed-top, navbar-fixed-bottom -->
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="./index.html"><img src="/good/i/brand.png" alt="TravelOnline"></a>
+        <ul class="nav">
+          <li class="active"><a href="./tickets.html">Авиабилеты</a></li>
+          <li><a href="./hotels.hmtl">Отели</a></li>
+          <li><a href="./tour.html">Туры</a></li>
+          <li><a href="./travel.html">ПУТЕШЕСТВИЯ</a></li>
+          <li><a href="./marsh.html">МАРШРУТЫ</a></li>
+          <li><a href="./rent.html">АРЕНДА недвижимости</a></li>
+          <li><a href="./aboutTrip.html">ВСЕ О ПУТЕШЕСТВИЯХ</a></li>
+        </ul>
+
+        <ul class="nav navAdd unReg">
+          <li class="navEnter"><a href="#modalEnter" data-toggle="modal">вход</a></li>
+          <li class="navReg"><a href="#modalReg" data-toggle="modal">регистрация</a></li>
+          <li class="navCurr dropdown">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">usd</a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a tabindex="-1" href="#">РУБЛИ (RUB)</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">ДОЛЛАРЫ (USD)</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">ЕВРО (EUR)</a></li>
+            </ul>
+          </li>
+          <li class="navLang dropdown">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">рус</a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a tabindex="-1" href="#">русский</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">английский</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">немецкий</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul class="nav navAdd regOn">
+          <li class="navPersPhoto"><img src="/good/i/navPersPhoto.jpg" alt=""></li>
+          <li class="navPers dropdown">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">ФЕДОР БЕЛЬТЮГОВ</a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a tabindex="-1" href="#">панель управления</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">ваши блоги</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">ваши маршруты</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">изображения</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">редактировать профиль</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">аккаунт</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">выход</a></li>
+            </ul>
+          </li>
+          <li class="navMsg dropdown">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">сообщения <span>2</span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li class="media">
+                <a class="mediaMsg" href="javascript:;">
+                  <img class="media-object pull-left" src="/good/i/mediaMsg.png">
+                  <div class="media-body">
+                    <h5 class="media-heading">ФЕДОР БЕЛЬТЮГОВ</h5>
+                    <p>Федор, меня так достал твой... </p>
+                    <time>18 Марта 2013</time>
+                  </div>
+                </a>
+              </li>
+              
+              <li class="divider"></li>
+
+              <li class="media">
+                <a class="mediaMsg" href="javascript:;">
+                  <img class="media-object pull-left" src="/good/i/mediaMsg.png">
+                  <div class="media-body">
+                    <h5 class="media-heading">ФЕДОР БЕЛЬТЮГОВ</h5>
+                    <p>Федор, когда запустищь свой...</p>
+                    <time>18 Марта 2013</time>
+                  </div>
+                </a>
+              </li>
+
+              <li class="divider"></li>
+
+              <li class="media">
+                <a class="mediaMsg" href="javascript:;">
+                  <img class="media-object pull-left" src="/good/i/mediaMsg.png">
+                  <div class="media-body">
+                    <h5 class="media-heading">ФЕДОР БЕЛЬТЮГОВ</h5>
+                    <p>Пойдем на турники</p>
+                    <time>18 Марта 2013</time>
+                  </div>
+                </a>
+              </li>
+
+              <li class="divider"></li>
+
+              <li class="showAllMediaMsg"><a href="javascript:;" class="text-center">показать все сообщения</a></li>
+            </ul>
+          </li>
+          <li class="navCurr dropdown">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">usd</a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a tabindex="-1" href="#">РУБЛИ (RUB)</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">ДОЛЛАРЫ (USD)</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">ЕВРО (EUR)</a></li>
+            </ul>
+          </li>
+          <li class="navLang dropdown">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">рус</a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a tabindex="-1" href="#">русский</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">английский</a></li>
+              <li class="divider"></li>
+              <li><a tabindex="-1" href="#">немецкий</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>  <!-- /container -->
+    </div>  <!-- /navbar-inner -->
+  </nav>
+
+  <section class="container">
+    <div class="row">
+      <div class="span12 mainSearch">
+        <form class="form-inline row" action="">
+          <div class="well span10">
+            <div class="btn-toolbar">
+              <div class="input-append">
+                <input type="text" class="input-large" placeholder="Откуда" autocomplete="off" id="tw-from">
+                <button class="btn btn-primary" onclick="return false;"><h3>16</h3><h4>дек</h4></button>
+              </div>
+              
+              <div class="btn-group calend" data-toggle="buttons-radio">
+                <a href="javascript:;" class="btn active" id="flightType1"><img src="/good/i/btnFlight1.png" alt="Туда"></a>
+                <a href="javascript:;" class="btn" id="flightType2"><img src="/good/i/btnFlight2.png" alt="Туда-сюда"></a>
+                <a href="javascript:;" class="btn" id="flightType3"><img src="/good/i/btnFlight3.png" alt="Туда-туда"></a>
+              </div>
+
+              <div class="input-append">
+                <input type="text" class="input-large" placeholder="Куда" autocomplete="off" id="tw-to">
+                <button class="btn btn-primary" onclick="return false;"><h3>16</h3><h4>дек</h4></button>
+              </div>
+            </div>
+
+            <div class="btn-toolbar toolbar2">
+              <div class="input-append">
+                <input type="text" class="input-large" placeholder="Откуда">
+                <button class="btn btn-primary" onclick="return false;"><h3>16</h3><h4>дек</h4></button>
+              </div>
+
+              <div class="input-append">
+                <input type="text" class="input-large" placeholder="Куда">
+                <button class="btn btn-primary" onclick="return false;"><h3>16</h3><h4>дек</h4></button>
+              </div>
+            </div>
+
+             <div class="calendar">
+                <div class="datepicker dp1">
+                  <div class="dateHeader">
+                    <p><span class="selDate">Выберите дату</span> <img src="/good/i/dateHeaderPlane.png" alt=""><span class="from">Москва</span> &rarr; <span class="to">Лондон</span></p>
+                  </div>
+                </div>
+                <div class="datepicker dp2">
+                  <div class="dateHeader">
+                    <div class="btn-group" data-toggle="buttons-radio">
+                      <span class="btn">прямые рейсы</span>
+                      <span class="btn active">с пересадкой</span>
+                    </div>
+                  </div>
+                </div>
+              </div>  <!-- /calendar -->
+          </div>  <!-- /well -->
+
+          <input type="submit" class="btn btn-danger span2" onclick="searchBegin(); return false;" value="ПОИСК">
+        </form>
+
+        <div class="span12 dynamics">
+          <div class="hided">
+            <div class="row">
+              <div class="span12">
+                <p class="searchResult"><a href="javascript:;">Москва - Нью-Йорк с 13 фев по 27 фев</a></p>
+              </div>
+            </div>
+            <div class="row">
+              <span class="dynTo span6">
+                <h2>Исходящий рейс <small>Динамика стоимости</small></h2>
+                <div class="dynMonth navbar clearfix">
+                  <ul class="nav">
+                    <li><a href="javascript:;">янв</a></li>
+                    <li><a href="javascript:;">фев</a></li>
+                    <li><a href="javascript:;">мар</a></li>
+                    <li class="active"><a href="javascript:;">апр</a></li>
+                    <li><a href="javascript:;">май</a></li>
+                    <li><a href="javascript:;">июн</a></li>
+                    <li><a href="javascript:;">июл</a></li>
+                    <li><a href="javascript:;">авг</a></li>
+                    <li><a href="javascript:;">сен</a></li>
+                    <li><a href="javascript:;">окт</a></li>
+                    <li><a href="javascript:;">ноя</a></li>
+                    <li><a href="javascript:;">дек</a></li>
+                  </ul>
+                </div>  <!-- /dynMonth -->
+
+                <div class="dynDateGraph navbar">
+                  <ul class="nav">
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li class="active"><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                  </ul>
+                </div>  <!-- /dynDate -->
+
+                <div class="dynDate navbar">
+                  <ul class="nav">
+                    <li><a href="javascript:;">01</a></li>
+                    <li><a href="javascript:;">02</a></li>
+                    <li><a href="javascript:;">03</a></li>
+                    <li><a href="javascript:;">04</a></li>
+                    <li><a href="javascript:;">05</a></li>
+                    <li><a href="javascript:;">06</a></li>
+                    <li><a href="javascript:;">07</a></li>
+                    <li><a href="javascript:;">08</a></li>
+                    <li><a href="javascript:;">09</a></li>
+                    <li><a href="javascript:;">10</a></li>
+                    <li><a href="javascript:;">11</a></li>
+                    <li><a href="javascript:;">12</a></li>
+                    <li class="active"><a href="javascript:;">13</a></li>
+                    <li><a href="javascript:;">14</a></li>
+                    <li><a href="javascript:;">15</a></li>
+                    <li><a href="javascript:;">16</a></li>
+                    <li><a href="javascript:;">17</a></li>
+                    <li><a href="javascript:;">18</a></li>
+                    <li><a href="javascript:;">19</a></li>
+                    <li><a href="javascript:;">20</a></li>
+                    <li><a href="javascript:;">21</a></li>
+                    <li><a href="javascript:;">22</a></li>
+                    <li><a href="javascript:;">23</a></li>
+                    <li><a href="javascript:;">24</a></li>
+                    <li><a href="javascript:;">25</a></li>
+                    <li><a href="javascript:;">26</a></li>
+                    <li><a href="javascript:;">27</a></li>
+                    <li><a href="javascript:;">28</a></li>
+                    <li><a href="javascript:;">29</a></li>
+                    <li><a href="javascript:;">30</a></li>
+                    <li><a href="javascript:;">31</a></li>
+                  </ul>
+                </div>  <!-- /dynDate -->
+
+                <div class="dynDay navbar">
+                  <ul class="nav">
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                    <li><span>ч</span></li>
+                    <li><span>п</span></li>
+                    <li class="active"><span>с</span></li>
+                    <li class="active"><span>в</span></li>
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                    <li><span>ч</span></li>
+                    <li><span>п</span></li>
+                    <li class="active"><span>с</span></li>
+                    <li class="active"><span>в</span></li>
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                    <li><span>ч</span></li>
+                    <li><span>п</span></li>
+                    <li class="active"><span>с</span></li>
+                    <li class="active"><span>в</span></li>
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                    <li><span>ч</span></li>
+                    <li><span>п</span></li>
+                    <li class="active"><span>с</span></li>
+                    <li class="active"><span>в</span></li>
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                  </ul>
+                </div>  <!-- /dynDate -->
+              </span>  <!-- /dynTo -->
+
+              <span class="dynFrom span6">
+                <h2>Обратный рейс <small>Динамика стоимости</small></h2>
+                <div class="dynMonth navbar clearfix">
+                  <ul class="nav">
+                    <li><a href="javascript:;">янв</a></li>
+                    <li><a href="javascript:;">фев</a></li>
+                    <li><a href="javascript:;">мар</a></li>
+                    <li class="active"><a href="javascript:;">апр</a></li>
+                    <li><a href="javascript:;">май</a></li>
+                    <li><a href="javascript:;">июн</a></li>
+                    <li><a href="javascript:;">июл</a></li>
+                    <li><a href="javascript:;">авг</a></li>
+                    <li><a href="javascript:;">сен</a></li>
+                    <li><a href="javascript:;">окт</a></li>
+                    <li><a href="javascript:;">ноя</a></li>
+                    <li><a href="javascript:;">дек</a></li>
+                  </ul>
+                </div>  <!-- /dynMonth -->
+
+                <div class="dynDateGraph navbar">
+                  <ul class="nav">
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li class="active"><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                    <li><a href="javascript:;"></a></li>
+                  </ul>
+                </div>  <!-- /dynDate -->
+
+                <div class="dynDate navbar">
+                  <ul class="nav">
+                    <li><a href="javascript:;">01</a></li>
+                    <li><a href="javascript:;">02</a></li>
+                    <li><a href="javascript:;">03</a></li>
+                    <li><a href="javascript:;">04</a></li>
+                    <li><a href="javascript:;">05</a></li>
+                    <li><a href="javascript:;">06</a></li>
+                    <li><a href="javascript:;">07</a></li>
+                    <li><a href="javascript:;">08</a></li>
+                    <li><a href="javascript:;">09</a></li>
+                    <li><a href="javascript:;">10</a></li>
+                    <li><a href="javascript:;">11</a></li>
+                    <li><a href="javascript:;">12</a></li>
+                    <li class="active"><a href="javascript:;">13</a></li>
+                    <li><a href="javascript:;">14</a></li>
+                    <li><a href="javascript:;">15</a></li>
+                    <li><a href="javascript:;">16</a></li>
+                    <li><a href="javascript:;">17</a></li>
+                    <li><a href="javascript:;">18</a></li>
+                    <li><a href="javascript:;">19</a></li>
+                    <li><a href="javascript:;">20</a></li>
+                    <li><a href="javascript:;">21</a></li>
+                    <li><a href="javascript:;">22</a></li>
+                    <li><a href="javascript:;">23</a></li>
+                    <li><a href="javascript:;">24</a></li>
+                    <li><a href="javascript:;">25</a></li>
+                    <li><a href="javascript:;">26</a></li>
+                    <li><a href="javascript:;">27</a></li>
+                    <li><a href="javascript:;">28</a></li>
+                    <li><a href="javascript:;">29</a></li>
+                    <li><a href="javascript:;">30</a></li>
+                    <li><a href="javascript:;">31</a></li>
+                  </ul>
+                </div>  <!-- /dynDate -->
+
+                <div class="dynDay navbar">
+                  <ul class="nav">
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                    <li><span>ч</span></li>
+                    <li><span>п</span></li>
+                    <li class="active"><span>с</span></li>
+                    <li class="active"><span>в</span></li>
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                    <li><span>ч</span></li>
+                    <li><span>п</span></li>
+                    <li class="active"><span>с</span></li>
+                    <li class="active"><span>в</span></li>
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                    <li><span>ч</span></li>
+                    <li><span>п</span></li>
+                    <li class="active"><span>с</span></li>
+                    <li class="active"><span>в</span></li>
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                    <li><span>ч</span></li>
+                    <li><span>п</span></li>
+                    <li class="active"><span>с</span></li>
+                    <li class="active"><span>в</span></li>
+                    <li><span>п</span></li>
+                    <li><span>в</span></li>
+                    <li><span>с</span></li>
+                  </ul>
+                </div>  <!-- /dynDate -->
+              </span>  <!-- /dynFrom -->
+            </div>
+
+            <div class="row">
+              <div class="span12 dynamicsFoot">
+                <div class="dynamicsFootDate">
+                  <p>13 Февраля 2013 г. - 27 Февряля 2013 г.</p>
+                </div>
+                <input type="submit" class="btn btn-danger" value="ИСКАТЬ НА ЭТИ ДАТЫ">
+              </div>  <!-- /dynamicsFoot-->
+            </div>  <!-- /row -->
+          </div>  <!-- /hided -->
+          <a href="javascript:;" class="labelDynamics">Календарь цен</a>
+        </div>  <!-- /dynamics -->
+      </div>  <!-- /mainSearch -->
+
+
+      <div class="span12 selectors">
+        <div class="btn-row">
+          <div class="btn-toolbar">
+            <div class="btn-group" data-toggle="buttons-radio">
+              <button class="btn active">Все билеты</button>
+              <button class="btn">Сдаваемые</button>
+            </div>
+
+            <div class="btn-group" data-toggle="buttons-radio">
+              <button class="btn active" onclick="renderResult({direct:false})">Все рейсы</button>
+              <button class="btn" onclick="renderResult({direct:true})">Прямые</button>
+            </div>
+
+            <label class="checkbox">класс: </label>
+            <div class="btn-group" data-toggle="buttons-radio">
+              <button class="btn active" onclick="searchBegin({cabinClass:'E'})">Эконом</button>
+              <button class="btn" onclick="searchBegin({cabinClass:'B'})">Бизнес</button>
+            </div>
+            
+            <label>валюта:</label>
+            <div id="filter_currency" class="btn-group last" data-toggle="buttons-radio">
+              <button class="btn active" data-code="RUB">RUB</button>
+              <button class="btn" data-code="USD">USD</button>
+              <button class="btn" data-code="EUR">EUR</button>
+            </div>
+          </div>  <!-- /btn-toolbar -->
+        </div>
+      </div>  <!-- /selectors -->
+
+      <aside class="span2">
+        <article class="side faster">
+          <h2>БЫСТРЕЕ / ДЕШЕВЛЕ</h2>
+          <div class="inn">
+            <div class="slider sliderType1"></div>
+          </div>
+        </article>
+
+        <article class="side flight">
+          <h2>Вылет и прилет</h2>
+          <div class="inn">
+            <div class="fl1"></div>
+            <div class="slider sliderType2" data-dir="from"></div>
+            <div class="fl2"></div>
+            <div class="clearfix"></div>
+            <h3><span class="flightFrom">Москва</span> - <span class="flightTo">Нью-Йорк</span></h3>
+
+            <form action="" class="form-inline" id="from-departure-form">
+              <div class="control-group fl-times">
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad1" checked data-time="0"> в любое время
+                  </label>
+                </div>
+                
+                <div class="controls-row" id="min_price_deptm_first">
+                  <label class="radio inline">
+                    <input type="radio" name="rad1" data-time="1"> 05:00-15:59
+                  </label>
+                  <span class="cost radio inline"></span>
+                </div>
+
+                <div class="controls-row" id="min_price_deptm_second">
+                  <label class="radio inline">
+                    <input type="radio" name="rad1" data-time="2"> 16:00-04:59
+                  </label>
+                  <span class="cost radio inline"></span>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad2" checked> из любого аэропорта
+                  </label>
+                </div>
+                
+                <div id="from_dep_airports_list"></div>
+              </div>
+
+            </form>
+            
+            
+            <form style="display: none;" action="" class="form-inline" id="from-arrival-form">
+              <div class="control-group fl-times">
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="arr_rad1" checked data-time="0"> в любое время
+                  </label>
+                </div>
+                
+                <div class="controls-row" id="min_price_arrtm_first">
+                  <label class="radio inline">
+                    <input type="radio" name="arr_rad1" data-time="1"> 05:00-15:59
+                  </label>
+                  <span class="cost radio inline"></span>
+                </div>
+
+                <div class="controls-row" id="min_price_arrtm_second">
+                  <label class="radio inline">
+                    <input type="radio" name="arr_rad1" data-time="2"> 16:00-04:59
+                  </label>
+                  <span class="cost radio inline"></span>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="arr_rad2" checked> из любого аэропорта
+                  </label>
+                </div>
+                
+                <div id="from_arr_airports_list"></div>
+              </div>
+
+            </form>
+          </div>
+        </article>
+
+        <article class="side flight flight2" style="display: none;">
+          <h2>Вылет и прилет</h2>
+          <div class="inn">
+            <div class="fl1"></div>
+            <div class="slider sliderType2" data-dir="to"></div>
+            <div class="fl2"></div>
+            <div class="clearfix"></div>
+            <h3><span class="flightFrom">Нью-Йорк</span> до <span class="flightTo">Москва</span></h3>
+
+            <form action="" class="form-inline" id="to-departure-form">
+              <div class="control-group fl-times">
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad5" checked data-time="0"> в любое время
+                  </label>
+                </div>
+                
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad5" data-time="1"> 05:00-15:59
+                  </label>
+                  <span class="cost radio inline"></span>
+                </div>
+
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad5" data-time="2"> 16:00-04:59
+                  </label>
+                  <span class="cost radio inline"></span>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad6" checked> из любого аэропорта
+                  </label>
+                </div>
+                
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad6"> Шереметьево
+                  </label>
+                  <span class="cost radio inline">300 $</span>
+                </div>
+
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad6"> Домодедово
+                  </label>
+                  <span class="cost radio inline">260 $</span>
+                </div>
+              </div>
+
+            </form>
+            
+            <form action="" class="form-inline" id="to-arrival-form" style="display: none;">
+              <div class="control-group fl-times">
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad5" checked data-time="0"> в любое время
+                  </label>
+                </div>
+                
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad5" data-time="1"> 05:00-15:59
+                  </label>
+                  <span class="cost radio inline"></span>
+                </div>
+
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad5" data-time="2"> 16:00-04:59
+                  </label>
+                  <span class="cost radio inline"></span>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad6" checked> из любого аэропорта
+                  </label>
+                </div>
+                
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad6"> Шереметьево
+                  </label>
+                  <span class="cost radio inline">300 $</span>
+                </div>
+
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad6"> Домодедово
+                  </label>
+                  <span class="cost radio inline">260 $</span>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </article>
+
+        <article class="side avialines">
+          <h2>Авиалинии</h2>
+          <div class="inn">
+            <form action="" class="form-inline">
+              <div class="control-group">
+                <div class="controls-row"><label class="radio inline"><input type="radio" name="rad3" data-airline="null" checked="checked"> все авиалинии</label></div>
+                <div id="airlines_list"></div>
+              </div>
+            </form>
+
+         <!-- <h4><a href="">Посмотреть еще</a></h4> -->
+          </div>
+        </article>
+
+        <article class="side aviatravel">
+          <h2>Авиаперевозчики</h2>
+          <div class="inn">
+            <form action="" class="form-inline">
+              <div class="control-group">
+                <div class="controls-row">
+                  <label class="radio inline">
+                    <input type="radio" name="rad4" checked>все перевозчики
+                  </label>
+                </div>
+                
+                <div id="aircarriers_list">
+                
+                <div class="controls-row">
+                  <label class="radio inline short">
+                    <input type="radio" name="rad4"> SkyTeam
+                  </label>
+                  <div class="star">
+                    <div class="star-ok"></div>
+                  </div>
+                </div>
+
+                <div class="controls-row">
+                  <label class="radio inline short">
+                    <input type="radio" name="rad4"> StarAlliance
+                  </label>
+                  <div class="star">
+                    <div class="star-ok"></div>
+                  </div>
+                </div>
+
+                <div class="controls-row">
+                  <label class="radio inline short">
+                    <input type="radio" name="rad4"> OneWorld
+                  </label>
+                  <div class="star">
+                    <div class="star-ok"></div>
+                  </div>
+                </div>
+
+                <div class="controls-row">
+                  <label class="radio inline short">
+                    <input type="radio" name="rad4"> SkyTeam
+                  </label>
+                  <div class="star">
+                    <div class="star-ok"></div>
+                  </div>
+                </div>
+
+                <div class="controls-row">
+                  <label class="radio inline short">
+                    <input type="radio" name="rad4"> StarAlliance
+                  </label>
+                  <div class="star">
+                    <div class="star-ok"></div>
+                  </div>
+                </div>
+
+                <div class="controls-row">
+                  <label class="radio inline short">
+                    <input type="radio" name="rad4"> OneWorld
+                  </label>
+                  <div class="star">
+                    <div class="star-ok"></div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </article>
+      </aside>
+
+      <div class="span10 tickets">
+      
+        <div style="display: none;" id="tw-layout_search" class="tw-invisible"></div>
+        <div style="display: none;" id="tw-layout_passengersForm" class="tw-invisible"></div>
+        <div style="display: none;" id="tw-layout_payment" class="tw-invisible"></div>
+      
+        <article class="ticket top most-quick">
+          <h2>САМЫЙ БЫСТРЫЙ БИЛЕТ</h2>
+          <div class="conter"></div>
+        </article>
+
+        <article class="ticket top most-cheap">
+          <h2 class="blue">САМЫЙ ДЕШЕВЫЙ БИЛЕТ</h2>
+          <div class="conter"></div>
+        </article>
+          
+        <h2 class="moreVariants">Еще варианты</h2> 
+
+        <div id="tw-layout_result" class="tw-invisible"></div>
+        
+     <!--  <button class="btn btn-danger ticMore">загрузить еще</button>  -->
+      </div>  <!-- /tickets -->
+    </div>
+  </section> <!-- /container -->
+
+  <footer>
+    <nav class="navbar navbar-static-top">  <!-- .navbar-static-top, navbar-fixed-top, navbar-fixed-bottom -->
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav text-center">
+            <li><a href="./aboutProject.html">О проекте</a></li>
+            <li><a href="./help.hmtl">Помощь</a></li>
+            <li class="active"><a href="./tickets.html">Авиабилеты</a></li>
+            <li><a href="./hotels.hmtl">Отели</a></li>
+            <li><a href="./tour.html">Туры</a></li>
+            <li><a href="./travel.html">ПУТЕШЕСТВИЯ</a></li>
+            <li><a href="./cruise.html">Круизы</a></li>
+            <li><a href="./rent.html">АРЕНДА недвижимости</a></li>
+            <li><a href="./aboutTrip.html">ВСЕ О ПУТЕШЕСТВИЯХ</a></li>
+            <li><a href="./visa.html">Визы</a></li>
+            <li><a href="./ensur.html">Страховка</a></li>
+          </ul>
+        </div>  <!-- /container -->
+      </div>  <!-- /navbar-inner -->
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <div class="span12 social text-center">
+          <a href="javascript:;"><img src="/good/i/socialFb.png" alt=""></a>
+          <a href="javascript:;"><img src="/good/i/socialGoogle.png" alt=""></a>
+          <a href="javascript:;"><img src="/good/i/socialVk.png" alt=""></a>
+          <a href="javascript:;"><img src="/good/i/socialLj.png" alt=""></a>
+          <a href="javascript:;"><img src="/good/i/socialTw.png" alt=""></a>
+          <a href="javascript:;"><img src="/good/i/socialLi.png" alt=""></a>
+        </div>  <!-- /social -->
+
+        <div class="span12 fbLine text-center">
+          <a href="javascript:;"><img src="/good/i/fbookLine.jpg" alt=""></a>
+        </div>  <!-- /fbLine -->
+
+        <div class="span4 offset2 footRights">
+          <p>© Photo square   2012  Все права защищены</p>
+          <p class="footDev">Разработка сайта <a href="http://re-branding.ru/">
+            <img alt="re-branding.ru" src="/good/i/footDev.png"></a>
+          </p>
+        </div>  <!-- /footRights -->
+
+        <div class="span5 offset1 footContacts">
+          <p class="footPhone">+7 495 <b>123 45 67</b></p>
+          <p>ул. Рабочая 84/4, Москва, 109544, Россия</p>
+          <p>e-mail: <a href="javascript:;">hello@ph2studios.com</a></p>
+        </div>  <!-- /footContacts -->
+      </div>
+    </div> <!-- /container -->
+  </footer>
+
+  <!-- javascript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="/good/js/jquery-1.9.min.js"></script>
+  <script src="/good/js/bootstrap.min.js"></script>
+  <script src="/good/js/jquery.sliderkit.1.9.2.js"></script>
+  <script src="/good/js/jquery-ui-1.10.2.custom.min.js"></script>
+  <script src="/good/js/custom_el.js"></script>
+  <script src="/good/js/jquery.ui.datepicker-ru.js"></script>
+  <script src="/good/js/custom.js"></script>
+</body>
+</html>

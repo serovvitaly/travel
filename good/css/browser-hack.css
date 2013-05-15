@@ -1,0 +1,60 @@
+.dropdown-menu {
+  background: #3c3c3c;
+}
+:root .dropdown-menu {
+  background: rgba(0,0,0,.8);
+}
+
+.dropdown-menu:after{
+  border-bottom:6px solid #3c3c3c;
+}
+
+.ui-datepicker-title{
+  font-family: Arial !important;
+}
+
+.navbar.dynDate a {
+  padding:0 2px 0 0;
+}
+
+.dynamics, .mainSearch{
+  outline:1px solid #bababc;
+}
+:root .dynamics, .mainSearch{
+  outline:none;
+}
+
+.selectors .btn-group{
+  margin-right:26px;
+}
+:root .selectors .btn-group{
+  margin-right:32px;
+}
+:root .selectors .btn-group.last{
+  margin-right:0px;
+}
+
+.box-shadow{
+  -webkit-box-shadow:  0px 0px 8px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow:  0px 0px 8px rgba(0, 0, 0, 0.3);
+  -ms-box-shadow:  0px 0px 8px rgba(0, 0, 0, 0.3);
+  box-shadow:  0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+.border_rounded {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.linear-gradient {
+  background:#e5e5e5;  /* для старых браузеров */
+  background: linear-gradient(top, #f3f3f3, #e5e5e5);  /* CSS3 */
+  background: -moz-linear-gradient(top, #f3f3f3, #e5e5e5);  /* Firefox 3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f3f3f3), color-stop(100%,#e5e5e5));  /* Chrome 10+, Safari 5.1+ */
+  background: -webkit-linear-gradient(top, #f3f3f3, #e5e5e5);
+  background: -o-linear-gradient(top, #f3f3f3, #e5e5e5);  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #f3f3f3, #e5e5e5);  /* IE10 */
+  filter:progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#f3f3f3, EndColorStr=#cccccc, GradientType=0);  /* old IE */
+}

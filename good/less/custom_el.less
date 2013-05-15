@@ -1,0 +1,113 @@
+.radio, .checkbox {
+	padding-left:0;
+}
+
+/*all*/
+.outtaHere {
+position:absolute;
+left:-3000px;
+}
+span.left, span.center, .selectArea a, .checkboxArea, .checkboxAreaChecked, .radioArea, .radioAreaChecked {
+display:inline-block;
+*display:inline;
+zoom:1;
+vertical-align:top;
+}
+
+/*select*/
+.selectArea {
+margin:0;
+height:32px;
+position:relative;
+background:url(../i/select_center.jpg) repeat-x;
+}
+a.selectButton {
+height:32px;
+position:absolute;
+top:0;
+}
+span.left {
+width:4px;
+height:32px;
+position:absolute;
+top:0;
+background:url(../i/select_left.jpg) no-repeat;
+}
+
+span.center {
+line-height:30px;
+width:auto;
+padding:0 10px;
+color:#5a5a5a;
+}
+a.selectButton {
+width:20px;
+right:0px;
+top:0;
+background:url(../i/select_button.jpg) no-repeat 0 0;
+outline: none;
+}
+
+/*option*/
+.optionsDivVisible {
+/*margin-left:-5px;*/
+}
+.select-center {
+background:#fff;
+border:2px solid #e7e7e7;
+border-top:0;
+width:auto;
+margin-top:-3px;
+padding-top:5px;
+}
+.select-center ul{
+	margin:0;
+	width:auto;
+}
+.select-center ul li{
+	width:auto;
+	text-align: left;
+	/*line-height: 24px;*/
+	height:24px;
+}
+.select-center a {
+padding:0px;
+line-height:24px;
+color:#5a5a5a;
+display:inline-block;
+padding:0 5px;
+width:95%;
+text-decoration:none;
+}
+.select-center a:hover {
+color:#fff;
+background:url(../i/select_center-a.png) repeat-x top;
+}
+
+.radioArea, .radioAreaChecked, .checkboxArea, .checkboxAreaChecked {
+margin-top:4px;
+width:16px;
+}
+/*checkbox*/
+.checkboxArea, .checkboxAreaChecked {
+height:16px;
+}
+.checkboxArea {
+background:url(../i/chkUn.jpg) no-repeat 0 0px;
+}
+.checkboxAreaChecked {
+background:url(../i/chkChk.jpg) no-repeat 0 0px;
+}
+
+/*radio*/
+.radioArea, .radioAreaChecked {
+height:15px;
+margin-right:10px;
+margin-top:6px;
+}
+.radioArea {
+background:url(../i/radioUn.png) no-repeat;
+}
+.radioAreaChecked {
+background:url(../i/radioChk.png) no-repeat;
+}
