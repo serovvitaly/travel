@@ -60,7 +60,10 @@ $(document).ready(function(){
 		orientation: "horizontal",
 		range: "min",
 		max: 100,
-		value: 50
+		value: 50,
+        slide: function( event, ui ) {
+          console.log(ui.value);
+        }
 	});
 	
 	$( ".slider.sliderType1" ).slider( "value", 60 );

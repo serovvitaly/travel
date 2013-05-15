@@ -372,8 +372,12 @@ tw.oResult = null;
 tw.ticketParams={};
 $(function(){
 	$.template('tmpl_layoutResult', $("#tmpl_layoutResult").trimHTML());
-    $.template('tmpl_singleTrip', $("#tmpl_singleTrip").trimHTML());
-	$.template('tmpl_singleTrip_top', $("#tmpl_singleTrip_top").trimHTML());
+    $.template('tmpl_singleTrip_1', $("#tmpl_singleTrip_1").trimHTML());
+    $.template('tmpl_singleTrip_2', $("#tmpl_singleTrip_2").trimHTML());
+    $.template('tmpl_singleTrip_3', $("#tmpl_singleTrip_3").trimHTML());
+    $.template('tmpl_singleTrip_top_1', $("#tmpl_singleTrip_top_1").trimHTML());
+    $.template('tmpl_singleTrip_top_2', $("#tmpl_singleTrip_top_2").trimHTML());
+	$.template('tmpl_singleTrip_top_3', $("#tmpl_singleTrip_top_3").trimHTML());
 	$.template('SelectedTripInfo', $("#tmpl_SelectedTripInfo").trimHTML());
 	$.template('Ticket', $("#tmpl_Ticket").trimHTML());
 	$.template('Baggage', $("#tmpl_Baggage").trimHTML());
@@ -1396,8 +1400,24 @@ tw.DrawResults.prototype.redrawColumn = function(){
     
     var most_quick_item = {time:0, id: 0};
     
-    //console.log('dirNumber = '+this.dirNumber );
-    //console.log(this.Columns);
+    var tmpl_single_name     = 'tmpl_singleTrip_1';
+    var tmpl_single_top_name = 'tmpl_singleTrip_top_1';
+    switch (search_mode) {
+        case 1:
+            tmpl_single_name     = 'tmpl_singleTrip_1';
+            tmpl_single_top_name = 'tmpl_singleTrip_top_1';
+            break;
+            
+        case 2:
+            tmpl_single_name     = 'tmpl_singleTrip_2';
+            tmpl_single_top_name = 'tmpl_singleTrip_top_2';
+            break;
+            
+        case 3:
+            tmpl_single_name     = 'tmpl_singleTrip_3';
+            tmpl_single_top_name = 'tmpl_singleTrip_top_3';
+            break;
+    }
     
     this.dataFlights = '#tw-layout_result';
     
@@ -1405,8 +1425,11 @@ tw.DrawResults.prototype.redrawColumn = function(){
 	$(this.dataFlights).empty();
 
 	if (this.dirNumber == 0) {
-        var uf_departure_times_items = [], min_price_deptm_first = {amount:0, price: 0}, min_price_deptm_second = {amount:0, price: 0}, airports_list = {}, airlines_list = {}, aircarriers_list = {};
-        
+        var uf_departure_times_items = [], from_dep_airports_list = {}, from_arr_airports_list = {}, airlines_list = {}, aircarriers_list = {};
+        var min_price_deptm_first  = {amount:0, price: 0}, 
+            min_price_deptm_second = {amount:0, price: 0}, 
+            min_price_arrtm_first  = {amount:0, price: 0}, 
+            min_price_arrtm_second = {amount:0, price: 0};
         
 		for (var j = 0; j < this.Columns.arr[0].length; j++ ) {
             console.log(this.Columns.arr[0][j].flight);            
@@ -1427,15 +1450,30 @@ tw.DrawResults.prototype.redrawColumn = function(){
             }
             
             var AirportByCodeFrom = this.Columns.arr[0][j].flight.html_tmpl.AirportByCodeFrom[0];
-            if (airports_list[ AirportByCodeFrom ]) {
-                if (this.Columns.arr[0][j].flight.AmountFare < airports_list[ AirportByCodeFrom ].amount) {
-                    airports_list[ AirportByCodeFrom ] = {
+            if (from_dep_airports_list[ AirportByCodeFrom ]) {
+                if (this.Columns.arr[0][j].flight.AmountFare < from_dep_airports_list[ AirportByCodeFrom ].amount) {
+                    from_dep_airports_list[ AirportByCodeFrom ] = {
                         amount: this.Columns.arr[0][j].flight.AmountFare,
                         price : this.Columns.arr[0][j].flight.html_tmpl.Price
                     };
                 }
             } else {
-                airports_list[ AirportByCodeFrom ] = {
+                from_dep_airports_list[ AirportByCodeFrom ] = {
+                    amount: this.Columns.arr[0][j].flight.AmountFare,
+                    price : this.Columns.arr[0][j].flight.html_tmpl.Price
+                };
+            }
+            
+            var AirportByCodeTo = this.Columns.arr[0][j].flight.html_tmpl.AirportByCodeTo[0];
+            if (from_arr_airports_list[ AirportByCodeTo ]) {
+                if (this.Columns.arr[0][j].flight.AmountFare < from_arr_airports_list[ AirportByCodeTo ].amount) {
+                    from_arr_airports_list[ AirportByCodeTo ] = {
+                        amount: this.Columns.arr[0][j].flight.AmountFare,
+                        price : this.Columns.arr[0][j].flight.html_tmpl.Price
+                    };
+                }
+            } else {
+                from_arr_airports_list[ AirportByCodeTo ] = {
                     amount: this.Columns.arr[0][j].flight.AmountFare,
                     price : this.Columns.arr[0][j].flight.html_tmpl.Price
                 };
@@ -1444,6 +1482,7 @@ tw.DrawResults.prototype.redrawColumn = function(){
             var AirlineByCode = this.Columns.arr[0][j].flight.html_tmpl.Airline[0];
             airlines_list[AirlineByCode] = 0;
             
+            // Подсчет минимальной цены вылета и прелета для интервалов времени (до обеда и после обеда)
             this.Columns.arr[0][j].flight.html_tmpl.StartTimeMy = [];
             for (var imo = 0; imo < this.Columns.arr[0][j].flight.html_tmpl.StartTime.length; imo++) {
                 var imo_item = this.Columns.arr[0][j].flight.html_tmpl.StartTime[imo].split(':');
@@ -1460,6 +1499,24 @@ tw.DrawResults.prototype.redrawColumn = function(){
                     if (min_price_deptm_second.amount <= 0 || this.Columns.arr[0][j].flight.AmountFare < min_price_deptm_second.amount) {
                         min_price_deptm_second.amount = this.Columns.arr[0][j].flight.AmountFare;
                         min_price_deptm_second.price  = this.Columns.arr[0][j].flight.html_tmpl.Price;
+                    }
+                }
+                
+                
+                var imo_item = this.Columns.arr[0][j].flight.html_tmpl.EndTime[imo].split(':');
+                //this.Columns.arr[0][j].flight.html_tmpl.EndTimeMy[imo] = imo_item[0] + ' ч ' + imo_item[1] + '  мин';
+                
+                var imo_item_join = imo_item.join('') * 1;
+                if (imo_item_join >= 500 && imo_item_join <= 1559) {
+                    if (min_price_arrtm_first.amount <= 0 || this.Columns.arr[0][j].flight.AmountFare < min_price_arrtm_first.amount) {
+                        min_price_arrtm_first.amount = this.Columns.arr[0][j].flight.AmountFare;
+                        min_price_arrtm_first.price  = this.Columns.arr[0][j].flight.html_tmpl.Price;
+                    }
+                }
+                else if (imo_item_join >= 1600 || imo_item_join <= 459) {
+                    if (min_price_arrtm_second.amount <= 0 || this.Columns.arr[0][j].flight.AmountFare < min_price_arrtm_second.amount) {
+                        min_price_arrtm_second.amount = this.Columns.arr[0][j].flight.AmountFare;
+                        min_price_arrtm_second.price  = this.Columns.arr[0][j].flight.html_tmpl.Price;
                     }
                 }
                   
@@ -1513,7 +1570,7 @@ tw.DrawResults.prototype.redrawColumn = function(){
                     this.Columns.arr[0][j].flight.html_tmpl.EndDateMy[imo] = twiket.formatDate(imo_item, 'd mmmm');
                 }
                 
-			    $($.tmpl('tmpl_singleTrip', this.Columns.arr[0][j].flight, {dir: 0, listlength: this.Columns.arr[0][j].list.length})).appendTo(this.dataFlights);
+			    $($.tmpl(tmpl_single_name, this.Columns.arr[0][j].flight, {dir: 0, listlength: this.Columns.arr[0][j].list.length})).appendTo(this.dataFlights);
                 
             }
 		}
@@ -1521,19 +1578,30 @@ tw.DrawResults.prototype.redrawColumn = function(){
         $('#min_price_deptm_first span').html(min_price_deptm_first.price);
         $('#min_price_deptm_second span').html(min_price_deptm_second.price);
         
+        $('#min_price_arrtm_first span').html(min_price_arrtm_first.price);
+        $('#min_price_arrtm_second span').html(min_price_arrtm_second.price);
         
         
-        $('#airports_list').html('');
-        $.each(airports_list, function(index, item){
-            $('#airports_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad2" data-airport="'+index+'"> ' + ref.getAirportString(index) + '</label><span class="cost radio inline">' + item.price + '</span></div>');
+        
+        $('#from_dep_airports_list').html('');
+        $.each(from_dep_airports_list, function(index, item){
+            $('#from_dep_airports_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad2" data-airport="'+index+'"> ' + ref.getAirportString(index) + '</label><span class="cost radio inline">' + item.price + '</span></div>');
         });
+        $('#from_dep_airports_list input[data-airport="'+ufilter.byDepartureAirport+'"]').attr('checked', 'checked');
         
-        $('#airports_list input[data-airport="'+ufilter.byDepartureAirport+'"]').attr('checked', 'checked');
+        if (from_arr_airports_list.length > 1) {
+            $('#from_arr_airports_list').html('');
+            $.each(from_arr_airports_list, function(index, item){
+                $('#from_arr_airports_list').append('<div class="controls-row"><label class="radio inline"><input type="radio" name="rad2" data-airport="'+index+'"> ' + ref.getAirportString(index) + '</label><span class="cost radio inline">' + item.price + '</span></div>');
+            });
+            $('#from_arr_airports_list input[data-airport="'+ufilter.byDepartureAirport+'"]').attr('checked', 'checked');
+        }
         
-        $('#airports_list input').change(function(e){            
+        $('#from_dep_airports_list input, #from_arr_airports_list input').change(function(e){            
             ufilter.byDepartureAirport = $(this).attr('data-airport');
             twiket.DrawFares(searchResult);
         });
+        
         
         
         
@@ -1551,9 +1619,9 @@ tw.DrawResults.prototype.redrawColumn = function(){
         
         
         // САМЫЙ БЫСТРЫЙ
-        $('.most-quick .conter').html( $($.tmpl('tmpl_singleTrip_top', this.Columns.arr[0][most_quick_item.id].flight, {dir: 0, listlength: this.Columns.arr[0][most_quick_item.id].list.length})) );
+        $('.most-quick .conter').html( $($.tmpl(tmpl_single_top_name, this.Columns.arr[0][most_quick_item.id].flight, {dir: 0, listlength: this.Columns.arr[0][most_quick_item.id].list.length})) );
         // САМЫЙ ДЕШЕВЫЙ        
-        $('.most-cheap .conter').html( $($.tmpl('tmpl_singleTrip_top', this.Columns.arr[0][0].flight, {dir: 0, listlength: this.Columns.arr[0][0].list.length})) );
+        $('.most-cheap .conter').html( $($.tmpl(tmpl_single_top_name, this.Columns.arr[0][0].flight, {dir: 0, listlength: this.Columns.arr[0][0].list.length})) );
         
         $('#aircarriers_list').html('');
         $.each(aircarriers_list, function(index, item){
@@ -1564,8 +1632,30 @@ tw.DrawResults.prototype.redrawColumn = function(){
 		$.tmpl('tmpl_singleTrip', this.Columns.obj[0][this.at].list, {dir: 1}).appendTo(this.dataFlights);;
 	}
     
-    return;
     
+    
+    $('.ticPrice a',this.dataFlights).on('click', function(){
+        var flight = self.oFlights[$(this).attr('fi')];
+        var elRow = this;        
+        tw.setMinHeight();
+        $('.tw-routeBody').fadeOut(function(){
+            if (self.directionsRoutes.length == 1 || self.dirNumber == 1) { alert('fo-4');
+                var confirmFlight = self.getFareConfirmationParams(flight);
+                $(document).trigger({
+                    type: "selectFlight",
+                    flight: confirmFlight,
+                    flightInfo: flight,
+                    direction: self.directionsRoutes
+                });
+            } else { alert('gpo-7');
+                self.initRowClick(elRow);
+            }
+        });
+        
+        return false;
+    });
+    
+    /*
 	$('.rowWrapper',this.dataFlights).on('click','div.avl',function(){
 		var flight = self.oFlights[$(this).attr('fi')];
 		var elRow = this;
@@ -1583,7 +1673,7 @@ tw.DrawResults.prototype.redrawColumn = function(){
 				self.initRowClick(elRow);
 			}
 		});
-	});
+	}); */
 };
 tw.DrawResults.prototype.initRowClick = function(elRow) {
 	var self = this;

@@ -3,11 +3,22 @@
 var searchResult = [];
 var uf_departure_times = null;
 
+var search_mode = 1; // 1 - туда, 2 - туда и обратно, 3 - туди и дальше
+
 var ufilter = {
     cabinClass:         'E',   // Тип салона
     direct:             false, // Все рейсы (false) или только прямые (true)
-    byDepartureTime:    null,  // Время вылета (null - любое)
-    byDepartureAirport: null,  // Аэропорт вылета (null - любое)
+    
+    byFromDepartureTime:  null,  // Время вылета, туда (null - любое)
+    byFromArrivalTime:    null,  // Время прилета, туда (null - любое)
+    byToDepartureTime:    null,  // Время вылета, обратно (null - любое)
+    byToArrivalTime:      null,  // Время прилета, обратно (null - любое)
+    
+    byFromDepartureAirport: null,  // Аэропорт вылета, туда (null - любое)
+    byFromArrivalAirport:   null,  // Аэропорт прилета, туда (null - любое)
+    byToDepartureAirport:   null,  // Аэропорт вылета, обратно (null - любое)
+    byToArrivalAirport:     null,  // Аэропорт прилета, обратно (null - любое)
+    
     byArrivalTime:      null,  // Время прилета (null - любое)
     byArrivalAirport:   null,  // Аэропорт прилета (null - любое)
     byAirline:          null,  // Авиалинии (null - любое)
@@ -49,6 +60,22 @@ function renderResult(filter){
 * Осуществляет поиск авиабилетов 
 */
 function searchBegin(filter){
+   
+    if ($('#flightType1').hasClass('active')) {
+        search_mode = 1;
+    }
+    else if ($('#flightType2').hasClass('active')) {
+        search_mode = 2;
+    }
+    else if ($('#flightType3').hasClass('active')) {
+        search_mode = 3;
+    }
+    
+    if ( search_mode == 2 ) {
+        $('.flight2').fadeIn();
+    } else {
+        $('.flight2').fadeOut();
+    }
     
     ufilter = $.extend(ufilter, filter);
     
@@ -69,10 +96,24 @@ function searchBegin(filter){
         ad: 1
     };
     
-    $('.fitl-time input').change(function(){
-        ufilter.byDepartureTime = $(this).attr('data-time');
+    // -- Отлавливаем нажатие фильтров для выбора времени --
+    $('#from-departure-form .fl-times input').change(function(){
+        ufilter.byFromDepartureTime = $(this).attr('data-time');
         twiket.DrawFares(searchResult);
     });
+    $('#from-arrival-form .fl-times input').change(function(){
+        ufilter.byFromArrivalTime = $(this).attr('data-time');
+        twiket.DrawFares(searchResult);
+    });
+    $('#to-departure-form .fl-times input').change(function(){
+        ufilter.byToDepartureTime = $(this).attr('data-time');
+        twiket.DrawFares(searchResult);
+    });
+    $('#to-arrival-form .fl-times input').change(function(){
+        ufilter.byToArrivalTime = $(this).attr('data-time');
+        twiket.DrawFares(searchResult);
+    });
+    // --END--
     
     uf_departure_times = null;
     
